@@ -606,7 +606,7 @@ namespace AutocadAPI
 
 
 
-            XbimCreateWall xbimWall = new XbimCreateWall(this.lstWalls, this.lstColumns, lstFooting, lstSlab, lstOpening);
+            XbimCreateBuilding xbimWall = new XbimCreateBuilding(this.lstWalls, this.lstColumns, lstFooting, lstSlab, lstOpening);
             //XbimCreateWall xbimWall = new XbimCreateWall(this.lstWalls);
         }
     }
