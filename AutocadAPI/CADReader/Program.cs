@@ -10,7 +10,6 @@ namespace CADReader
     {
         static void Main(string[] args)
         {
-            devDept.Eyeshot.Translators.ReadAutodesk.OnApplicationExit(null,null);
         }
     }
 }

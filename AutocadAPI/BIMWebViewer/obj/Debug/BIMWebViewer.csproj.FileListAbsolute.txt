@@ -1,0 +1,668 @@
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\ApplicationInsights.config
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\BIMWebViewer.dll.config
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\BIMWebViewer.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\BIMWebViewer.pdb
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\roslyn\csc.exe
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\roslyn\csc.exe.config
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\roslyn\csc.rsp
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\roslyn\csi.exe
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\roslyn\csi.exe.config
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\roslyn\csi.rsp
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\roslyn\Microsoft.CodeAnalysis.CSharp.Scripting.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\roslyn\Microsoft.CodeAnalysis.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\roslyn\Microsoft.CodeAnalysis.Scripting.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\roslyn\Microsoft.CSharp.Core.targets
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\roslyn\Microsoft.DiaSymReader.Native.amd64.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\roslyn\Microsoft.DiaSymReader.Native.x86.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\roslyn\Microsoft.Managed.Core.targets
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\roslyn\Microsoft.VisualBasic.Core.targets
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\roslyn\System.AppContext.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\roslyn\System.Collections.Immutable.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\roslyn\System.Console.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\roslyn\System.Diagnostics.FileVersionInfo.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\roslyn\System.Diagnostics.StackTrace.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\roslyn\System.IO.Compression.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\roslyn\System.IO.FileSystem.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\roslyn\System.IO.FileSystem.Primitives.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\roslyn\System.IO.Pipes.AccessControl.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\roslyn\System.IO.Pipes.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\roslyn\System.Reflection.Metadata.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\roslyn\System.Security.AccessControl.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\roslyn\System.Security.Claims.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\roslyn\System.Security.Cryptography.Algorithms.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\roslyn\System.Security.Cryptography.Encoding.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\roslyn\System.Security.Cryptography.Primitives.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\roslyn\System.Security.Cryptography.X509Certificates.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\roslyn\System.Security.Principal.Windows.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\roslyn\System.Text.Encoding.CodePages.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\roslyn\System.ValueTuple.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\roslyn\System.Xml.ReaderWriter.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\roslyn\System.Xml.XmlDocument.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\roslyn\System.Xml.XPath.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\roslyn\System.Xml.XPath.XDocument.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\roslyn\vbc.exe
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\roslyn\vbc.exe.config
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\roslyn\vbc.rsp
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\roslyn\VBCSCompiler.exe
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\roslyn\VBCSCompiler.exe.config
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Antlr3.Runtime.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\EntityFramework.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\EntityFramework.SqlServer.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Esent.Interop.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\ICSharpCode.SharpZipLib.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\log4net.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Microsoft.AI.Agent.Intercept.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Microsoft.AI.DependencyCollector.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Microsoft.AI.PerfCounterCollector.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Microsoft.AI.ServerTelemetryChannel.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Microsoft.AI.Web.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Microsoft.AI.WindowsServer.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Microsoft.ApplicationInsights.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Microsoft.AspNet.Identity.Core.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Microsoft.AspNet.Identity.EntityFramework.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Microsoft.AspNet.Identity.Owin.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Microsoft.AspNet.TelemetryCorrelation.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Microsoft.Owin.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Microsoft.Owin.Host.SystemWeb.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Microsoft.Owin.Security.Cookies.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Microsoft.Owin.Security.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Microsoft.Owin.Security.Facebook.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Microsoft.Owin.Security.Google.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Microsoft.Owin.Security.MicrosoftAccount.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Microsoft.Owin.Security.OAuth.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Microsoft.Owin.Security.Twitter.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Microsoft.Web.Infrastructure.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Newtonsoft.Json.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Owin.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\System.Diagnostics.DiagnosticSource.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\System.Net.Http.Formatting.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\System.Web.Cors.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\System.Web.Helpers.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\System.Web.Http.Cors.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\System.Web.Http.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\System.Web.Mvc.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\System.Web.Optimization.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\System.Web.Razor.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\System.Web.WebPages.Deployment.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\System.Web.WebPages.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\System.Web.WebPages.Razor.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\WebGrease.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Xbim.CobieExpress.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Xbim.Common.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Xbim.Geometry.Engine.Interop.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Xbim.Ifc.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Xbim.Ifc.Extensions.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Xbim.Ifc2x3.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Xbim.Ifc2x3.IO.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Xbim.Ifc4.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Xbim.IO.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Xbim.ModelGeometry.Scene.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Xbim.Tessellator.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Esent.Interop.pdb
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Esent.Interop.xml
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\log4net.xml
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\System.Net.Http.Formatting.xml
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\System.Web.Http.xml
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\System.Web.Http.Cors.xml
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\System.Web.Helpers.xml
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\System.Web.Mvc.xml
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\System.Web.Optimization.xml
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\System.Web.Razor.xml
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\System.Web.WebPages.xml
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\System.Web.WebPages.Deployment.xml
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\System.Web.WebPages.Razor.xml
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Newtonsoft.Json.xml
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Antlr3.Runtime.pdb
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Xbim.CobieExpress.pdb
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Xbim.CobieExpress.xml
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Xbim.Common.pdb
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Xbim.Common.xml
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Xbim.Geometry.Engine.Interop.pdb
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Xbim.Geometry.Engine.Interop.xml
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Xbim.Ifc.pdb
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Xbim.Ifc.xml
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Xbim.Ifc.Extensions.pdb
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Xbim.Ifc.Extensions.xml
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Xbim.Ifc2x3.pdb
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Xbim.Ifc2x3.xml
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Xbim.Ifc2x3.IO.pdb
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Xbim.Ifc2x3.IO.xml
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Xbim.Ifc4.pdb
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Xbim.Ifc4.xml
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Xbim.IO.pdb
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Xbim.IO.xml
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Xbim.ModelGeometry.Scene.pdb
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Xbim.ModelGeometry.Scene.xml
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Xbim.Tessellator.pdb
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Xbim.Tessellator.xml
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\EntityFramework.xml
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\EntityFramework.SqlServer.xml
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Microsoft.AspNet.Identity.Core.xml
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Microsoft.AspNet.Identity.Owin.xml
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Microsoft.AspNet.Identity.EntityFramework.xml
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Microsoft.Owin.xml
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Microsoft.Owin.Host.SystemWeb.xml
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Microsoft.Owin.Security.xml
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Microsoft.Owin.Security.Facebook.xml
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Microsoft.Owin.Security.Cookies.xml
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Microsoft.Owin.Security.Google.xml
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Microsoft.Owin.Security.Twitter.xml
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Microsoft.Owin.Security.OAuth.xml
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\System.Diagnostics.DiagnosticSource.xml
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Microsoft.AspNet.TelemetryCorrelation.xml
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Microsoft.AI.DependencyCollector.xml
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Microsoft.AI.WindowsServer.xml
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Microsoft.AI.Web.xml
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\obj\Debug\BIMWebViewer.csproj.CoreCompileInputs.cache
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\obj\Debug\BIMWebViewer.csproj.CopyComplete
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\obj\Debug\BIMWebViewer.dll
+E:\WebViewer\04_WebViewer 190516\WebViewer\BIMWebViewer\obj\Debug\BIMWebViewer.pdb
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\ApplicationInsights.config
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\BIMWebViewer.dll.config
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\BIMWebViewer.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\BIMWebViewer.pdb
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\csc.exe
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\csc.exe.config
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\csc.rsp
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\csi.exe
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\csi.exe.config
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\csi.rsp
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\Microsoft.CodeAnalysis.CSharp.Scripting.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\Microsoft.CodeAnalysis.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\Microsoft.CodeAnalysis.Scripting.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\Microsoft.CSharp.Core.targets
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\Microsoft.DiaSymReader.Native.amd64.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\Microsoft.DiaSymReader.Native.x86.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\Microsoft.Managed.Core.targets
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\Microsoft.VisualBasic.Core.targets
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\System.AppContext.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\System.Collections.Immutable.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\System.Console.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\System.Diagnostics.FileVersionInfo.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\System.Diagnostics.StackTrace.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\System.IO.Compression.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\System.IO.FileSystem.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\System.IO.FileSystem.Primitives.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\System.IO.Pipes.AccessControl.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\System.IO.Pipes.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\System.Reflection.Metadata.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\System.Security.AccessControl.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\System.Security.Claims.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\System.Security.Cryptography.Algorithms.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\System.Security.Cryptography.Encoding.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\System.Security.Cryptography.Primitives.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\System.Security.Cryptography.X509Certificates.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\System.Security.Principal.Windows.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\System.Text.Encoding.CodePages.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\System.ValueTuple.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\System.Xml.ReaderWriter.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\System.Xml.XmlDocument.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\System.Xml.XPath.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\System.Xml.XPath.XDocument.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\vbc.exe
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\vbc.exe.config
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\vbc.rsp
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\VBCSCompiler.exe
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\VBCSCompiler.exe.config
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Antlr3.Runtime.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\EntityFramework.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\EntityFramework.SqlServer.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Esent.Interop.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\ICSharpCode.SharpZipLib.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\log4net.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.AI.Agent.Intercept.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.AI.DependencyCollector.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.AI.PerfCounterCollector.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.AI.ServerTelemetryChannel.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.AI.Web.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.AI.WindowsServer.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.ApplicationInsights.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.AspNet.Identity.Core.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.AspNet.Identity.EntityFramework.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.AspNet.Identity.Owin.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.AspNet.TelemetryCorrelation.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.Owin.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.Owin.Host.SystemWeb.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.Owin.Security.Cookies.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.Owin.Security.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.Owin.Security.Facebook.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.Owin.Security.Google.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.Owin.Security.MicrosoftAccount.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.Owin.Security.OAuth.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.Owin.Security.Twitter.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.Web.Infrastructure.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Newtonsoft.Json.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Owin.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\System.Diagnostics.DiagnosticSource.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\System.Net.Http.Formatting.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\System.Web.Cors.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\System.Web.Helpers.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\System.Web.Http.Cors.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\System.Web.Http.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\System.Web.Mvc.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\System.Web.Optimization.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\System.Web.Razor.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\System.Web.WebPages.Deployment.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\System.Web.WebPages.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\System.Web.WebPages.Razor.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\WebGrease.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.CobieExpress.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.Common.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.Geometry.Engine.Interop.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.Ifc.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.Ifc.Extensions.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.Ifc2x3.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.Ifc2x3.IO.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.Ifc4.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.IO.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.ModelGeometry.Scene.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.Tessellator.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Esent.Interop.pdb
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Esent.Interop.xml
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\log4net.xml
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\System.Net.Http.Formatting.xml
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\System.Web.Http.xml
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\System.Web.Http.Cors.xml
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\System.Web.Helpers.xml
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\System.Web.Mvc.xml
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\System.Web.Optimization.xml
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\System.Web.Razor.xml
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\System.Web.WebPages.xml
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\System.Web.WebPages.Deployment.xml
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\System.Web.WebPages.Razor.xml
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Newtonsoft.Json.xml
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Antlr3.Runtime.pdb
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.CobieExpress.pdb
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.CobieExpress.xml
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.Common.pdb
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.Common.xml
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.Geometry.Engine.Interop.pdb
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.Geometry.Engine.Interop.xml
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.Ifc.pdb
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.Ifc.xml
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.Ifc.Extensions.pdb
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.Ifc.Extensions.xml
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.Ifc2x3.pdb
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.Ifc2x3.xml
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.Ifc2x3.IO.pdb
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.Ifc2x3.IO.xml
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.Ifc4.pdb
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.Ifc4.xml
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.IO.pdb
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.IO.xml
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.ModelGeometry.Scene.pdb
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.ModelGeometry.Scene.xml
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.Tessellator.pdb
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.Tessellator.xml
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\EntityFramework.xml
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\EntityFramework.SqlServer.xml
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.AspNet.Identity.Core.xml
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.AspNet.Identity.Owin.xml
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.AspNet.Identity.EntityFramework.xml
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.Owin.xml
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.Owin.Host.SystemWeb.xml
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.Owin.Security.xml
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.Owin.Security.Facebook.xml
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.Owin.Security.Cookies.xml
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.Owin.Security.Google.xml
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.Owin.Security.Twitter.xml
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.Owin.Security.OAuth.xml
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\System.Diagnostics.DiagnosticSource.xml
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.AspNet.TelemetryCorrelation.xml
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.AI.DependencyCollector.xml
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.AI.WindowsServer.xml
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.AI.Web.xml
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\obj\Debug\BIMWebViewer.csprojResolveAssemblyReference.cache
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\obj\Debug\BIMWebViewer.dll
+D:\Project Preparation\WebViewer\WebViewer\01_WebViewer 190826\WebViewer\BIMWebViewer\obj\Debug\BIMWebViewer.pdb
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\ApplicationInsights.config
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\BIMWebViewer.dll.config
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\BIMWebViewer.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\BIMWebViewer.pdb
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\csc.exe
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\csc.exe.config
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\csc.rsp
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\csi.exe
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\csi.exe.config
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\csi.rsp
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\Microsoft.CodeAnalysis.CSharp.Scripting.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\Microsoft.CodeAnalysis.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\Microsoft.CodeAnalysis.Scripting.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\Microsoft.CSharp.Core.targets
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\Microsoft.DiaSymReader.Native.amd64.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\Microsoft.DiaSymReader.Native.x86.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\Microsoft.Managed.Core.targets
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\Microsoft.VisualBasic.Core.targets
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\System.AppContext.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\System.Collections.Immutable.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\System.Console.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\System.Diagnostics.FileVersionInfo.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\System.Diagnostics.StackTrace.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\System.IO.Compression.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\System.IO.FileSystem.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\System.IO.FileSystem.Primitives.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\System.IO.Pipes.AccessControl.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\System.IO.Pipes.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\System.Reflection.Metadata.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\System.Security.AccessControl.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\System.Security.Claims.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\System.Security.Cryptography.Algorithms.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\System.Security.Cryptography.Encoding.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\System.Security.Cryptography.Primitives.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\System.Security.Cryptography.X509Certificates.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\System.Security.Principal.Windows.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\System.Text.Encoding.CodePages.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\System.ValueTuple.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\System.Xml.ReaderWriter.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\System.Xml.XmlDocument.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\System.Xml.XPath.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\System.Xml.XPath.XDocument.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\vbc.exe
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\vbc.exe.config
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\vbc.rsp
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\VBCSCompiler.exe
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\roslyn\VBCSCompiler.exe.config
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Antlr3.Runtime.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\EntityFramework.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\EntityFramework.SqlServer.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Esent.Interop.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\ICSharpCode.SharpZipLib.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\log4net.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.AI.Agent.Intercept.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.AI.DependencyCollector.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.AI.PerfCounterCollector.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.AI.ServerTelemetryChannel.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.AI.Web.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.AI.WindowsServer.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.ApplicationInsights.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.AspNet.Identity.Core.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.AspNet.Identity.EntityFramework.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.AspNet.Identity.Owin.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.AspNet.TelemetryCorrelation.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.Owin.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.Owin.Host.SystemWeb.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.Owin.Security.Cookies.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.Owin.Security.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.Owin.Security.Facebook.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.Owin.Security.Google.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.Owin.Security.MicrosoftAccount.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.Owin.Security.OAuth.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.Owin.Security.Twitter.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.Web.Infrastructure.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Newtonsoft.Json.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Owin.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\System.Diagnostics.DiagnosticSource.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\System.Net.Http.Formatting.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\System.Web.Cors.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\System.Web.Helpers.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\System.Web.Http.Cors.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\System.Web.Http.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\System.Web.Mvc.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\System.Web.Optimization.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\System.Web.Razor.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\System.Web.WebPages.Deployment.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\System.Web.WebPages.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\System.Web.WebPages.Razor.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\WebGrease.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.CobieExpress.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.Common.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.Geometry.Engine.Interop.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.Ifc.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.Ifc.Extensions.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.Ifc2x3.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.Ifc2x3.IO.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.Ifc4.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.IO.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.ModelGeometry.Scene.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.Tessellator.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Esent.Interop.pdb
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Esent.Interop.xml
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\log4net.xml
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\System.Net.Http.Formatting.xml
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\System.Web.Http.xml
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\System.Web.Http.Cors.xml
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\System.Web.Helpers.xml
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\System.Web.Mvc.xml
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\System.Web.Optimization.xml
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\System.Web.Razor.xml
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\System.Web.WebPages.xml
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\System.Web.WebPages.Deployment.xml
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\System.Web.WebPages.Razor.xml
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Newtonsoft.Json.xml
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Antlr3.Runtime.pdb
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.CobieExpress.pdb
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.CobieExpress.xml
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.Common.pdb
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.Common.xml
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.Geometry.Engine.Interop.pdb
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.Geometry.Engine.Interop.xml
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.Ifc.pdb
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.Ifc.xml
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.Ifc.Extensions.pdb
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.Ifc.Extensions.xml
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.Ifc2x3.pdb
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.Ifc2x3.xml
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.Ifc2x3.IO.pdb
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.Ifc2x3.IO.xml
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.Ifc4.pdb
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.Ifc4.xml
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.IO.pdb
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.IO.xml
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.ModelGeometry.Scene.pdb
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.ModelGeometry.Scene.xml
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.Tessellator.pdb
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Xbim.Tessellator.xml
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\EntityFramework.xml
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\EntityFramework.SqlServer.xml
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.AspNet.Identity.Core.xml
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.AspNet.Identity.Owin.xml
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.AspNet.Identity.EntityFramework.xml
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.Owin.xml
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.Owin.Host.SystemWeb.xml
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.Owin.Security.xml
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.Owin.Security.Facebook.xml
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.Owin.Security.Cookies.xml
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.Owin.Security.Google.xml
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.Owin.Security.Twitter.xml
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.Owin.Security.OAuth.xml
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\System.Diagnostics.DiagnosticSource.xml
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.AspNet.TelemetryCorrelation.xml
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.AI.DependencyCollector.xml
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.AI.WindowsServer.xml
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.AI.Web.xml
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\obj\Debug\BIMWebViewer.dll
+D:\Project Preparation\WebViewer\WebViewer\02_WebViewer 190826\WebViewer\BIMWebViewer\obj\Debug\BIMWebViewer.pdb
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\ApplicationInsights.config
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\BIMWebViewer.dll.config
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\BIMWebViewer.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\BIMWebViewer.pdb
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\roslyn\csc.exe
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\roslyn\csc.exe.config
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\roslyn\csc.rsp
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\roslyn\csi.exe
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\roslyn\csi.exe.config
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\roslyn\csi.rsp
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\roslyn\Microsoft.CodeAnalysis.CSharp.Scripting.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\roslyn\Microsoft.CodeAnalysis.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\roslyn\Microsoft.CodeAnalysis.Scripting.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\roslyn\Microsoft.CSharp.Core.targets
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\roslyn\Microsoft.DiaSymReader.Native.amd64.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\roslyn\Microsoft.DiaSymReader.Native.x86.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\roslyn\Microsoft.Managed.Core.targets
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\roslyn\Microsoft.VisualBasic.Core.targets
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\roslyn\System.AppContext.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\roslyn\System.Collections.Immutable.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\roslyn\System.Console.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\roslyn\System.Diagnostics.FileVersionInfo.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\roslyn\System.Diagnostics.StackTrace.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\roslyn\System.IO.Compression.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\roslyn\System.IO.FileSystem.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\roslyn\System.IO.FileSystem.Primitives.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\roslyn\System.IO.Pipes.AccessControl.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\roslyn\System.IO.Pipes.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\roslyn\System.Reflection.Metadata.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\roslyn\System.Security.AccessControl.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\roslyn\System.Security.Claims.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\roslyn\System.Security.Cryptography.Algorithms.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\roslyn\System.Security.Cryptography.Encoding.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\roslyn\System.Security.Cryptography.Primitives.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\roslyn\System.Security.Cryptography.X509Certificates.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\roslyn\System.Security.Principal.Windows.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\roslyn\System.Text.Encoding.CodePages.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\roslyn\System.ValueTuple.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\roslyn\System.Xml.ReaderWriter.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\roslyn\System.Xml.XmlDocument.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\roslyn\System.Xml.XPath.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\roslyn\System.Xml.XPath.XDocument.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\roslyn\vbc.exe
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\roslyn\vbc.exe.config
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\roslyn\vbc.rsp
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\roslyn\VBCSCompiler.exe
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\roslyn\VBCSCompiler.exe.config
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Antlr3.Runtime.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\CADReader.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\devDept.Eyeshot.Control.Wpf.v12.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\devDept.Eyeshot.Control.x86.Wpf.v12.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\devDept.Geometry.v12.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\devDept.Graphics.Shaders.v12.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\devDept.Graphics.Wpf.v12.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\EntityFramework.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\EntityFramework.SqlServer.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Esent.Interop.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\ICSharpCode.SharpZipLib.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\log4net.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Microsoft.AI.Agent.Intercept.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Microsoft.AI.DependencyCollector.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Microsoft.AI.PerfCounterCollector.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Microsoft.AI.ServerTelemetryChannel.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Microsoft.AI.Web.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Microsoft.AI.WindowsServer.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Microsoft.ApplicationInsights.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Microsoft.AspNet.Identity.Core.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Microsoft.AspNet.Identity.EntityFramework.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Microsoft.AspNet.Identity.Owin.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Microsoft.AspNet.TelemetryCorrelation.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Microsoft.Owin.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Microsoft.Owin.Host.SystemWeb.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Microsoft.Owin.Security.Cookies.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Microsoft.Owin.Security.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Microsoft.Owin.Security.Facebook.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Microsoft.Owin.Security.Google.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Microsoft.Owin.Security.MicrosoftAccount.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Microsoft.Owin.Security.OAuth.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Microsoft.Owin.Security.Twitter.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Microsoft.Web.Infrastructure.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Newtonsoft.Json.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Owin.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\System.Diagnostics.DiagnosticSource.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\System.Net.Http.Formatting.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\System.Web.Cors.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\System.Web.Helpers.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\System.Web.Http.Cors.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\System.Web.Http.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\System.Web.Mvc.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\System.Web.Optimization.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\System.Web.Razor.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\System.Web.WebPages.Deployment.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\System.Web.WebPages.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\System.Web.WebPages.Razor.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\WebGrease.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Xbim.CobieExpress.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Xbim.Common.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Xbim.Geometry.Engine.Interop.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Xbim.Ifc.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Xbim.Ifc.Extensions.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Xbim.Ifc2x3.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Xbim.Ifc2x3.IO.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Xbim.Ifc4.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Xbim.IO.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Xbim.ModelGeometry.Scene.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Xbim.Tessellator.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\CADReader.pdb
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\CADReader.dll.config
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\devDept.Eyeshot.Control.Wpf.v12.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\devDept.Eyeshot.Control.x86.Wpf.v12.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\devDept.Geometry.v12.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\devDept.Graphics.Wpf.v12.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Esent.Interop.pdb
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Esent.Interop.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\log4net.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\System.Net.Http.Formatting.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\System.Web.Http.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\System.Web.Http.Cors.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\System.Web.Helpers.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\System.Web.Mvc.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\System.Web.Optimization.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\System.Web.Razor.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\System.Web.WebPages.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\System.Web.WebPages.Deployment.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\System.Web.WebPages.Razor.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Newtonsoft.Json.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Antlr3.Runtime.pdb
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Xbim.CobieExpress.pdb
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Xbim.CobieExpress.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Xbim.Common.pdb
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Xbim.Common.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Xbim.Geometry.Engine.Interop.pdb
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Xbim.Geometry.Engine.Interop.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Xbim.Ifc.pdb
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Xbim.Ifc.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Xbim.Ifc.Extensions.pdb
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Xbim.Ifc.Extensions.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Xbim.Ifc2x3.pdb
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Xbim.Ifc2x3.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Xbim.Ifc2x3.IO.pdb
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Xbim.Ifc2x3.IO.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Xbim.Ifc4.pdb
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Xbim.Ifc4.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Xbim.IO.pdb
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Xbim.IO.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Xbim.ModelGeometry.Scene.pdb
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Xbim.ModelGeometry.Scene.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Xbim.Tessellator.pdb
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Xbim.Tessellator.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\EntityFramework.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\EntityFramework.SqlServer.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Microsoft.AspNet.Identity.Core.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Microsoft.AspNet.Identity.Owin.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Microsoft.AspNet.Identity.EntityFramework.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Microsoft.Owin.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Microsoft.Owin.Host.SystemWeb.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Microsoft.Owin.Security.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Microsoft.Owin.Security.Facebook.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Microsoft.Owin.Security.Cookies.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Microsoft.Owin.Security.Google.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Microsoft.Owin.Security.Twitter.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Microsoft.Owin.Security.OAuth.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\System.Diagnostics.DiagnosticSource.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Microsoft.AspNet.TelemetryCorrelation.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Microsoft.AI.DependencyCollector.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Microsoft.AI.WindowsServer.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Microsoft.AI.Web.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\obj\Debug\BIMWebViewer.csprojResolveAssemblyReference.cache
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\obj\Debug\BIMWebViewer.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\obj\Debug\BIMWebViewer.pdb

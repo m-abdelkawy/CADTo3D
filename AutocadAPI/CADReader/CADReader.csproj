@@ -8,9 +8,10 @@
     <OutputType>Library</OutputType>
     <RootNamespace>CADReader</RootNamespace>
     <AssemblyName>CADReader</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -38,9 +39,8 @@
     <Reference Include="devDept.Eyeshot.Control.Wpf.v12, Version=12.0.520.0, Culture=neutral, PublicKeyToken=5385d83d2fb4d7d9, processorArchitecture=MSIL">
       <HintPath>..\packages\devDept.Eyeshot.12.0.520\lib\net40\devDept.Eyeshot.Control.Wpf.v12.dll</HintPath>
     </Reference>
-    <Reference Include="devDept.Eyeshot.Control.x86.Wpf.v12, Version=12.0.520.0, Culture=neutral, PublicKeyToken=c8a727666e3c0a09, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files\devDept Software\Eyeshot Professional 12\Bin\x86\devDept.Eyeshot.Control.x86.Wpf.v12.dll</HintPath>
+    <Reference Include="devDept.Eyeshot.Control.x86.Wpf.v12">
+      <HintPath>..\Dlls\devDept.Eyeshot.Control.x86.Wpf.v12.dll</HintPath>
     </Reference>
     <Reference Include="devDept.Geometry.v12, Version=12.0.520.0, Culture=neutral, PublicKeyToken=9440825e8b4733bc, processorArchitecture=MSIL">
       <HintPath>..\packages\devDept.Eyeshot.12.0.520\lib\net40\devDept.Geometry.v12.dll</HintPath>
