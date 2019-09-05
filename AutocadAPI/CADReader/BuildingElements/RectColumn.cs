@@ -38,13 +38,13 @@ namespace CADReader.BuildingElements
         public double Length
         {
             get { return length; }
-            private set { length = value; }
+            set { length = value; }
         }
         
         public double Width
         {
             get { return width; }
-            private set { width = value; }
+            set { width = value; }
         }
 
     }

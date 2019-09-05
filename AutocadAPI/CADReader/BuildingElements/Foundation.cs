@@ -18,8 +18,9 @@ namespace CADReader.BuildingElements
         #endregion
 
         #region Constructor
-        public Foundation(string drawingFilePath)
+        public Foundation(string drawingFilePath,double level)
         {
+            Level = level;
             FileReader = new ReadAutodesk(drawingFilePath);
             FileReader.DoWork();
             GetFootings();
@@ -58,7 +59,8 @@ namespace CADReader.BuildingElements
                      
 
                     Point3D center = (polyLinPath.Vertices[0] + polyLinPath.Vertices[2]) / 2.0;
-
+                    center.Z = Level;
+                    widthMidPt.Z = Level;
                     RectFooting footing = new RectFooting(width, length, center, widthMidPt);
                     Footings.Add(footing);
                 }

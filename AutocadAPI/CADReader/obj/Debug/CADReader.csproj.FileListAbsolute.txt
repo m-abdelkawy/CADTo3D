@@ -71,3 +71,16 @@ D:\03_PROJECT PREPERATION\01_AutocadAPI\03_AutocadAPI-master_190904\CADTo3D\Auto
 D:\03_PROJECT PREPERATION\01_AutocadAPI\03_AutocadAPI-master_190904\CADTo3D\AutocadAPI\CADReader\bin\Debug\WIPEOUT_20.5_11.TX
 D:\03_PROJECT PREPERATION\01_AutocadAPI\03_AutocadAPI-master_190904\CADTo3D\AutocadAPI\CADReader\obj\Debug\CADReader.dll
 D:\03_PROJECT PREPERATION\01_AutocadAPI\03_AutocadAPI-master_190904\CADTo3D\AutocadAPI\CADReader\obj\Debug\CADReader.pdb
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\CADReader\bin\Debug\CADReader.dll.config
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\CADReader\bin\Debug\CADReader.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\CADReader\bin\Debug\CADReader.pdb
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\CADReader\bin\Debug\devDept.Eyeshot.Control.Wpf.v12.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\CADReader\bin\Debug\devDept.Geometry.v12.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\CADReader\bin\Debug\devDept.Graphics.Shaders.v12.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\CADReader\bin\Debug\devDept.Graphics.Wpf.v12.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\CADReader\bin\Debug\devDept.Eyeshot.Control.Wpf.v12.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\CADReader\bin\Debug\devDept.Geometry.v12.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\CADReader\bin\Debug\devDept.Graphics.Wpf.v12.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\CADReader\obj\Debug\CADReader.csprojResolveAssemblyReference.cache
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\CADReader\obj\Debug\CADReader.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\CADReader\obj\Debug\CADReader.pdb

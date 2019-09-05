@@ -12,6 +12,7 @@ namespace CADReader.BuildingElements
         private double thickness;
         private Point3D stPt;
         private Point3D endPt;
+      
 
 
         public Wall(double _thick, Point3D _stPt, Point3D _endPt)

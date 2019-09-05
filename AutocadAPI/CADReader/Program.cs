@@ -10,8 +10,6 @@ namespace CADReader
     {
         static void Main(string[] args)
         {
-            Class1 cl = new Class1();
-            cl.GetBlocks();
             devDept.Eyeshot.Translators.ReadAutodesk.OnApplicationExit(null,null);
         }
     }

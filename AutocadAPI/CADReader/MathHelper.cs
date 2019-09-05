@@ -56,7 +56,7 @@ namespace CADReader
         }
 
 
-        internal static Point3D MidPoint(Point3D pt1, Point3D pt2)
+        public static Point3D MidPoint(Point3D pt1, Point3D pt2)
         {
             double midX = 0.50 * (pt1.X + pt2.X);
             double midY = 0.50 * (pt1.Y + pt2.Y);
@@ -64,7 +64,7 @@ namespace CADReader
 
             return new Point3D(midX, midY, midZ);
         }
-        internal static Point3D UnitVectorFromPt1ToPt2(Point3D pt1, Point3D pt2)
+        public static Point3D UnitVectorFromPt1ToPt2(Point3D pt1, Point3D pt2)
         {//check
             Vector3D vector = (new Vector3D(pt2.X, pt2.Y, pt2.Z) - new Vector3D(pt1.X, pt1.Y, pt1.Z));
 
@@ -73,7 +73,7 @@ namespace CADReader
             return new Point3D(vector.X, vector.Y, vector.Z);
         }
 
-        internal static double CalcDistanceBetweenTwoPoint3D(Point3D pt1, Point3D pt2)
+        public static double CalcDistanceBetweenTwoPoint3D(Point3D pt1, Point3D pt2)
         {
             return Math.Sqrt(Math.Pow(pt1.X - pt2.X, 2) + Math.Pow(pt1.Y - pt2.Y, 2) + Math.Pow(pt1.Z - pt2.Z, 2));
         }

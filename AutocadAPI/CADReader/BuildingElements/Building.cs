@@ -21,14 +21,15 @@ namespace CADReader.BuildingElements
         #endregion
 
         #region Public Functions
-        public void AddNewFloor(string filePath)
+        public void AddNewFloor(string filePath,double level)
         {
-            Floor floor = new Floor(filePath);
+            Floor floor = new Floor(filePath,level);
+            
             Floors.Add(floor);  
         }
-        public void AddBuildingFoundation(string filePath)
+        public void AddBuildingFoundation(string filePath,double level)
         {
-            Foundation foundation = new Foundation(filePath);
+            Foundation foundation = new Foundation(filePath,level);
             Floors.Add(foundation);
         } 
         #endregion

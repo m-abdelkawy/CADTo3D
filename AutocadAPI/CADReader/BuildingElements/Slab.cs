@@ -9,7 +9,7 @@ namespace CADReader.BuildingElements
 {
     public class Slab
     {
-        private double thickness = 250;
+        private double thickness = 0.25;
         private double width;
         private double length;
         private Point3D centerPt;
@@ -40,18 +40,18 @@ namespace CADReader.BuildingElements
         public double Length
         {
             get { return length; }
-            private set { length = value; }
+            set { length = value; }
         }
 
         public double Width
         {
             get { return width; }
-            private set { width = value; }
+            set { width = value; }
         }
 
         public double Thickness
         {
-            get { return thickness = 250; }
+            get { return thickness; }
             set { thickness = value; }
         }
     }

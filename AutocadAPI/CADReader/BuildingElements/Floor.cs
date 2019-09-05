@@ -22,20 +22,21 @@ namespace CADReader.BuildingElements
         #endregion
 
         #region Constructors
-        public Floor(string drawingFilePath)
+        public Floor(string drawingFilePath,double level)
         {
+            Level = level;
             FileReader = new ReadAutodesk(drawingFilePath);
             FileReader.DoWork();
 
             GetSlab();
             GetOpening();
             GetColumns();
-            WallGetEndPoints();
+            GetWalls();
         } 
         #endregion
 
         #region Private Methods
-        private void WallGetEndPoints()
+        private void GetWalls()
         {
 
             Walls = new List<Wall>();
@@ -78,16 +79,25 @@ namespace CADReader.BuildingElements
                 Point3D stPt1 = lstParallels[0].StartPoint;
                 Point3D stPt2 = lstParallels[1].StartPoint;
 
+               
+
                 Point3D endPt1 = lstParallels[0].EndPoint;
                 Point3D endPt2 = lstParallels[1].EndPoint;
 
+
+                Point3D midStart = MathHelper.MidPoint(stPt1, stPt2);
+                midStart.Z = Level - Slab.Thickness*1000;
+
+                Point3D midEnd = MathHelper.MidPoint(endPt1, endPt2);
+                midEnd.Z = Level - Slab.Thickness*1000;
+
                 if (stPt1.DistanceTo(stPt2) < stPt1.DistanceTo(endPt2))
                 {
-                    lstMidPoints.Add(new List<Point3D> { MathHelper.MidPoint(stPt1, stPt2), MathHelper.MidPoint(endPt1, endPt2) });
+                    lstMidPoints.Add(new List<Point3D> { midStart, midEnd});
                 }
                 else
                 {
-                    lstMidPoints.Add(new List<Point3D> { MathHelper.MidPoint(stPt1, endPt2), MathHelper.MidPoint(stPt2, endPt1) });
+                    lstMidPoints.Add(new List<Point3D> { midEnd, midStart });
                 }
             }
 
@@ -136,6 +146,9 @@ namespace CADReader.BuildingElements
 
                     Point3D center = (polyLinPath.Vertices[0] + polyLinPath.Vertices[2]) / 2.0;
 
+                    center.Z = Level;
+                    widthMidPt.Z = Level;
+
                     RectColumn col = new RectColumn(width, length, center, widthMidPt);
                     Columns.Add(col);
                 }
@@ -176,6 +189,9 @@ namespace CADReader.BuildingElements
 
                     Point3D center = (polyLinPath.Vertices[0] + polyLinPath.Vertices[2]) / 2.0;
 
+                    center.Z = Level;
+                    widthMidPt.Z = Level;
+
                     Openings.Add(new Opening(width, length, center, widthMidPt));
                 }
             }
@@ -212,7 +228,8 @@ namespace CADReader.BuildingElements
 
 
                     Point3D center = (polyLinPath.Vertices[0] + polyLinPath.Vertices[2]) / 2.0;
-
+                    center.Z = Level;
+                    widthMidPt.Z = Level;
                     Slab = new Slab(width, length, center, widthMidPt);
                 }
             }

@@ -32,19 +32,19 @@ namespace CADReader.BuildingElements
         public Point3D CenterPt
         {
             get { return centerPt; }
-            private set { centerPt = value; }
+            set { centerPt = value; }
         }
 
         public double Length
         {
             get { return length; }
-            private set { length = value; }
+             set { length = value; }
         }
 
         public double Width
         {
             get { return width; }
-            private set { width = value; }
+            set { width = value; }
         }
     }
 }
