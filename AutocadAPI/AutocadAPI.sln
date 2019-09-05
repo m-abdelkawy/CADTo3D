@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.26228.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutocadAPI", "AutocadAPI\AutocadAPI.csproj", "{6FF0210A-DA2F-4209-A715-678382C1B2F2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OdaLibTrials", "OdaLibTrials\OdaLibTrials.csproj", "{057872B7-8E3C-4047-8E73-73ACB3232FA7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CADReader", "CADReader\CADReader.csproj", "{057872B7-8E3C-4047-8E73-73ACB3232FA7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

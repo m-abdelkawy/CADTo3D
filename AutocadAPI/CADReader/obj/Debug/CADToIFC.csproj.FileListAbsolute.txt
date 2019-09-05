@@ -1,0 +1,1 @@
+D:\03_PROJECT PREPERATION\01_AutocadAPI\03_AutocadAPI-master_190904\CADTo3D\AutocadAPI\CADToIFC\obj\Debug\CADToIFC.csprojResolveAssemblyReference.cache
