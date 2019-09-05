@@ -110,9 +110,10 @@
     <Compile Include="Class1.cs" />
     <Compile Include="Constants\BlockName.cs" />
     <Compile Include="Constants\LayerName.cs" />
+    <Compile Include="IFCHelper.cs" />
     <Compile Include="MathHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="XbimCreateWall.cs" />
+    <Compile Include="XbimCreateBuilding.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Files\" />
