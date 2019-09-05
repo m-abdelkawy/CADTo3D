@@ -54,7 +54,7 @@ namespace AutocadAPI
                     foreach (var item in columns)
                     {
 
-                        IfcColumn column = CreateColumn(model, item, 3000);
+                        IfcColumn column = CreateIfcColumn(model, item, 3000);
 
                         using (var txn = model.BeginTransaction("Add column"))
                         {
@@ -66,7 +66,7 @@ namespace AutocadAPI
                     foreach (var item in lstFooting)
                     {
 
-                        IfcFooting footing = CreateFooting(model, item, 500);
+                        IfcFooting footing = CreateIfcFooting(model, item, 500);
 
                         using (var txn = model.BeginTransaction("Add Footing"))
                         {
@@ -85,15 +85,18 @@ namespace AutocadAPI
                         }
                     }
 
+                    IfcOpeningElement opening = null;
                     foreach (var item in lstOpning)
                     {
-                        IfcOpeningElement opening = CreateOpening(model, item, 0.30);
+                        opening = CreateOpening(model, item, 0.30);
                         using (var trans = model.BeginTransaction("Add Opening"))
                         {
                             building.AddElement(opening);
                             trans.Commit();
                         }
                     }
+                    //attach opening
+                    slab.AttchOpening(model, opening);
 
                     try
                     {
@@ -204,10 +207,10 @@ namespace AutocadAPI
 
 
                 IfcExtrudedAreaSolid body = IFCHelper.ProfileSweptSolidCreate(model, height, rectProf, extrusionDir);
-                
+
                 //parameters to insert the geometry in the model
                 body.BodyPlacementSet(model, 0, 0, cadWall.StPt.Z * 1000 - 3000);
-                
+
                 //Create a Definition shape to hold the geometry of the wall 3D body
                 IfcShapeRepresentation shape = IFCHelper.ShapeRepresentationCreate(model, "SweptSolid", "Body");
                 shape.Items.Add(body);
@@ -235,454 +238,282 @@ namespace AutocadAPI
 
                 //now place the wall into the model
                 IfcLocalPlacement lp = IFCHelper.LocalPlacemetCreate(model, ax3D);
-                
+
                 wallToCreate.ObjectPlacement = lp;
-                
+
 
                 // IfcPresentationLayerAssignment is required for CAD presentation in IfcWall or IfcWallStandardCase
                 var ifcPresentationLayerAssignment = model.Instances.New<IfcPresentationLayerAssignment>();
                 ifcPresentationLayerAssignment.Name = "some ifcPresentationLayerAssignment";
                 ifcPresentationLayerAssignment.AssignedItems.Add(shape);
-                
+
                 trans.Commit();
                 return wallToCreate;
             }
 
         }
 
-        static private IfcColumn CreateColumn(IfcStore model, RectColumn col, double height)
+        static private IfcColumn CreateIfcColumn(IfcStore model, RectColumn cadCol, double height)
         {
             //
-            double length = col.Length * 1000;
-            double width = col.Width * 1000;
+            double length = cadCol.Length * 1000;
+            double width = cadCol.Width * 1000;
             //begin a transaction
-            using (var txn = model.BeginTransaction("Create column"))
+            using (var trans = model.BeginTransaction("Create column"))
             {
-                var column = model.Instances.New<IfcColumn>();
-                column.Name = "A Standard rectangular column";
+                IfcColumn colToCreate = model.Instances.New<IfcColumn>();
+                colToCreate.Name = "A Standard rectangular column";
 
-                //represent wall as a rectangular profile
-                var rectProf = model.Instances.New<IfcRectangleProfileDef>();
-                rectProf.ProfileType = IfcProfileTypeEnum.AREA;
-                rectProf.XDim = length;
-                rectProf.YDim = width;
+                //represent column as a rectangular profile
+                IfcRectangleProfileDef rectProf = IFCHelper.RectProfileCreate(model, length, width);
 
-                var insertPoint = model.Instances.New<IfcCartesianPoint>();
-                insertPoint.SetXY(0, 0); //insert at arbitrary position
-                rectProf.Position = model.Instances.New<IfcAxis2Placement2D>();
-                rectProf.Position.Location = insertPoint;
+
+                //Profile insertion point
+                rectProf.ProfileInsertionPointSet(model, 0, 0);
 
                 //model as a swept area solid
-                var body = model.Instances.New<IfcExtrudedAreaSolid>();
-                body.Depth = height;
-                body.SweptArea = rectProf;
-                body.ExtrudedDirection = model.Instances.New<IfcDirection>();
-                body.ExtrudedDirection.SetXYZ(0, 0, 1);
+                IfcDirection extrusionDir = model.Instances.New<IfcDirection>();
+                extrusionDir.SetXYZ(0, 0, 1);
+
+                IfcExtrudedAreaSolid body = IFCHelper.ProfileSweptSolidCreate(model, height, rectProf, extrusionDir);
+
 
                 //parameters to insert the geometry in the model
-                var origin = model.Instances.New<IfcCartesianPoint>();
-                origin.SetXYZ(0, 0, 0);
+                body.BodyPlacementSet(model, 0, 0, -height);
 
 
-                body.Position = model.Instances.New<IfcAxis2Placement3D>();
-                var location = model.Instances.New<IfcCartesianPoint>();
-                location.SetXYZ(0, 0, -height);
-                body.Position.Location = location;
 
                 //Create a Definition shape to hold the geometry
-                var shape = model.Instances.New<IfcShapeRepresentation>();
-                var modelContext = model.Instances.OfType<IfcGeometricRepresentationContext>().FirstOrDefault();
-                shape.ContextOfItems = modelContext;
-                shape.RepresentationType = "SweptSolid";
-                shape.RepresentationIdentifier = "Body";
+                IfcShapeRepresentation shape = IFCHelper.ShapeRepresentationCreate(model, "SweptSolid", "Body");
                 shape.Items.Add(body);
 
                 //Create a Product Definition and add the model geometry to the wall
-                var rep = model.Instances.New<IfcProductDefinitionShape>();
-                rep.Representations.Add(shape);
-                column.Representation = rep;
+                IfcProductDefinitionShape prDefShape = model.Instances.New<IfcProductDefinitionShape>();
+                prDefShape.Representations.Add(shape);
+                colToCreate.Representation = prDefShape;
+
+                //Create Local axes system and assign it to the column
+                IfcCartesianPoint location3D = model.Instances.New<IfcCartesianPoint>();
+                location3D.SetXYZ(cadCol.CenterPt.X * 1000, cadCol.CenterPt.Y * 1000, cadCol.CenterPt.Z * 1000);
+
+                var uvColLongDir = MathHelper.UnitVectorFromPt1ToPt2(cadCol.CenterPt, cadCol.PtLengthDir);
+
+                IfcDirection localXDir = model.Instances.New<IfcDirection>();
+                localXDir.SetXYZ(uvColLongDir.X, uvColLongDir.Y, uvColLongDir.Z);
+
+                IfcDirection localZDir = model.Instances.New<IfcDirection>();
+                localZDir.SetXYZ(0, 0, 1);
+
+                IfcAxis2Placement3D ax3D = IFCHelper.LocalAxesSystemCreate(model, location3D, localXDir, localZDir);
 
                 //now place the wall into the model
-                var lp = model.Instances.New<IfcLocalPlacement>();
-                var ax3D = model.Instances.New<IfcAxis2Placement3D>();
-                var location3D = model.Instances.New<IfcCartesianPoint>();
-                location3D.SetXYZ(col.CenterPt.X * 1000, col.CenterPt.Y * 1000, col.CenterPt.Z * 1000);
-                ax3D.Location = location3D;
-                ax3D.RefDirection = model.Instances.New<IfcDirection>();
-                var point = MathHelper.UnitVectorFromPt1ToPt2(col.CenterPt, col.PtLengthDir);
-                ax3D.RefDirection.SetXYZ(point.X, point.Y, point.Z);
-                //if(Math.Abs(newWall.EndPt.X - newWall.StPt.X) > 0)
-                //{
-                //ax3D.RefDirection.SetXYZ(0,1,0);
-                //}
-                //else
-                //{
-                //    ax3D.RefDirection.SetXYZ(1,0,0);
-                //}
-                ax3D.Axis = model.Instances.New<IfcDirection>();
-                ax3D.Axis.SetXYZ(0, 0, 1);
-                lp.RelativePlacement = ax3D;
-                column.ObjectPlacement = lp;
+                IfcLocalPlacement lp = IFCHelper.LocalPlacemetCreate(model, ax3D);
+                colToCreate.ObjectPlacement = lp;
 
-
-                // Where Clause: The IfcWallStandard relies on the provision of an IfcMaterialLayerSetUsage 
-                var ifcMaterialLayerSetUsage = model.Instances.New<IfcMaterialLayerSetUsage>();
-                var ifcMaterialLayerSet = model.Instances.New<IfcMaterialLayerSet>();
-                var ifcMaterialLayer = model.Instances.New<IfcMaterialLayer>();
-                ifcMaterialLayer.LayerThickness = 10;
-                ifcMaterialLayerSet.MaterialLayers.Add(ifcMaterialLayer);
-                ifcMaterialLayerSetUsage.ForLayerSet = ifcMaterialLayerSet;
-                ifcMaterialLayerSetUsage.LayerSetDirection = IfcLayerSetDirectionEnum.AXIS2;
-                ifcMaterialLayerSetUsage.DirectionSense = IfcDirectionSenseEnum.NEGATIVE;
-                ifcMaterialLayerSetUsage.OffsetFromReferenceLine = 150;
-
-                // Add material to wall
-                var material = model.Instances.New<IfcMaterial>();
-                material.Name = "some material";
-                var ifcRelAssociatesMaterial = model.Instances.New<IfcRelAssociatesMaterial>();
-                ifcRelAssociatesMaterial.RelatingMaterial = material;
-                ifcRelAssociatesMaterial.RelatedObjects.Add(column);
-
-                ifcRelAssociatesMaterial.RelatingMaterial = ifcMaterialLayerSetUsage;
-
-                // IfcPresentationLayerAssignment is required for CAD presentation in IfcWall or IfcWallStandardCase
-                var ifcPresentationLayerAssignment = model.Instances.New<IfcPresentationLayerAssignment>();
-                ifcPresentationLayerAssignment.Name = "some ifcPresentationLayerAssignment";
-                ifcPresentationLayerAssignment.AssignedItems.Add(shape);
-
-
-
-                txn.Commit();
-                return column;
+                trans.Commit();
+                return colToCreate;
             }
 
         }
 
 
-        static private IfcFooting CreateFooting(IfcStore model, RectFooting footing, double height)
+        static private IfcFooting CreateIfcFooting(IfcStore model, RectFooting cadFooting, double thickness)
         {
             //
-            double length = footing.Length * 1000;
-            double width = footing.Width * 1000;
+            double length = cadFooting.Length * 1000;
+            double width = cadFooting.Width * 1000;
             //begin a transaction
-            using (var txn = model.BeginTransaction("Create Footing"))
+            using (var trans = model.BeginTransaction("Create Footing"))
             {
-                var footingCreated = model.Instances.New<IfcFooting>();
-                footingCreated.Name = "A Standard rectangular column";
+                IfcFooting footingToCreate = model.Instances.New<IfcFooting>();
+                footingToCreate.Name = "A Standard rectangular Footing";
 
-                //represent wall as a rectangular profile
-                var rectProf = model.Instances.New<IfcRectangleProfileDef>();
-                rectProf.ProfileType = IfcProfileTypeEnum.AREA;
-                rectProf.XDim = length;
-                rectProf.YDim = width;
+                //represent footing as a rectangular profile
+                IfcRectangleProfileDef rectProf = IFCHelper.RectProfileCreate(model, length, width);
 
-                var insertPoint = model.Instances.New<IfcCartesianPoint>();
-                insertPoint.SetXY(0, 0); //insert at arbitrary position
-                rectProf.Position = model.Instances.New<IfcAxis2Placement2D>();
-                rectProf.Position.Location = insertPoint;
+                //Profile Insertion Point
+                rectProf.ProfileInsertionPointSet(model, 0, 0);
+
 
                 //model as a swept area solid
-                var body = model.Instances.New<IfcExtrudedAreaSolid>();
-                body.Depth = height;
-                body.SweptArea = rectProf;
-                body.ExtrudedDirection = model.Instances.New<IfcDirection>();
-                body.ExtrudedDirection.SetXYZ(0, 0, 1);
+                IfcDirection extrusionDir = model.Instances.New<IfcDirection>();
+                extrusionDir.SetXYZ(0, 0, 1);
+
+                IfcExtrudedAreaSolid body = IFCHelper.ProfileSweptSolidCreate(model, thickness * 1000, rectProf, extrusionDir);
+
 
                 //parameters to insert the geometry in the model
-                var origin = model.Instances.New<IfcCartesianPoint>();
-                origin.SetXYZ(0, 0, 0);
+                body.BodyPlacementSet(model, 0, 0, -thickness - 3000);
 
 
-                body.Position = model.Instances.New<IfcAxis2Placement3D>();
-                var location = model.Instances.New<IfcCartesianPoint>();
-                location.SetXYZ(0, 0, -height - 3000);
-                body.Position.Location = location;
 
                 //Create a Definition shape to hold the geometry
-                var shape = model.Instances.New<IfcShapeRepresentation>();
-                var modelContext = model.Instances.OfType<IfcGeometricRepresentationContext>().FirstOrDefault();
-                shape.ContextOfItems = modelContext;
-                shape.RepresentationType = "SweptSolid";
-                shape.RepresentationIdentifier = "Body";
+                IfcShapeRepresentation shape = IFCHelper.ShapeRepresentationCreate(model, "SweptSolid", "Body");
                 shape.Items.Add(body);
 
                 //Create a Product Definition and add the model geometry to the wall
-                var rep = model.Instances.New<IfcProductDefinitionShape>();
-                rep.Representations.Add(shape);
-                footingCreated.Representation = rep;
+                IfcProductDefinitionShape prDefShape = model.Instances.New<IfcProductDefinitionShape>();
+                prDefShape.Representations.Add(shape);
+                footingToCreate.Representation = prDefShape;
+
+                //Create Local axes system and assign it to the wall
+
+                IfcCartesianPoint location3D = model.Instances.New<IfcCartesianPoint>();
+                location3D.SetXYZ(cadFooting.CenterPt.X * 1000, cadFooting.CenterPt.Y * 1000, cadFooting.CenterPt.Z * 1000);
+
+                var uvFootingLongDir = MathHelper.UnitVectorFromPt1ToPt2(cadFooting.CenterPt, cadFooting.PtLengthDir);
+
+                IfcDirection localXDir = model.Instances.New<IfcDirection>();
+                localXDir.SetXYZ(uvFootingLongDir.X, uvFootingLongDir.Y, uvFootingLongDir.Z);
+
+                IfcDirection localZDir = model.Instances.New<IfcDirection>();
+                localZDir.SetXYZ(0, 0, 1);
+
+                IfcAxis2Placement3D ax3D = IFCHelper.LocalAxesSystemCreate(model, location3D, localXDir, localZDir);
+
 
                 //now place the wall into the model
-                var lp = model.Instances.New<IfcLocalPlacement>();
-                var ax3D = model.Instances.New<IfcAxis2Placement3D>();
-                var location3D = model.Instances.New<IfcCartesianPoint>();
-                location3D.SetXYZ(footing.CenterPt.X * 1000, footing.CenterPt.Y * 1000, footing.CenterPt.Z * 1000);
-                ax3D.Location = location3D;
-                ax3D.RefDirection = model.Instances.New<IfcDirection>();
-                var point = MathHelper.UnitVectorFromPt1ToPt2(footing.CenterPt, footing.PtLengthDir);
-                ax3D.RefDirection.SetXYZ(point.X, point.Y, point.Z);
-                //if(Math.Abs(newWall.EndPt.X - newWall.StPt.X) > 0)
-                //{
-                //ax3D.RefDirection.SetXYZ(0,1,0);
-                //}
-                //else
-                //{
-                //    ax3D.RefDirection.SetXYZ(1,0,0);
-                //}
-                ax3D.Axis = model.Instances.New<IfcDirection>();
-                ax3D.Axis.SetXYZ(0, 0, 1);
-                lp.RelativePlacement = ax3D;
-                footingCreated.ObjectPlacement = lp;
+                IfcLocalPlacement lp = IFCHelper.LocalPlacemetCreate(model, ax3D);
+                footingToCreate.ObjectPlacement = lp;
 
 
-                // Where Clause: The IfcWallStandard relies on the provision of an IfcMaterialLayerSetUsage 
-                var ifcMaterialLayerSetUsage = model.Instances.New<IfcMaterialLayerSetUsage>();
-                var ifcMaterialLayerSet = model.Instances.New<IfcMaterialLayerSet>();
-                var ifcMaterialLayer = model.Instances.New<IfcMaterialLayer>();
-                ifcMaterialLayer.LayerThickness = 10;
-                ifcMaterialLayerSet.MaterialLayers.Add(ifcMaterialLayer);
-                ifcMaterialLayerSetUsage.ForLayerSet = ifcMaterialLayerSet;
-                ifcMaterialLayerSetUsage.LayerSetDirection = IfcLayerSetDirectionEnum.AXIS2;
-                ifcMaterialLayerSetUsage.DirectionSense = IfcDirectionSenseEnum.NEGATIVE;
-                ifcMaterialLayerSetUsage.OffsetFromReferenceLine = 150;
-
-                // Add material to wall
-                var material = model.Instances.New<IfcMaterial>();
-                material.Name = "some material";
-                var ifcRelAssociatesMaterial = model.Instances.New<IfcRelAssociatesMaterial>();
-                ifcRelAssociatesMaterial.RelatingMaterial = material;
-                ifcRelAssociatesMaterial.RelatedObjects.Add(footingCreated);
-
-                ifcRelAssociatesMaterial.RelatingMaterial = ifcMaterialLayerSetUsage;
-
-                // IfcPresentationLayerAssignment is required for CAD presentation in IfcWall or IfcWallStandardCase
-                var ifcPresentationLayerAssignment = model.Instances.New<IfcPresentationLayerAssignment>();
-                ifcPresentationLayerAssignment.Name = "some ifcPresentationLayerAssignment";
-                ifcPresentationLayerAssignment.AssignedItems.Add(shape);
-
-
-
-                txn.Commit();
-                return footingCreated;
+                trans.Commit();
+                return footingToCreate;
             }
 
         }
 
-        static private IfcSlab CreateSlab(IfcStore model, Slab slab, double thickness)
+        static private IfcSlab CreateSlab(IfcStore model, Slab cadSlab, double thickness)
         {
             //
-            double length = slab.Length * 1000;
-            double width = slab.Width * 1000;
+            double length = cadSlab.Length * 1000;
+            double width = cadSlab.Width * 1000;
             //begin a transaction
-            using (var txn = model.BeginTransaction("Create Slab"))
+            using (ITransaction trans = model.BeginTransaction("Create Slab"))
             {
-                var slabCreated = model.Instances.New<IfcSlab>();
-                slabCreated.Name = "A Standard rectangular slab";
+                IfcSlab slabToCreate = model.Instances.New<IfcSlab>();
+                slabToCreate.Name = "A Standard rectangular slab";
 
-                //represent wall as a rectangular profile
-                var rectProf = model.Instances.New<IfcRectangleProfileDef>();
-                rectProf.ProfileType = IfcProfileTypeEnum.AREA;
-                rectProf.XDim = length;
-                rectProf.YDim = width;
+                //represent Element as a rectangular profile
+                IfcRectangleProfileDef rectProf = IFCHelper.RectProfileCreate(model, length, width);
 
-                var insertPoint = model.Instances.New<IfcCartesianPoint>();
-                insertPoint.SetXYZ(0, 0, slab.ZLevel * 1000 - 3000); //insert at arbitrary position
-                rectProf.Position = model.Instances.New<IfcAxis2Placement2D>();
-                rectProf.Position.Location = insertPoint;
+                //Profile insertion point
+                rectProf.ProfileInsertionPointSet(model, 0, 0, cadSlab.ZLevel * 1000 - 3000);
+
 
                 //model as a swept area solid
-                var body = model.Instances.New<IfcExtrudedAreaSolid>();
-                body.Depth = thickness*1000;
-                body.SweptArea = rectProf;
-                body.ExtrudedDirection = model.Instances.New<IfcDirection>();
-                body.ExtrudedDirection.SetXYZ(0, 0, 1);
+                IfcDirection extrusionDir = model.Instances.New<IfcDirection>();
+                extrusionDir.SetXYZ(0, 0, 1);
+
+                IfcExtrudedAreaSolid body = IFCHelper.ProfileSweptSolidCreate(model, thickness * 1000, rectProf, extrusionDir);
+
 
                 //parameters to insert the geometry in the model
-                //var origin = model.Instances.New<IfcCartesianPoint>();
-                //origin.SetXYZ(0, 0, 0);
+                body.BodyPlacementSet(model, 0, 0, -thickness * 1000 - 3000);
 
-
-                body.Position = model.Instances.New<IfcAxis2Placement3D>();
-                var location = model.Instances.New<IfcCartesianPoint>();
-                location.SetXYZ(0, 0, -thickness * 1000-3000);
-                body.Position.Location = location;
 
                 //Create a Definition shape to hold the geometry
-                var shape = model.Instances.New<IfcShapeRepresentation>();
-                var modelContext = model.Instances.OfType<IfcGeometricRepresentationContext>().FirstOrDefault();
-                shape.ContextOfItems = modelContext;
-                shape.RepresentationType = "SweptSolid";
-                shape.RepresentationIdentifier = "Body";
+                IfcShapeRepresentation shape = IFCHelper.ShapeRepresentationCreate(model, "SweptSolid", "Body");
                 shape.Items.Add(body);
 
+
+
                 //Create a Product Definition and add the model geometry to the wall
-                var rep = model.Instances.New<IfcProductDefinitionShape>();
-                rep.Representations.Add(shape);
-                slabCreated.Representation = rep;
+                IfcProductDefinitionShape prDefRep = model.Instances.New<IfcProductDefinitionShape>();
+                prDefRep.Representations.Add(shape);
+                slabToCreate.Representation = prDefRep;
+
+                //Create Local axes system and assign it to the column
+                IfcCartesianPoint location3D = model.Instances.New<IfcCartesianPoint>();
+                location3D.SetXYZ(cadSlab.CenterPt.X * 1000, cadSlab.CenterPt.Y * 1000, cadSlab.CenterPt.Z * 1000);
+
+                var uvColLongDir = MathHelper.UnitVectorFromPt1ToPt2(cadSlab.CenterPt, cadSlab.PtLengthDir);
+
+                IfcDirection localXDir = model.Instances.New<IfcDirection>();
+                localXDir.SetXYZ(uvColLongDir.X, uvColLongDir.Y, uvColLongDir.Z);
+
+                IfcDirection localZDir = model.Instances.New<IfcDirection>();
+                localZDir.SetXYZ(0, 0, 1);
+
+                IfcAxis2Placement3D ax3D = IFCHelper.LocalAxesSystemCreate(model, location3D, localXDir, localZDir);
 
                 //now place the slab into the model
-                var lp = model.Instances.New<IfcLocalPlacement>();
-                var ax3D = model.Instances.New<IfcAxis2Placement3D>();
-                var location3D = model.Instances.New<IfcCartesianPoint>();
-                location3D.SetXYZ(slab.CenterPt.X * 1000, slab.CenterPt.Y * 1000, slab.CenterPt.Z * 1000);
-                ax3D.Location = location3D;
-                ax3D.RefDirection = model.Instances.New<IfcDirection>();
-                var point = MathHelper.UnitVectorFromPt1ToPt2(slab.CenterPt, slab.PtLengthDir);
-                ax3D.RefDirection.SetXYZ(point.X, point.Y, point.Z);
-                //if(Math.Abs(newWall.EndPt.X - newWall.StPt.X) > 0)
-                //{
-                //ax3D.RefDirection.SetXYZ(0,1,0);
-                //}
-                //else
-                //{
-                //    ax3D.RefDirection.SetXYZ(1,0,0);
-                //}
-                ax3D.Axis = model.Instances.New<IfcDirection>();
-                ax3D.Axis.SetXYZ(0, 0, 1);
-                lp.RelativePlacement = ax3D;
-                slabCreated.ObjectPlacement = lp;
+                IfcLocalPlacement lp = IFCHelper.LocalPlacemetCreate(model, ax3D);
+                slabToCreate.ObjectPlacement = lp;
 
 
-                // Where Clause: The IfcWallStandard relies on the provision of an IfcMaterialLayerSetUsage 
-                var ifcMaterialLayerSetUsage = model.Instances.New<IfcMaterialLayerSetUsage>();
-                var ifcMaterialLayerSet = model.Instances.New<IfcMaterialLayerSet>();
-                var ifcMaterialLayer = model.Instances.New<IfcMaterialLayer>();
-                ifcMaterialLayer.LayerThickness = 10;
-                ifcMaterialLayerSet.MaterialLayers.Add(ifcMaterialLayer);
-                ifcMaterialLayerSetUsage.ForLayerSet = ifcMaterialLayerSet;
-                ifcMaterialLayerSetUsage.LayerSetDirection = IfcLayerSetDirectionEnum.AXIS2;
-                ifcMaterialLayerSetUsage.DirectionSense = IfcDirectionSenseEnum.NEGATIVE;
-                ifcMaterialLayerSetUsage.OffsetFromReferenceLine = 150;
-
-                // Add material to wall
-                var material = model.Instances.New<IfcMaterial>();
-                material.Name = "some material";
-                var ifcRelAssociatesMaterial = model.Instances.New<IfcRelAssociatesMaterial>();
-                ifcRelAssociatesMaterial.RelatingMaterial = material;
-                ifcRelAssociatesMaterial.RelatedObjects.Add(slabCreated);
-
-                ifcRelAssociatesMaterial.RelatingMaterial = ifcMaterialLayerSetUsage;
-
-                // IfcPresentationLayerAssignment is required for CAD presentation in IfcWall or IfcWallStandardCase
-                var ifcPresentationLayerAssignment = model.Instances.New<IfcPresentationLayerAssignment>();
-                ifcPresentationLayerAssignment.Name = "some ifcPresentationLayerAssignment";
-                ifcPresentationLayerAssignment.AssignedItems.Add(shape);
-
-
-
-                txn.Commit();
-                return slabCreated;
+                trans.Commit();
+                return slabToCreate;
             }
 
         }
 
-        private IfcOpeningElement CreateOpening(IfcStore model, Opening opening, double thickness)
+        private IfcOpeningElement CreateOpening(IfcStore model, Opening cadOpening, double thickness)
         {
             //
-            double length = opening.Length * 1000;
-            double width = opening.Width * 1000;
+            double length = cadOpening.Length * 1000;
+            double width = cadOpening.Width * 1000;
             //begin a transaction
-            using (var txn = model.BeginTransaction("Create Opening"))
+            using (var trans = model.BeginTransaction("Create Opening"))
             {
-                IfcOpeningElement openingCreated = model.Instances.New<IfcOpeningElement>();
-                openingCreated.Name = "A rectangular opening";
+                IfcOpeningElement openingToCreate = model.Instances.New<IfcOpeningElement>();
+                openingToCreate.Name = "A rectangular opening";
 
                 //represent wall as a rectangular profile
-                var rectProf = model.Instances.New<IfcRectangleProfileDef>();
-                rectProf.ProfileType = IfcProfileTypeEnum.AREA;
-                rectProf.XDim = length;
-                rectProf.YDim = width;
+                IfcRectangleProfileDef rectProf = IFCHelper.RectProfileCreate(model, length, width);
+
+                //Profile insertion point
+                rectProf.ProfileInsertionPointSet(model, 0, 0);
 
                 var insertPoint = model.Instances.New<IfcCartesianPoint>();
-                insertPoint.SetXYZ(0, 0, opening.ZLevel * 1000); //insert at arbitrary position
+                insertPoint.SetXYZ(0, 0, cadOpening.ZLevel * 1000); //insert at arbitrary position
                 rectProf.Position = model.Instances.New<IfcAxis2Placement2D>();
                 rectProf.Position.Location = insertPoint;
 
                 //model as a swept area solid
-                var body = model.Instances.New<IfcExtrudedAreaSolid>();
-                body.Depth = thickness*1000;
-                body.SweptArea = rectProf;
-                body.ExtrudedDirection = model.Instances.New<IfcDirection>();
-                body.ExtrudedDirection.SetXYZ(0, 0, 1);
+                IfcDirection extrusionDir = model.Instances.New<IfcDirection>();
+                extrusionDir.SetXYZ(0, 0, 1);
+
+                IfcExtrudedAreaSolid body = IFCHelper.ProfileSweptSolidCreate(model, thickness * 1000, rectProf, extrusionDir);
+
 
                 //parameters to insert the geometry in the model
-                var origin = model.Instances.New<IfcCartesianPoint>();
-                origin.SetXYZ(0, 0, 0);
+                body.BodyPlacementSet(model, 0, 0, -thickness * 1000 - 3000);
 
-
-                body.Position = model.Instances.New<IfcAxis2Placement3D>();
-                var location = model.Instances.New<IfcCartesianPoint>();
-                location.SetXYZ(0, 0, -thickness *1000-3000);
-                body.Position.Location = location;
 
                 //Create a Definition shape to hold the geometry
-                var shape = model.Instances.New<IfcShapeRepresentation>();
-                var modelContext = model.Instances.OfType<IfcGeometricRepresentationContext>().FirstOrDefault();
-                shape.ContextOfItems = modelContext;
-                shape.RepresentationType = "SweptSolid";
-                shape.RepresentationIdentifier = "Body";
+                IfcShapeRepresentation shape = IFCHelper.ShapeRepresentationCreate(model, "SweptSolid", "Body");
                 shape.Items.Add(body);
 
-                //Create a Product Definition and add the model geometry to the wall
-                var rep = model.Instances.New<IfcProductDefinitionShape>();
-                rep.Representations.Add(shape);
-                openingCreated.Representation = rep;
+                //Create a Product Definition and add the model geometry to the opening
+                IfcProductDefinitionShape prDefRep = model.Instances.New<IfcProductDefinitionShape>();
+                prDefRep.Representations.Add(shape);
+                openingToCreate.Representation = prDefRep;
+
+                //Create Local axes system and assign it to the column
+                IfcCartesianPoint location3D = model.Instances.New<IfcCartesianPoint>();
+                location3D.SetXYZ(cadOpening.CenterPt.X * 1000, cadOpening.CenterPt.Y * 1000, cadOpening.CenterPt.Z * 1000);
+
+                var uvColLongDir = MathHelper.UnitVectorFromPt1ToPt2(cadOpening.CenterPt, cadOpening.PtLengthDir);
+
+                IfcDirection localXDir = model.Instances.New<IfcDirection>();
+                localXDir.SetXYZ(uvColLongDir.X, uvColLongDir.Y, uvColLongDir.Z);
+
+                IfcDirection localZDir = model.Instances.New<IfcDirection>();
+                localZDir.SetXYZ(0, 0, 1);
+
+                IfcAxis2Placement3D ax3D = IFCHelper.LocalAxesSystemCreate(model, location3D, localXDir, localZDir);
 
                 //now place the wall into the model
-                var lp = model.Instances.New<IfcLocalPlacement>();
-                var ax3D = model.Instances.New<IfcAxis2Placement3D>();
-                var location3D = model.Instances.New<IfcCartesianPoint>();
-                location3D.SetXYZ(opening.CenterPt.X * 1000, opening.CenterPt.Y * 1000, opening.CenterPt.Z * 1000);
-                ax3D.Location = location3D;
-                ax3D.RefDirection = model.Instances.New<IfcDirection>();
-                var point = MathHelper.UnitVectorFromPt1ToPt2(opening.CenterPt, opening.PtLengthDir);
-                ax3D.RefDirection.SetXYZ(point.X, point.Y, point.Z);
-                //if(Math.Abs(newWall.EndPt.X - newWall.StPt.X) > 0)
-                //{
-                //ax3D.RefDirection.SetXYZ(0,1,0);
-                //}
-                //else
-                //{
-                //    ax3D.RefDirection.SetXYZ(1,0,0);
-                //}
-                ax3D.Axis = model.Instances.New<IfcDirection>();
-                ax3D.Axis.SetXYZ(0, 0, 1);
-                lp.RelativePlacement = ax3D;
-                openingCreated.ObjectPlacement = lp;
-
-
-                // Where Clause: The IfcWallStandard relies on the provision of an IfcMaterialLayerSetUsage 
-                var ifcMaterialLayerSetUsage = model.Instances.New<IfcMaterialLayerSetUsage>();
-                var ifcMaterialLayerSet = model.Instances.New<IfcMaterialLayerSet>();
-                var ifcMaterialLayer = model.Instances.New<IfcMaterialLayer>();
-                ifcMaterialLayer.LayerThickness = 10;
-                ifcMaterialLayerSet.MaterialLayers.Add(ifcMaterialLayer);
-                ifcMaterialLayerSetUsage.ForLayerSet = ifcMaterialLayerSet;
-                ifcMaterialLayerSetUsage.LayerSetDirection = IfcLayerSetDirectionEnum.AXIS2;
-                ifcMaterialLayerSetUsage.DirectionSense = IfcDirectionSenseEnum.NEGATIVE;
-                ifcMaterialLayerSetUsage.OffsetFromReferenceLine = 150;
-
-                // Add material to wall
-                var material = model.Instances.New<IfcMaterial>();
-                material.Name = "some material";
-                var ifcRelAssociatesMaterial = model.Instances.New<IfcRelAssociatesMaterial>();
-                ifcRelAssociatesMaterial.RelatingMaterial = material;
-                ifcRelAssociatesMaterial.RelatedObjects.Add(openingCreated);
-
-                ifcRelAssociatesMaterial.RelatingMaterial = ifcMaterialLayerSetUsage;
-
-                // IfcPresentationLayerAssignment is required for CAD presentation in IfcWall or IfcWallStandardCase
-                var ifcPresentationLayerAssignment = model.Instances.New<IfcPresentationLayerAssignment>();
-                ifcPresentationLayerAssignment.Name = "some ifcPresentationLayerAssignment";
-                ifcPresentationLayerAssignment.AssignedItems.Add(shape);
-
-
-                IfcRelVoidsElement relVoids = model.Instances.New<IfcRelVoidsElement>();
-                relVoids.RelatedOpeningElement = openingCreated;
-                relVoids.RelatingBuildingElement = slab;
-
-                txn.Commit();
+                //now place the wall into the model
+                IfcLocalPlacement lp = IFCHelper.LocalPlacemetCreate(model, ax3D);
+                openingToCreate.ObjectPlacement = lp;
                 
-                return openingCreated;
+
+                //commit transaction
+                trans.Commit();
+
+                return openingToCreate;
             }
 
         }
