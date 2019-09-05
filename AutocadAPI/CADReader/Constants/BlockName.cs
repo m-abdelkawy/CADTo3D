@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CADToIFC.Constants
+namespace CADReader.Constants
 {
     internal class BlockName
     {

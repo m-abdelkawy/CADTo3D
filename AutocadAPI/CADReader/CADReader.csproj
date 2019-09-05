@@ -40,7 +40,7 @@
     </Reference>
     <Reference Include="devDept.Eyeshot.Control.x86.Wpf.v12, Version=12.0.520.0, Culture=neutral, PublicKeyToken=c8a727666e3c0a09, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Downloads\x86\devDept.Eyeshot.Control.x86.Wpf.v12.dll</HintPath>
+      <HintPath>C:\Program Files\devDept Software\Eyeshot Professional 12\Bin\x86\devDept.Eyeshot.Control.x86.Wpf.v12.dll</HintPath>
     </Reference>
     <Reference Include="devDept.Geometry.v12, Version=12.0.520.0, Culture=neutral, PublicKeyToken=9440825e8b4733bc, processorArchitecture=MSIL">
       <HintPath>..\packages\devDept.Eyeshot.12.0.520\lib\net40\devDept.Geometry.v12.dll</HintPath>

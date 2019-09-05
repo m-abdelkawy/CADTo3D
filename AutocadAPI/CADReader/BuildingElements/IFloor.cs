@@ -1,4 +1,4 @@
-﻿namespace CADToIFC.BuildingElements
+﻿namespace CADReader.BuildingElements
 {
     public interface IFloor
     {

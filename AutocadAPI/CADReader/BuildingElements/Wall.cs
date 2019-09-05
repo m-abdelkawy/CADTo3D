@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CADToIFC.BuildingElements
+namespace CADReader.BuildingElements
 {
     public class Wall
     {

@@ -3,8 +3,8 @@ using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 using devDept.Eyeshot.Translators;
 using devDept.Geometry;
-using CADToIFC;
-using CADToIFC.BuildingElements;
+using CADReader;
+using CADReader.BuildingElements;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,7 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CADToIFC
+namespace CADReader
 {
     public class Class1
     {

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CADToIFC
+namespace CADReader
 {
     public static class AutocadHelper
     {
