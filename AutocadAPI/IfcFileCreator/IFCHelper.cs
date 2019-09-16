@@ -1,4 +1,5 @@
-﻿using System;
+﻿using devDept.Geometry;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,7 +19,7 @@ namespace IfcFileCreator
 {
     public static class IFCHelper
     {
-        internal static IfcRectangleProfileDef RectProfileCreate(IfcStore model ,double length, double width)
+        internal static IfcRectangleProfileDef RectProfileCreate(IfcStore model, double length, double width)
         {
             IfcRectangleProfileDef rectProf = model.Instances.New<IfcRectangleProfileDef>();
             rectProf.ProfileType = IfcProfileTypeEnum.AREA;
@@ -26,6 +27,23 @@ namespace IfcFileCreator
             rectProf.YDim = width;
 
             return rectProf;
+        }
+
+        internal static IfcArbitraryClosedProfileDef ArbitraryClosedProfileCreate(IfcStore model, List<Point3D> lstPoints)
+        {
+            IfcPolyline pLine = model.Instances.New<IfcPolyline>();
+            for (int i = 0; i < lstPoints.Count; i++)
+            {
+                IfcCartesianPoint point = model.Instances.New<IfcCartesianPoint>();
+                point.SetXYZ(lstPoints[i].X, lstPoints[i].Y, lstPoints[i].Z);
+                pLine.Points.Add(point);
+
+            }
+            IfcArbitraryClosedProfileDef profile = model.Instances.New<IfcArbitraryClosedProfileDef>();
+            profile.ProfileType = IfcProfileTypeEnum.AREA;
+            profile.OuterCurve = pLine;
+
+            return profile;
         }
 
         internal static void ProfileInsertionPointSet(this IfcRectangleProfileDef rectProf, IfcStore model, double x, double y)
@@ -105,5 +123,43 @@ namespace IfcFileCreator
             relVoids.RelatedOpeningElement = opening;
             relVoids.RelatingBuildingElement = slab;
         }
+
+        #region For Rebar
+        internal static IfcCompositeCurveSegment CreateCurveSegment(IfcStore model, Point3D p1, Point3D p2)
+        {
+            // Create PolyLine for rebar
+            IfcPolyline pL = model.Instances.New<IfcPolyline>();
+            var startPoint = model.Instances.New<IfcCartesianPoint>();
+            startPoint.SetXYZ(p1.X, p1.Y, p1.Z);
+            var EndPoint = model.Instances.New<IfcCartesianPoint>();
+            EndPoint.SetXYZ(p2.X, p2.Y, p2.Z);
+            pL.Points.Add(startPoint);
+            pL.Points.Add(EndPoint);
+
+            IfcCompositeCurveSegment segment = model.Instances.New<IfcCompositeCurveSegment>();
+            segment.Transition = IfcTransitionCode.CONTINUOUS;
+            segment.ParentCurve = pL;
+            segment.SameSense = true;
+            return segment;
+
+        }
+
+        internal static IfcCompositeCurve CreateCompositeProfile(IfcStore model, List<IfcCompositeCurveSegment> segments)
+        {
+            IfcCompositeCurve compositProf = model.Instances.New<IfcCompositeCurve>();
+            compositProf.Segments.AddRange(segments);
+            compositProf.SelfIntersect = false;
+
+            return compositProf;
+        }
+
+        internal static IfcSweptDiskSolid SweptDiskSolidCreate(IfcStore model, IfcCurve prof, double radius)
+        {
+            IfcSweptDiskSolid body = model.Instances.New<IfcSweptDiskSolid>();
+            body.Directrix = prof;
+            body.Radius = radius;
+            return body;
+        }
+        #endregion
     }
 }

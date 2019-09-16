@@ -70,3 +70,4 @@ D:\Coding Trials\GIT\CADTo3D\AutocadAPI\CADReader\bin\Release\WINOPENGL_20.5_11.
 D:\Coding Trials\GIT\CADTo3D\AutocadAPI\CADReader\bin\Release\WIPEOUT_20.5_11.TX
 D:\Coding Trials\GIT\CADTo3D\AutocadAPI\CADReader\obj\Release\CADReader.dll
 D:\Coding Trials\GIT\CADTo3D\AutocadAPI\CADReader\obj\Release\CADReader.pdb
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\CADReader\obj\Release\CADReader.csprojResolveAssemblyReference.cache

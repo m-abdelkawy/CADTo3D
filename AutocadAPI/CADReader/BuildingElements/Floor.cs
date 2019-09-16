@@ -1,4 +1,5 @@
-﻿using devDept.Eyeshot.Entities;
+﻿using CADReader.Helpers;
+using devDept.Eyeshot.Entities;
 using devDept.Eyeshot.Translators;
 using devDept.Geometry;
 using System;
@@ -18,82 +19,63 @@ namespace CADReader.BuildingElements
         public List<Opening> Openings { get; set; }
         public Slab Slab { get; set; }
 
-        private ReadAutodesk FileReader { get; set; } 
         #endregion
 
         #region Constructors
-        public Floor(string drawingFilePath,double level)
+        public Floor(ReadAutodesk cadReader, double level)
         {
             Level = level;
-            FileReader = new ReadAutodesk(drawingFilePath);
-            FileReader.DoWork();
 
-            GetSlab();
-            GetOpening();
-            GetColumns();
-            GetWalls();
-        } 
+            GetSlab(cadReader);
+            GetOpening(cadReader);
+            GetColumns(cadReader);
+            GetWalls(cadReader);
+        }
         #endregion
 
         #region Private Methods
-        private void GetWalls()
+        private void GetWalls(ReadAutodesk CadReader)
         {
 
             Walls = new List<Wall>();
             List<List<Point3D>> lstMidPoints = new List<List<Point3D>>();
             List<double> lstThickness = new List<double>();
 
+            List<Line> lstWallLines = CadHelper.LinesGetByLayerName(CadReader, CadLayerName.Wall);
 
-
-            List<Line> lstWallLines = new List<Line>();
-            foreach (Entity item in FileReader.Entities)
-            {
-                Line line = item as Line;
-                if (line == null)
-                {
-                    continue;
-                }
-                if (line.LayerName == "Wall")
-                {
-                    lstWallLines.Add(line);
-
-                }
-
-            }
+           
             List<List<Line>> lstWalls = new List<List<Line>>();
-
 
             for (int i = 0; i < lstWallLines.Count; i++)
             {
                 Line parallel = lstWallLines[i].LineGetNearestParallel(lstWallLines.ToArray());
+                
                 if (parallel != null && (lstWallLines[i].Length() > parallel.Length()))
-                {
+                {//Exclude Lines from list
                     lstWalls.Add(new List<Line> { lstWallLines[i], parallel });
                     lstThickness.Add(MathHelper.DistanceBetweenTwoParallels(lstWallLines[i], parallel));
+                    lstWallLines.IndexOf(parallel);
                 }
             }
-
 
             foreach (List<Line> lstParallels in lstWalls)
             {
                 Point3D stPt1 = lstParallels[0].StartPoint;
                 Point3D stPt2 = lstParallels[1].StartPoint;
 
-               
-
                 Point3D endPt1 = lstParallels[0].EndPoint;
                 Point3D endPt2 = lstParallels[1].EndPoint;
 
 
                 Point3D midStart = MathHelper.MidPoint(stPt1, stPt2);
-                midStart.Z = Level - Slab.Thickness*1000;
+                midStart.Z = Level - Slab.Thickness * 1000;
 
                 Point3D midEnd = MathHelper.MidPoint(endPt1, endPt2);
-                midEnd.Z = Level - Slab.Thickness*1000;
+                midEnd.Z = Level - Slab.Thickness * 1000;
 
                 if (stPt1.DistanceTo(stPt2) < stPt1.DistanceTo(endPt2))
                 {
-                    lstMidPoints.Add(new List<Point3D> { midStart, midEnd});
+                    lstMidPoints.Add(new List<Point3D> { midStart, midEnd });
                 }
                 else
                 {
@@ -107,8 +89,7 @@ namespace CADReader.BuildingElements
                 Walls.Add(new Wall(lstThickness[i], lstMidPoints[i][0], lstMidPoints[i][1]));
             }
         }
-
-        private void GetColumns()
+        private void GetColumns(ReadAutodesk CadReader)
         {
 
             Columns = new List<RectColumn>();
@@ -116,7 +97,7 @@ namespace CADReader.BuildingElements
 
             List<LinearPath> lstPolyLine = new List<LinearPath>();
 
-            foreach (Entity entity in FileReader.Entities)
+            foreach (Entity entity in CadReader.Entities)
             {
                 LinearPath polyLinPath = entity as LinearPath;
 
@@ -149,17 +130,16 @@ namespace CADReader.BuildingElements
                     center.Z = Level;
                     widthMidPt.Z = Level;
 
-                    RectColumn col = new RectColumn(width, length, center, widthMidPt);
+                    RectColumn col = new RectColumn(width, length, center, widthMidPt, polyLinPath);
                     Columns.Add(col);
                 }
             }
 
         }
-
-        private void GetOpening()
+        private void GetOpening(ReadAutodesk CadReader)
         {
             Openings = new List<Opening>();
-            foreach (Entity entity in FileReader.Entities)
+            foreach (Entity entity in CadReader.Entities)
             {
                 LinearPath polyLinPath = entity as LinearPath;
                 if (polyLinPath == null)
@@ -197,9 +177,9 @@ namespace CADReader.BuildingElements
             }
 
         }
-        private void GetSlab()
+        private void GetSlab(ReadAutodesk CadReader)
         {
-            foreach (Entity entity in FileReader.Entities)
+            foreach (Entity entity in CadReader.Entities)
             {
                 LinearPath polyLinPath = entity as LinearPath;
                 if (polyLinPath == null)
@@ -234,7 +214,7 @@ namespace CADReader.BuildingElements
                 }
             }
 
-        } 
+        }
         #endregion
 
     }
