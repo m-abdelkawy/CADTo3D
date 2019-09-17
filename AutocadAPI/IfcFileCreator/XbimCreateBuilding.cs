@@ -53,7 +53,7 @@ namespace IfcFileCreator
                             if (i + 1 == lstSortedFloors.Count)
                                 break;
                             double lvlDifference = lstSortedFloors[i].Level - lstSortedFloors[i + 1].Level;
-                            double wallHeight = lvlDifference - floor.Slab.Thickness * 1000;
+                            double wallHeight = lvlDifference - floor.Slabs.Thickness * 1000;
                             foreach (Wall cadWall in floor.Walls)
                             {
                                 IfcWallStandardCase wall = CreateIfcWall(model, cadWall, wallHeight);
@@ -78,7 +78,7 @@ namespace IfcFileCreator
                                 }
                             }
 
-                            slab = CreateSlab(model, floor.Slab);
+                            slab = CreateSlab(model, floor.Slabs);
                             using (var trans = model.BeginTransaction("Add Slab"))
                             {
                                 building.AddElement(slab);
@@ -89,7 +89,7 @@ namespace IfcFileCreator
                             IfcOpeningElement opening = null;
                             foreach (var cadOpening in floor.Openings)
                             {
-                                opening = CreateOpening(model, cadOpening, floor.Slab.Thickness * 1000);
+                                opening = CreateOpening(model, cadOpening, floor.Slabs.Thickness * 1000);
                                 using (var trans = model.BeginTransaction("Add Opening"))
                                 {
                                     building.AddElement(opening);
@@ -263,7 +263,7 @@ namespace IfcFileCreator
                 wallToCreate.Representation = prDefShape;
 
                 //Create Local axes system and assign it to the wall
-                var midPt = MathHelper.MidPoint(cadWall.StPt, cadWall.EndPt);
+                var midPt = MathHelper.MidPoint3D(cadWall.StPt, cadWall.EndPt);
 
                 IfcCartesianPoint location3D = model.Instances.New<IfcCartesianPoint>();
                 location3D.SetXYZ(midPt.X , midPt.Y , midPt.Z );

@@ -54,7 +54,7 @@ namespace CADReader
 
             return Math.Abs(c1 - c2) / Math.Sqrt(1 + Math.Pow(m1, 2));
         }
-        public static Point3D MidPoint(Point3D pt1, Point3D pt2)
+        public static Point3D MidPoint3D(Point3D pt1, Point3D pt2)
         {
             double midX = 0.50 * (pt1.X + pt2.X);
             double midY = 0.50 * (pt1.Y + pt2.Y);
