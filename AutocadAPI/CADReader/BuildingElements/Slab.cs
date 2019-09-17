@@ -1,4 +1,5 @@
 ﻿using CADReader.Base;
+using CADReader.Helpers;
 using devDept.Geometry;
 using System;
 using System.Collections.Generic;
@@ -10,11 +11,13 @@ namespace CADReader.BuildingElements
 {
     public class Slab: IRectangleBase
     {
-        public double Thickness { get; set; }
+        #region Properties
+        public double Thickness { get; set; } = DefaultValues.SlabThinkess;
         public double Width { get; set; }
         public double Length { get; set; }
         public Point3D CenterPt { get; set; }
-        public Point3D PtLengthDir { get; set; }
+        public Point3D PtLengthDir { get; set; } 
+        #endregion
 
 
         public Slab(double _width, double _length, Point3D _cntrPt, Point3D _ptLngthDir )
