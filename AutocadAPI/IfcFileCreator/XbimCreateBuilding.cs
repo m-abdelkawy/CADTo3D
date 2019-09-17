@@ -26,6 +26,10 @@ using Xbim.Ifc4.SharedBldgElements;
 using Xbim.Ifc4.StructuralElementsDomain;
 using CADReader.BuildingElements;
 using CADReader;
+using devDept.Eyeshot.Entities;
+using CADReader.Helpers;
+using CADReader.Base;
+using IfcFileCreator.Helpers;
 
 namespace IfcFileCreator
 {
@@ -53,7 +57,7 @@ namespace IfcFileCreator
                             if (i + 1 == lstSortedFloors.Count)
                                 break;
                             double lvlDifference = lstSortedFloors[i].Level - lstSortedFloors[i + 1].Level;
-                            double wallHeight = lvlDifference - floor.Slabs.Thickness * 1000;
+                            double wallHeight = lvlDifference - floor.Slabs[0].Thickness;
                             foreach (Wall cadWall in floor.Walls)
                             {
                                 IfcWallStandardCase wall = CreateIfcWall(model, cadWall, wallHeight);
@@ -78,18 +82,22 @@ namespace IfcFileCreator
                                 }
                             }
 
-                            slab = CreateSlab(model, floor.Slabs);
-                            using (var trans = model.BeginTransaction("Add Slab"))
+                            foreach (Slab cadSlab in floor.Slabs)
                             {
-                                building.AddElement(slab);
-                                trans.Commit();
+                                slab = CreateIfcSlab(model, cadSlab);
+                                using (var trans = model.BeginTransaction("Add Slab"))
+                                {
+                                    building.AddElement(slab);
+                                    trans.Commit();
+                                }
                             }
+                            
 
 
                             IfcOpeningElement opening = null;
                             foreach (var cadOpening in floor.Openings)
                             {
-                                opening = CreateOpening(model, cadOpening, floor.Slabs.Thickness * 1000);
+                                opening = CreateIfcOpening(model, cadOpening, floor.Slabs[0].Thickness);
                                 using (var trans = model.BeginTransaction("Add Opening"))
                                 {
                                     building.AddElement(opening);
@@ -100,14 +108,49 @@ namespace IfcFileCreator
 
                             }
 
+                            //Create stairs
+                            foreach (Stair cadStair in floor.Stairs)
+                            {
+
+                                IfcStair stair = CreateIfcStair(model, cadStair);
+
+                                using (var txn = model.BeginTransaction("Add Stair"))
+                                {
+                                    building.AddElement(stair);
+                                    txn.Commit();
+                                }
+                            }
+                            foreach (LinearPath cadLanding in floor.Landings)
+                            {
+
+                                IfcSlab landing = CreateIfcLanding(model, cadLanding, DefaultValues.SlabThinkess);
+
+                                using (var txn = model.BeginTransaction("Add Landing"))
+                                {
+                                    building.AddElement(landing);
+                                    txn.Commit();
+                                }
+                            }
+
                         }
                         else
                         {
                             Foundation foundation = lstSortedFloors[i] as Foundation;
-                            foreach (RCRectFooting cadFooting in foundation.PCFooting)
+                            foreach (PCRectFooting cadFooting in foundation.PCFooting)
                             {
 
-                                IfcFooting footing = CreateIfcFooting(model, cadFooting, 500);
+                                IfcFooting footing = CreateIfcFooting(model, cadFooting);
+
+                                using (var txn = model.BeginTransaction("Add Footing"))
+                                {
+                                    building.AddElement(footing);
+                                    txn.Commit();
+                                }
+                            }
+                            foreach (RCRectFooting cadFooting in foundation.RCFooting)
+                            {
+
+                                IfcFooting footing = CreateIfcFooting(model, cadFooting);
 
                                 using (var txn = model.BeginTransaction("Add Footing"))
                                 {
@@ -118,7 +161,7 @@ namespace IfcFileCreator
                             foreach (SlopedSlab cadRamp in foundation.Ramps)
                             {
 
-                                IfcSlab ramp = CreateSlopedSlab(model, cadRamp);
+                                IfcSlab ramp = CreateIfcSlopedSlab(model, cadRamp);
 
                                 using (var txn = model.BeginTransaction("Add Ramp"))
                                 {
@@ -128,10 +171,6 @@ namespace IfcFileCreator
                             }
 
                         }
-
-
-
-
                     } 
 
                     try
@@ -203,7 +242,7 @@ namespace IfcFileCreator
                 //create a project
                 var project = model.Instances.New<IfcProject>();
                 //set the units to SI (mm and metres)
-                project.Initialize(ProjectUnits.SIUnitsUK);
+                project.InitProject(CADConfig.Units);
                 project.Name = projectName;
                 //now commit the changes, else they will be rolled back at the end of the scope of the using statement
                 txn.Commit();
@@ -221,11 +260,11 @@ namespace IfcFileCreator
         /// <returns></returns>
          private IfcWallStandardCase CreateIfcWall(IfcStore model, Wall cadWall, double height)
         {
-            cadWall.Thickness *= 1000;
-            cadWall.StPt.X *= 1000;
-            cadWall.StPt.Y*= 1000;
-            cadWall.EndPt.X *= 1000;
-            cadWall.EndPt.Y *= 1000;
+            //cadWall.Thickness *= 1000;
+            //cadWall.StPt.X *= 1000;
+            //cadWall.StPt.Y*= 1000;
+            //cadWall.EndPt.X *= 1000;
+            //cadWall.EndPt.Y *= 1000;
 
             //dimensions of the new IFC Wall we want to create
             double length = Math.Abs(cadWall.EndPt.X - cadWall.StPt.X) > 0 ? Math.Abs(cadWall.EndPt.X - cadWall.StPt.X)  : Math.Abs(cadWall.EndPt.Y - cadWall.StPt.Y) ;
@@ -297,14 +336,14 @@ namespace IfcFileCreator
 
          private IfcColumn CreateIfcColumn(IfcStore model, RectColumn cadCol, double height)
         {
-            cadCol.Length *= 1000;
-            cadCol.Width *= 1000;
+            //cadCol.Length *= 1000;
+            //cadCol.Width *= 1000;
 
-            cadCol.CenterPt.X *= 1000;
-            cadCol.CenterPt.Y *= 1000;
+            //cadCol.CenterPt.X *= 1000;
+            //cadCol.CenterPt.Y *= 1000;
             
-            cadCol.PtLengthDir.X *= 1000;
-            cadCol.PtLengthDir.Y *= 1000;
+            //cadCol.PtLengthDir.X *= 1000;
+            //cadCol.PtLengthDir.Y *= 1000;
             //
             double length = cadCol.Length ;
             double width = cadCol.Width ;
@@ -366,15 +405,16 @@ namespace IfcFileCreator
 
         }
 
-         private IfcFooting CreateIfcFooting(IfcStore model, RCRectFooting cadFooting, double thickness)
+         private IfcFooting CreateIfcFooting(IfcStore model, FootingBase cadFooting)
         {
-            cadFooting.Length *= 1000;
-            cadFooting.Width *= 1000;
+            
+            //cadFooting.Length *= 1000;
+            //cadFooting.Width *= 1000;
 
-            cadFooting.CenterPt.X *= 1000;
-            cadFooting.CenterPt.Y *= 1000;
-            cadFooting.PtLengthDir.X *= 1000;
-            cadFooting.PtLengthDir.Y *= 1000;
+            //cadFooting.CenterPt.X *= 1000;
+            //cadFooting.CenterPt.Y *= 1000;
+            //cadFooting.PtLengthDir.X *= 1000;
+            //cadFooting.PtLengthDir.Y *= 1000;
             //
             double length = cadFooting.Length ;
             double width = cadFooting.Width ;
@@ -395,7 +435,7 @@ namespace IfcFileCreator
                 IfcDirection extrusionDir = model.Instances.New<IfcDirection>();
                 extrusionDir.SetXYZ(0, 0, -1);
 
-                IfcExtrudedAreaSolid body = IFCHelper.ProfileSweptSolidCreate(model, thickness , rectProf, extrusionDir);
+                IfcExtrudedAreaSolid body = IFCHelper.ProfileSweptSolidCreate(model, cadFooting.Thickness, rectProf, extrusionDir);
 
 
                 //parameters to insert the geometry in the model
@@ -439,16 +479,16 @@ namespace IfcFileCreator
 
         }
 
-         private IfcSlab CreateSlab(IfcStore model, Slab cadSlab)
+         private IfcSlab CreateIfcSlab(IfcStore model, Slab cadSlab)
         {
-            cadSlab.Length *= 1000;
-            cadSlab.Width *= 1000;
-            cadSlab.Thickness *= 1000;
-            cadSlab.CenterPt.X *= 1000;
-            cadSlab.CenterPt.Y *= 1000;
+            //cadSlab.Length *= 1000;
+            //cadSlab.Width *= 1000;
+            //cadSlab.Thickness *= 1000;
+            //cadSlab.CenterPt.X *= 1000;
+            //cadSlab.CenterPt.Y *= 1000;
 
-            cadSlab.PtLengthDir.X *= 1000;
-            cadSlab.PtLengthDir.Y *= 1000;
+            //cadSlab.PtLengthDir.X *= 1000;
+            //cadSlab.PtLengthDir.Y *= 1000;
             //
             double length = cadSlab.Length;
             double width = cadSlab.Width;
@@ -512,13 +552,13 @@ namespace IfcFileCreator
 
         }
 
-        private IfcSlab CreateSlopedSlab(IfcStore model, SlopedSlab cadSlab)
+        private IfcSlab CreateIfcSlopedSlab(IfcStore model, SlopedSlab cadSlab)
         {
-            for (int i = 0; i < cadSlab.LstFacePt.Count; i++)
-            {
-                cadSlab.LstFacePt[i] *= 1000;
-            }
-            cadSlab.Thickness *= 1000;
+            //for (int i = 0; i < cadSlab.LstFacePt.Count; i++)
+            //{
+            //    cadSlab.LstFacePt[i] *= 1000;
+            //}
+            //cadSlab.Thickness *= 1000;
            
             //begin a transaction
             using (ITransaction trans = model.BeginTransaction("Create Slab"))
@@ -579,16 +619,16 @@ namespace IfcFileCreator
 
         }
 
-        private IfcOpeningElement CreateOpening(IfcStore model, Opening cadOpening, double thickness)
+        private IfcOpeningElement CreateIfcOpening(IfcStore model, Opening cadOpening, double thickness)
         {
-            cadOpening.CenterPt.X *= 1000;
-            cadOpening.CenterPt.Y *= 1000;
+            //cadOpening.CenterPt.X *= 1000;
+            //cadOpening.CenterPt.Y *= 1000;
 
-            cadOpening.PtLengthDir.X *= 1000;
-            cadOpening.PtLengthDir.Y *= 1000;
+            //cadOpening.PtLengthDir.X *= 1000;
+            //cadOpening.PtLengthDir.Y *= 1000;
 
-            cadOpening.Length *= 1000;
-            cadOpening.Width *= 1000;
+            //cadOpening.Length *= 1000;
+            //cadOpening.Width *= 1000;
             //
             double length = cadOpening.Length ;
             double width = cadOpening.Width ;
@@ -657,12 +697,137 @@ namespace IfcFileCreator
 
         }
 
+        private IfcStair CreateIfcStair(IfcStore model, Stair stair)
+        {
+
+            //begin a transaction
+            using (var trans = model.BeginTransaction("Create Stair"))
+            {
+                IfcStair stairToCreate = model.Instances.New<IfcStair>();
+                stairToCreate.Name = " stair - Wall:UC305x305x97:" + 1500;
+
+
+                IfcDirection extrusionDir = model.Instances.New<IfcDirection>();
+                extrusionDir.SetXYZ(0, 0, -1);
+
+                //Create a Definition shape to hold the geometry of the Stair 3D body
+                IfcShapeRepresentation shape = IFCHelper.ShapeRepresentationCreate(model, "SweptSolid", "Body");
+
+                for (int i = 0; i < stair.LstStep.Count; i++)
+                {
+                    IfcArbitraryClosedProfileDef stepProfile = IFCHelper.ArbitraryClosedProfileCreate(model, (stair.LstStep[i].Vertices/*.Select(v => v * 1000)*/).ToList());
+
+                    IfcExtrudedAreaSolid body = IFCHelper.ProfileSweptSolidCreate(model, stair.Thickness, stepProfile, extrusionDir);
+
+                    body.BodyPlacementSet(model, 0, 0, stair.IsUp ? stair.Thickness * i : stair.Thickness * -i);
+
+                    shape.Items.Add(body);
+                }
+
+
+
+
+
+
+
+                //Create a Product Definition and add the model geometry to the wall
+                IfcProductDefinitionShape prDefShape = model.Instances.New<IfcProductDefinitionShape>();
+                prDefShape.Representations.Add(shape);
+
+                IfcStairFlight flight = model.Instances.New<IfcStairFlight>();
+                flight.Representation = prDefShape;
+
+                IfcRelAggregates relAggregate = model.Instances.New<IfcRelAggregates>();
+                relAggregate.RelatingObject = stairToCreate;
+                relAggregate.RelatedObjects.Add(flight);
+
+                //Create Local axes system and assign it to the column
+                IfcCartesianPoint location3D = model.Instances.New<IfcCartesianPoint>();
+                location3D.SetXYZ(0, 0, 0);
+
+                //var uvColLongDir = MathHelper.UnitVectorPtFromPt1ToPt2(cadSlab.CenterPt, cadSlab.PtLengthDir);
+
+                IfcDirection localXDir = model.Instances.New<IfcDirection>();
+                localXDir.SetXYZ(1, 0, 0);
+
+                IfcDirection localZDir = model.Instances.New<IfcDirection>();
+                localZDir.SetXYZ(0, 0, 1);
+
+                IfcAxis2Placement3D ax3D = IFCHelper.LocalAxesSystemCreate(model, location3D, localXDir, localZDir);
+
+                //now place the slab into the model
+                IfcLocalPlacement lp = IFCHelper.LocalPlacemetCreate(model, ax3D);
+                flight.ObjectPlacement = lp;
+
+                trans.Commit();
+                return stairToCreate;
+            }
+
+        }
+
+        private IfcSlab CreateIfcLanding(IfcStore model, LinearPath landingPline, double landingThickness)
+        {
+
+            //begin a transaction
+            using (var trans = model.BeginTransaction("Create Wall"))
+            {
+
+                IfcSlab landing = model.Instances.New<IfcSlab>();
+
+
+                IfcDirection extrusionDir = model.Instances.New<IfcDirection>();
+                extrusionDir.SetXYZ(0, 0, -1);
+
+                //Create a Definition shape to hold the geometry of the Stair 3D body
+                IfcShapeRepresentation shape = IFCHelper.ShapeRepresentationCreate(model, "SweptSolid", "Body");
+
+
+                IfcArbitraryClosedProfileDef stepProfile = IFCHelper.ArbitraryClosedProfileCreate(model, (landingPline.Vertices/*.Select(v => v * 1000)*/).ToList());
+                    
+                IfcExtrudedAreaSolid body = IFCHelper.ProfileSweptSolidCreate(model, landingThickness, stepProfile, extrusionDir);
+
+
+                body.BodyPlacementSet(model, 0, 0, 0);
+
+                shape.Items.Add(body);
+
+                //Create a Product Definition and add the model geometry to the wall
+                IfcProductDefinitionShape prDefShape = model.Instances.New<IfcProductDefinitionShape>();
+                prDefShape.Representations.Add(shape);
+
+                landing.Representation = prDefShape;
+
+                //Create Local axes system and assign it to the column
+                IfcCartesianPoint location3D = model.Instances.New<IfcCartesianPoint>();
+                location3D.SetXYZ(0, 0, 0);
+
+                //var uvColLongDir = MathHelper.UnitVectorPtFromPt1ToPt2(cadSlab.CenterPt, cadSlab.PtLengthDir);
+
+                IfcDirection localXDir = model.Instances.New<IfcDirection>();
+                localXDir.SetXYZ(1, 0, 0);
+
+                IfcDirection localZDir = model.Instances.New<IfcDirection>();
+                localZDir.SetXYZ(0, 0, 1);
+
+                IfcAxis2Placement3D ax3D = IFCHelper.LocalAxesSystemCreate(model, location3D, localXDir, localZDir);
+
+                //now place the slab into the model
+                IfcLocalPlacement lp = IFCHelper.LocalPlacemetCreate(model, ax3D);
+                landing.ObjectPlacement = lp;
+                trans.Commit();
+                return landing;
+            }
+
+        }
+
+
+
         /// <summary>
         /// Add some properties to the wall,
         /// </summary>
         /// <param name="model">XbimModel</param>
         /// <param name="wall"></param>
-         private void AddPropertiesToWall(IfcStore model, IfcWallStandardCase wall)
+        private void AddPropertiesToWall(IfcStore model, IfcWallStandardCase wall)
         {
             using (var txn = model.BeginTransaction("Create Wall"))
             {
@@ -703,6 +868,8 @@ namespace IfcFileCreator
                 rdbp.RelatingPropertyDefinition = ifcPropertySet;
             });
         }
+
+
 
 
     }

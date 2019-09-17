@@ -15,5 +15,6 @@ namespace CADReader.Helpers
         internal const string Column = "Column";
         internal const string PCFooting = "PCFooting";
         internal const string RCFooting = "RCFooting";
+        internal const string Stair = "Stair";
     }
 }

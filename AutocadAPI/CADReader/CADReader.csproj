@@ -61,6 +61,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Base\FootingBase.cs" />
     <Compile Include="Base\IRectangleBase.cs" />
     <Compile Include="Base\ReinforcedElements.cs" />
     <Compile Include="BuildingElements\PCRectFooting.cs" />

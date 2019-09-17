@@ -8,14 +8,10 @@ using System.Threading.Tasks;
 
 namespace CADReader.BuildingElements
 {
-    class PCRectFooting:IRectangleBase
+    public class PCRectFooting: FootingBase
     {
-        public double Width { get; set; }
-        public double Length { get; set; }
-        public Point3D CenterPt { get; set; }
-        public Point3D PtLengthDir { get; set; }
-
-        public double Thickness { get; set; }
+     
+        public override string Type { get; set; } = "PC";
 
         public PCRectFooting(double _width, double _length, double _thickness, Point3D _cntrPt, Point3D _ptLngthDir)
         {

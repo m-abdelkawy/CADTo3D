@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CADReader.BuildingElements
 {
-    internal class Stair
+    public class Stair
     {
         public double Width { get; set; }
         public double Thickness { get; set; }

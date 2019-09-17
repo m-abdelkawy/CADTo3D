@@ -18,6 +18,8 @@ namespace CADReader.BuildingElements
         public double Level { get; set; }
         public List<Opening> Openings { get; set; }
         public List<Slab> Slabs { get; set; }
+        public List<Stair> Stairs { get; set; }
+        public List<LinearPath> Landings { get; set; }
 
         #endregion
 
@@ -26,7 +28,7 @@ namespace CADReader.BuildingElements
         {
             Level = level;
 
-            GetSlab(cadReader);
+            GetSlabs(cadReader);
             GetOpening(cadReader);
             GetColumns(cadReader);
             GetWalls(cadReader);
@@ -150,7 +152,7 @@ namespace CADReader.BuildingElements
                 }
 
 
-                Point3D center =MathHelper.MidPoint3D(lstPolyLine[i].Vertices[0], lstPolyLine[i].Vertices[2]);
+                Point3D center = MathHelper.MidPoint3D(lstPolyLine[i].Vertices[0], lstPolyLine[i].Vertices[2]);
 
                 center.Z = Level;
                 widthMidPt.Z = Level;
@@ -158,7 +160,7 @@ namespace CADReader.BuildingElements
                 Openings.Add(new Opening(width, length, center, widthMidPt));
             }
         }
-        private void GetSlab(ReadAutodesk cadFileReader)
+        private void GetSlabs(ReadAutodesk cadFileReader)
         {
             List<LinearPath> lstPLine = CadHelper.PLinesGetByLayerName(cadFileReader, CadLayerName.Slab, true);
 
@@ -192,6 +194,48 @@ namespace CADReader.BuildingElements
             }
 
         }
+        private void GetStairs(ReadAutodesk cadFileReader)
+        {
+            List<LinearPathEx> lstStairFlightPath = CadHelper.PLinesGetByLayerName(cadFileReader, CadLayerName.Stair).Cast<LinearPathEx>().ToList();
+            Landings = CadHelper.PLinesGetByLayerName(cadFileReader, CadLayerName.Stair);
+
+
+            Dictionary<int, List<Line>> dicStairLines = new Dictionary<int, List<Line>>();
+            //Dictionary<double, List<Line>> dicSlopedStairLines = new Dictionary<double, List<Line>>();
+            for (int i = 0; i < lstStairFlightPath.Count(); i++)
+            {
+
+                List<Line> lstLines = new List<Line>();
+                for (int j = 0; j < lstStairFlightPath[i].Vertices.Count() - 1; j++)
+                {
+                    Line l = new Line(lstStairFlightPath[i].Vertices[j], lstStairFlightPath[i].Vertices[j + 1]);
+                    lstLines.Add(l);
+                }
+                dicStairLines.Add(i, lstLines);
+            }
+
+            foreach (KeyValuePair<int, List<Line>> item in dicStairLines)
+            {
+                List<Line> slopedLines = new List<Line>();
+                List<Line> hzLines = new List<Line>();
+
+                for (int i = 0; i < item.Value.Count(); i++)
+                {
+                    if (item.Value[i].StartPoint.Z != item.Value[i].EndPoint.Z)
+                    {
+                        slopedLines.Add(item.Value[i]);
+                    }
+                    else
+                    {
+                        hzLines.Add(item.Value[i]);
+                    }
+                }
+                double stairWidth = hzLines[0].Length();
+                Stairs.Add(new Stair(stairWidth, slopedLines));
+            }
+
+        }
+
         #endregion
 
     }

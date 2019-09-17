@@ -107,6 +107,7 @@
   <ItemGroup>
     <Compile Include="Constants\BlockName.cs" />
     <Compile Include="Constants\LayerName.cs" />
+    <Compile Include="Helpers\IFCExtensions.cs" />
     <Compile Include="IFCHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

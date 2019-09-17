@@ -1,4 +1,5 @@
-﻿using CADReader.Helpers;
+﻿using CADReader.Base;
+using CADReader.Helpers;
 using devDept.Eyeshot.Entities;
 using devDept.Eyeshot.Translators;
 using devDept.Geometry;
@@ -16,7 +17,7 @@ namespace CADReader.BuildingElements
         private double PcThickness { get; set; } = DefaultValues.PCFootingThinkess;
         private double RcThickness { get; set; } = DefaultValues.RCFootingThinkess;
         public double Level { get; set; }
-        public List<RCRectFooting> PCFooting { get; set; }
+        public List<PCRectFooting> PCFooting { get; set; }
         public List<RCRectFooting> RCFooting { get; set; }
         public List<SlopedSlab> Ramps { get; set; }
         #endregion
@@ -24,7 +25,7 @@ namespace CADReader.BuildingElements
         #region Constructor
         public Foundation(ReadAutodesk cadReader, double level)
         {
-            Level = level; 
+            Level = level;
             GetPCFootings(cadReader);
             GetRCFootings(cadReader);
             GetRamps(cadReader);
@@ -33,13 +34,13 @@ namespace CADReader.BuildingElements
 
         private void GetPCFootings(ReadAutodesk cadReader)
         {
-            PCFooting = new List<RCRectFooting>();
+            PCFooting = new List<PCRectFooting>();
 
             List<LinearPath> lstPLine = CadHelper.PLinesGetByLayerName(cadReader, CadLayerName.PCFooting).Where(pl => pl.IsClosed).ToList();
 
             for (int i = 0; i < lstPLine.Count; i++)
             {
-                RCRectFooting footing = RectFootingCreate(lstPLine[i], PcThickness);
+                PCRectFooting footing = RectFootingCreate(lstPLine[i], PcThickness,"PC") as PCRectFooting;
                 PCFooting.Add(footing);
             }
 
@@ -53,13 +54,13 @@ namespace CADReader.BuildingElements
 
             for (int i = 0; i < lstPLine.Count; i++)
             {
-                RCRectFooting footing = RectFootingCreate(lstPLine[i], RcThickness);
+                RCRectFooting footing = RectFootingCreate(lstPLine[i], RcThickness,"RC") as RCRectFooting;
                 RCFooting.Add(footing);
             }
 
         }
 
-        private RCRectFooting RectFootingCreate(LinearPath pLine, double thickness)
+        private FootingBase RectFootingCreate(LinearPath pLine, double thickness, string type)
         {
             double width = double.MaxValue;
             double length = 0;
@@ -82,15 +83,18 @@ namespace CADReader.BuildingElements
             Point3D center = (pLine.Vertices[0] + pLine.Vertices[2]) / 2.0;
             center.Z = Level;
             widthMidPt.Z = Level;
-            RCRectFooting footing = new RCRectFooting(width, length, thickness, center, widthMidPt);
-            return footing;
+
+            if (type == "RC")
+                return new RCRectFooting(width, length, thickness, center, widthMidPt);
+            else
+                return new PCRectFooting(width, length, thickness, center, widthMidPt);
         }
 
         private void GetRamps(ReadAutodesk cadReader)
         {
             this.Ramps = new List<SlopedSlab>();
 
-            List<LinearPath> lstPLine = CadHelper.PLinesGetByLayerName(cadReader,CadLayerName.Ramp);
+            List<LinearPath> lstPLine = CadHelper.PLinesGetByLayerName(cadReader, CadLayerName.Ramp);
 
             List<SlopedSlab> lstSlopedSlab = lstPLine.Where(e => e is LinearPathEx).Select(s => new SlopedSlab(s.Vertices.ToList())).ToList();
 
