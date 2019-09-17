@@ -17,7 +17,7 @@ namespace CADReader.BuildingElements
         public List<RectColumn> Columns { get; set; }
         public double Level { get; set; }
         public List<Opening> Openings { get; set; }
-        public Slab Slab { get; set; }
+        public List<Slab> Slabs { get; set; }
 
         #endregion
 
@@ -43,13 +43,13 @@ namespace CADReader.BuildingElements
 
             List<Line> lstWallLines = CadHelper.LinesGetByLayerName(CadReader, CadLayerName.Wall);
 
-           
+
             List<List<Line>> lstWalls = new List<List<Line>>();
 
             for (int i = 0; i < lstWallLines.Count; i++)
             {
                 Line parallel = lstWallLines[i].LineGetNearestParallel(lstWallLines.ToArray());
-                
+
                 if (parallel != null && (lstWallLines[i].Length() > parallel.Length()))
                 {//Exclude Lines from list
                     lstWalls.Add(new List<Line> { lstWallLines[i], parallel });
@@ -67,11 +67,11 @@ namespace CADReader.BuildingElements
                 Point3D endPt2 = lstParallels[1].EndPoint;
 
 
-                Point3D midStart = MathHelper.MidPoint(stPt1, stPt2);
-                midStart.Z = Level - Slab.Thickness * 1000;
+                Point3D midStart = MathHelper.MidPoint3D(stPt1, stPt2);
+                midStart.Z = Level - Slabs[0].Thickness * 1000;
 
-                Point3D midEnd = MathHelper.MidPoint(endPt1, endPt2);
-                midEnd.Z = Level - Slab.Thickness * 1000;
+                Point3D midEnd = MathHelper.MidPoint3D(endPt1, endPt2);
+                midEnd.Z = Level - Slabs[0].Thickness * 1000;
 
                 if (stPt1.DistanceTo(stPt2) < stPt1.DistanceTo(endPt2))
                 {
@@ -89,129 +89,106 @@ namespace CADReader.BuildingElements
                 Walls.Add(new Wall(lstThickness[i], lstMidPoints[i][0], lstMidPoints[i][1]));
             }
         }
-        private void GetColumns(ReadAutodesk CadReader)
+        private void GetColumns(ReadAutodesk cadFileReader)
         {
 
             Columns = new List<RectColumn>();
 
 
-            List<LinearPath> lstPolyLine = new List<LinearPath>();
-
-            foreach (Entity entity in CadReader.Entities)
+            List<LinearPath> lstPolyLine = CadHelper.PLinesGetByLayerName(cadFileReader, CadLayerName.Column, true);
+            for (int i = 0; i < lstPolyLine.Count; i++)
             {
-                LinearPath polyLinPath = entity as LinearPath;
+                double width = double.MaxValue;
+                double length = 0;
+                Point3D widthMidPt = Point3D.Origin;
 
-                if (polyLinPath == null)
-                    continue;
-                if (polyLinPath.LayerName == "Column" && polyLinPath.IsClosed == true)
+                int verticesCount = lstPolyLine[i].Vertices.Length;
+                for (int j = 0; j < verticesCount - 1; j++)
                 {
-
-                    double width = double.MaxValue;
-                    double length = 0;
-                    Point3D widthMidPt = Point3D.Origin;
-
-                    int verticesCount = polyLinPath.Vertices.Length;
-                    for (int i = 0; i < verticesCount; i++)
+                    double dist = MathHelper.CalcDistanceBetweenTwoPoint3D(lstPolyLine[i].Vertices[j], lstPolyLine[i].Vertices[j + 1]);
+                    width = Math.Min(width, dist);
+                    if (width == dist)
                     {
-                        if (i + 1 == verticesCount)
-                            break;
-                        double dist = MathHelper.CalcDistanceBetweenTwoPoint3D(polyLinPath.Vertices[i], polyLinPath.Vertices[i + 1]);
-                        width = Math.Min(width, dist);
-                        if (width == dist)
-                        {
-                            widthMidPt = MathHelper.MidPoint(polyLinPath.Vertices[i], polyLinPath.Vertices[i + 1]);
-                        }
-                        length = Math.Max(length, dist);
+                        widthMidPt = MathHelper.MidPoint3D(lstPolyLine[i].Vertices[j], lstPolyLine[i].Vertices[j + 1]);
                     }
-
-
-                    Point3D center = (polyLinPath.Vertices[0] + polyLinPath.Vertices[2]) / 2.0;
-
-                    center.Z = Level;
-                    widthMidPt.Z = Level;
-
-                    RectColumn col = new RectColumn(width, length, center, widthMidPt, polyLinPath);
-                    Columns.Add(col);
+                    length = Math.Max(length, dist);
                 }
+
+
+                Point3D center = MathHelper.MidPoint3D(lstPolyLine[i].Vertices[0], lstPolyLine[i].Vertices[2]);
+
+                center.Z = Level;
+                widthMidPt.Z = Level;
+
+                RectColumn col = new RectColumn(width, length, center, widthMidPt, lstPolyLine[i]);
+                Columns.Add(col);
             }
 
         }
-        private void GetOpening(ReadAutodesk CadReader)
+        private void GetOpening(ReadAutodesk cadFileReader)
         {
             Openings = new List<Opening>();
-            foreach (Entity entity in CadReader.Entities)
+            List<LinearPath> lstPolyLine = CadHelper.PLinesGetByLayerName(cadFileReader, CadLayerName.Opening, true);
+            for (int i = 0; i < lstPolyLine.Count; i++)
             {
-                LinearPath polyLinPath = entity as LinearPath;
-                if (polyLinPath == null)
-                    continue;
-                if (polyLinPath.LayerName == "Opening" && polyLinPath.IsClosed == true)
+                double width = double.MaxValue;
+                double length = 0;
+                List<Point2D> lstVertices = new List<Point2D>();
+
+                Point3D widthMidPt = Point3D.Origin;
+                int nVertices = lstPolyLine[i].Vertices.Length;
+
+                for (int j = 0; j < nVertices - 1; j++)
                 {
-                    double width = double.MaxValue;
-                    double length = 0;
-                    List<Point2D> lstVertices = new List<Point2D>();
-
-                    Point3D widthMidPt = Point3D.Origin;
-                    int nVertices = polyLinPath.Vertices.Length;
-
-                    for (int i = 0; i < nVertices; i++)
+                    double dist = MathHelper.CalcDistanceBetweenTwoPoint3D(lstPolyLine[i].Vertices[j], lstPolyLine[i].Vertices[j + 1]);
+                    width = Math.Min(width, dist);
+                    if (width == dist)
                     {
-                        if (i + 1 == nVertices)
-                            break;
-                        double dist = MathHelper.CalcDistanceBetweenTwoPoint3D(polyLinPath.Vertices[i], polyLinPath.Vertices[i + 1]);
-                        width = Math.Min(width, dist);
-                        if (width == dist)
-                        {
-                            widthMidPt = MathHelper.MidPoint(polyLinPath.Vertices[i], polyLinPath.Vertices[i + 1]);
-                        }
-                        length = Math.Max(length, dist);
+                        widthMidPt = MathHelper.MidPoint3D(lstPolyLine[i].Vertices[j], lstPolyLine[i].Vertices[j + 1]);
                     }
-
-
-                    Point3D center = (polyLinPath.Vertices[0] + polyLinPath.Vertices[2]) / 2.0;
-
-                    center.Z = Level;
-                    widthMidPt.Z = Level;
-
-                    Openings.Add(new Opening(width, length, center, widthMidPt));
+                    length = Math.Max(length, dist);
                 }
+
+
+                Point3D center =MathHelper.MidPoint3D(lstPolyLine[i].Vertices[0], lstPolyLine[i].Vertices[2]);
+
+                center.Z = Level;
+                widthMidPt.Z = Level;
+
+                Openings.Add(new Opening(width, length, center, widthMidPt));
             }
-
         }
-        private void GetSlab(ReadAutodesk CadReader)
+        private void GetSlab(ReadAutodesk cadFileReader)
         {
-            foreach (Entity entity in CadReader.Entities)
+            List<LinearPath> lstPLine = CadHelper.PLinesGetByLayerName(cadFileReader, CadLayerName.Slab, true);
+
+            for (int i = 0; i < lstPLine.Count; i++)
             {
-                LinearPath polyLinPath = entity as LinearPath;
-                if (polyLinPath == null)
-                    continue;
-                if (polyLinPath.LayerName == "Slab" && polyLinPath.IsClosed == true)
+                double width = double.MaxValue;
+                double length = 0;
+                List<Point2D> lstVertices = new List<Point2D>();
+
+                Point3D widthMidPt = Point3D.Origin;
+                int nVertices = lstPLine[i].Vertices.Length;
+
+                for (int j = 0; j < nVertices; j++)
                 {
-                    double width = double.MaxValue;
-                    double length = 0;
-                    List<Point2D> lstVertices = new List<Point2D>();
-
-                    Point3D widthMidPt = Point3D.Origin;
-                    int nVertices = polyLinPath.Vertices.Length;
-
-                    for (int i = 0; i < nVertices; i++)
+                    if (j + 1 == nVertices)
+                        break;
+                    double dist = MathHelper.CalcDistanceBetweenTwoPoint3D(lstPLine[i].Vertices[j], lstPLine[i].Vertices[j + 1]);
+                    width = Math.Min(width, dist);
+                    if (width == dist)
                     {
-                        if (i + 1 == nVertices)
-                            break;
-                        double dist = MathHelper.CalcDistanceBetweenTwoPoint3D(polyLinPath.Vertices[i], polyLinPath.Vertices[i + 1]);
-                        width = Math.Min(width, dist);
-                        if (width == dist)
-                        {
-                            widthMidPt = MathHelper.MidPoint(polyLinPath.Vertices[i], polyLinPath.Vertices[i + 1]);
-                        }
-                        length = Math.Max(length, dist);
+                        widthMidPt = MathHelper.MidPoint3D(lstPLine[i].Vertices[j], lstPLine[i].Vertices[j + 1]);
                     }
-
-
-                    Point3D center = (polyLinPath.Vertices[0] + polyLinPath.Vertices[2]) / 2.0;
-                    center.Z = Level;
-                    widthMidPt.Z = Level;
-                    Slab = new Slab(width, length, center, widthMidPt);
+                    length = Math.Max(length, dist);
                 }
+
+
+                Point3D center = MathHelper.MidPoint3D(lstPLine[i].Vertices[0], lstPLine[i].Vertices[2]);
+                center.Z = Level;
+                widthMidPt.Z = Level;
+                Slabs.Add(new Slab(width, length, center, widthMidPt));
             }
 
         }

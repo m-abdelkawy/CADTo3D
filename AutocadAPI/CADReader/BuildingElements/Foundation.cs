@@ -73,7 +73,7 @@ namespace CADReader.BuildingElements
                 width = Math.Min(width, dist);
                 if (width == dist)
                 {
-                    widthMidPt = MathHelper.MidPoint(pLine.Vertices[j], pLine.Vertices[j + 1]);
+                    widthMidPt = MathHelper.MidPoint3D(pLine.Vertices[j], pLine.Vertices[j + 1]);
                 }
                 length = Math.Max(length, dist);
             }
