@@ -61,21 +61,32 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AutocadHelper.cs" />
+    <Compile Include="Base\IRectangleBase.cs" />
+    <Compile Include="Base\ReinforcedElements.cs" />
+    <Compile Include="BuildingElements\PCRectFooting.cs" />
+    <Compile Include="BuildingElements\Stair.cs" />
+    <Compile Include="ElementComponents\Rebar.cs" />
+    <Compile Include="ElementComponents\Stirrup.cs" />
+    <Compile Include="Helpers\CADConfig.cs" />
+    <Compile Include="Helpers\CadHelper.cs" />
+    <Compile Include="Helpers\DefaultValues.cs" />
+    <Compile Include="Helpers\Extensions.cs" />
     <Compile Include="BuildingElements\Building.cs" />
     <Compile Include="BuildingElements\Floor.cs" />
     <Compile Include="BuildingElements\Foundation.cs" />
     <Compile Include="BuildingElements\IFloor.cs" />
     <Compile Include="BuildingElements\Opening.cs" />
     <Compile Include="BuildingElements\RectColumn.cs" />
-    <Compile Include="BuildingElements\RectFooting.cs" />
+    <Compile Include="BuildingElements\RCRectFooting.cs" />
     <Compile Include="BuildingElements\Slab.cs" />
+    <Compile Include="BuildingElements\SlopedSlab.cs" />
     <Compile Include="BuildingElements\Wall.cs" />
-    <Compile Include="Class1.cs" />
     <Compile Include="Constants\BlockName.cs" />
+    <Compile Include="Helpers\CadLayerName.cs" />
     <Compile Include="MathHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reinforced Elements\ReinforcedCadColumn.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

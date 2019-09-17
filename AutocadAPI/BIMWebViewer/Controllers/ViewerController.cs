@@ -87,7 +87,7 @@ namespace BIMWebViewer.Controllers
             Building building = new Building("Building A");
             building.AddNewFloor(@"D:\Coding Trials\AEC Development\New Demo 2019.09.06\03.2nd slab.dwg", 3000);
             building.AddNewFloor(@"D:\Coding Trials\AEC Development\New Demo 2019.09.06\02.1st slab.dwg", 0);
-            building.AddBuildingFoundation(@"D:\Coding Trials\AEC Development\New Demo 2019.09.06\01.Foundation.dwg", -3000);
+            building.AddBuildingFoundation(@"D:\Coding Trials\AEC Development\New Demo 2019.09.09\01.Foundation with ramps.dwg", -3000);
             XbimCreateBuilding newBuilding = new XbimCreateBuilding(building,versionPath);
            // devDept.Eyeshot.Translators.ReadAutodesk.OnApplicationExit(null, null);
 
