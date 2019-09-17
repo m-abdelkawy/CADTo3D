@@ -1,4 +1,5 @@
 ﻿using CADReader.Base;
+using CADReader.Helpers;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 using System;
@@ -17,11 +18,8 @@ namespace CADReader.BuildingElements
         public Point3D PtLengthDir { get; set; }
 
         public LinearPath ColPath { get; set; }
-        public double Cover { get; set; } = 0.03;
+        public double Cover { get; set; } = DefaultValues.ColumnCover;
         
-
-
-
         public RectColumn(double _width, double _length, Point3D _cntrPt, Point3D _ptLngthDir, LinearPath _colLinPath)
         {
             Width = _width;

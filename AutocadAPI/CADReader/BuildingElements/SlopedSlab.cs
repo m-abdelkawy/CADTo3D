@@ -1,4 +1,5 @@
-﻿using devDept.Geometry;
+﻿using CADReader.Helpers;
+using devDept.Geometry;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,33 +10,18 @@ namespace CADReader.BuildingElements
 {
     public class SlopedSlab
     {
-        #region Data members
-        private double thickness = 0.25;
-        private List<Point3D> lstFacePt;
-        #endregion
-
-
-
         #region Constructors
         public SlopedSlab(List<Point3D> vertices)
         {
-            this.lstFacePt = vertices;
+            LstFacePt = vertices;
         }
         #endregion 
 
         #region Properties
         
-        public List<Point3D> LstFacePt
-        {
-            get { return lstFacePt; }
-            set { lstFacePt = value; }
-        }
+        public List<Point3D> LstFacePt { get; set; }
 
-        public double Thickness
-        {
-            get { return thickness; }
-            set { thickness = value; }
-        }
+        public double Thickness { get; set; } = DefaultValues.SlabThinkess;
         #endregion
          
     }

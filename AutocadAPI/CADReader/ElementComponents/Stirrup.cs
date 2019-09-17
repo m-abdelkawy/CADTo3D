@@ -1,4 +1,5 @@
-﻿using devDept.Eyeshot.Entities;
+﻿using CADReader.Helpers;
+using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 using System;
 using System.Collections.Generic;
@@ -10,23 +11,20 @@ namespace CADReader.ElementComponents
 {
     public class Stirrup
     {
-        private double diameter = 0.018;
-        public List<Line> lstBranch = new List<Line>();
-        public List<Curve> lstCurve;
-        private double curveDiameter = 0.03;
 
-        public Stirrup(double _diameter, LinearPath stirrupPath)
+        #region Properties
+        public List<Line> LstBranch { get; set; } = new List<Line>();
+        public List<Curve> LstCurve { get; set; }
+        private double CurveDiameter { get; set; }
+        public double Diameter { get; set; } = DefaultValues.BarDiameter; 
+        #endregion
+
+        public Stirrup(LinearPath stirrupPath)
         {
-            diameter = _diameter;
             LstBranchPopulate(stirrupPath);
         }
 
 
-        public double Diameter
-        {
-            get { return diameter; }
-            set { diameter = value; }
-        }
 
         public void LstBranchPopulate(LinearPath stirrupPath)
         {
@@ -35,7 +33,7 @@ namespace CADReader.ElementComponents
             {
                 Point3D ptSt = stirrupPath.Vertices[i];
                 Point3D ptEnd = stirrupPath.Vertices[i + 1];
-                lstBranch.Add(new Line(new Point3D(ptSt.X, ptSt.Y, ptSt.Z), new Point3D(ptEnd.X, ptEnd.Y, ptEnd.Z)));
+                LstBranch.Add(new Line(new Point3D(ptSt.X, ptSt.Y, ptSt.Z), new Point3D(ptEnd.X, ptEnd.Y, ptEnd.Z)));
             }
         }
 
