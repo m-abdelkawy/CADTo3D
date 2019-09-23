@@ -1,5 +1,6 @@
 ﻿using CADReader.Base;
 using CADReader.Helpers;
+using CADReader.Reinforced_Elements;
 using devDept.Eyeshot.Entities;
 using devDept.Eyeshot.Translators;
 using devDept.Geometry;
@@ -11,51 +12,102 @@ using System.Threading.Tasks;
 
 namespace CADReader.BuildingElements
 {
-    public class Foundation : IFloor
+    public class Foundation : FloorBase
     {
         #region Properties
         private double PcThickness { get; set; } = DefaultValues.PCFootingThinkess;
-        private double RcThickness { get; set; } = DefaultValues.RCFootingThinkess;
-        public double Level { get; set; }
-        public List<PCRectFooting> PCFooting { get; set; }
-        public List<RCRectFooting> RCFooting { get; set; }
+        private double RcThickness { get; set; } = DefaultValues.RCFootingThinkess; 
+        public List<PCRectFooting> PCRectFooting { get; set; }
+        public List<RCRectFooting> RCRectFooting { get; set; }
         public List<SlopedSlab> Ramps { get; set; }
+        public List<Wall> RetainingWalls{ get; set; }
+        public List<ReinforcedCadColumn> RcColumns{ get; set; }
+        public List<ShearWall> ShearWalls { get; set; }
+
+        public List<PCFooting> PCFooting { get; set; }
+        public List<RCFooting> RCFooting { get; set; }
         #endregion
 
         #region Constructor
         public Foundation(ReadAutodesk cadReader, double level)
         {
             Level = level;
-            GetPCFootings(cadReader);
-            GetRCFootings(cadReader);
-            GetRamps(cadReader);
+            GetPCRectFootings(cadReader);
+            GetRCRectFootings(cadReader);
+            Ramps = GetRamps(cadReader);
+            this.RetainingWalls = base.GetWalls(cadReader);
+            this.RcColumns = base.GetRCColumns(base.GetColumns(cadReader));
+
+            GetPCFooting(cadReader);
+            GetRCFooting(cadReader);
+            ShearWalls = GetShearWalls(cadReader);
         }
         #endregion
 
-        private void GetPCFootings(ReadAutodesk cadReader)
+        private void GetPCFooting(ReadAutodesk cadFileReader)
         {
-            PCFooting = new List<PCRectFooting>();
+            this.PCFooting = new List<PCFooting>();
+
+            List<LinearPath> lstPLine = CadHelper.PLinesGetByLayerName(cadFileReader, CadLayerName.PCFooting, true);
+
+            for (int i = 0; i < lstPLine.Count; i++)
+            {
+                for (int j = 0; j < lstPLine[i].Vertices.Length; j++)
+                {
+                    lstPLine[i].Vertices[j].Z = Level;
+                }
+            }
+
+            List<PCFooting> lstPCFooting = lstPLine.Select(s => new PCFooting(s, PcThickness)).ToList();
+
+            PCFooting.AddRange(lstPCFooting);
+
+        }
+
+        private void GetRCFooting(ReadAutodesk cadFileReader)
+        {
+            this.RCFooting = new List<RCFooting>();
+
+            List<LinearPath> lstPLine = CadHelper.PLinesGetByLayerName(cadFileReader, CadLayerName.RCFooting, true);
+
+            for (int i = 0; i < lstPLine.Count; i++)
+            {
+                for (int j = 0; j < lstPLine[i].Vertices.Length; j++)
+                {
+                    lstPLine[i].Vertices[j].Z = Level;
+                }
+            }
+
+            List<RCFooting> lstRCFooting = lstPLine.Select(s => new RCFooting(s, RcThickness)).ToList();
+
+            RCFooting.AddRange(lstRCFooting);
+
+        }
+
+        private void GetPCRectFootings(ReadAutodesk cadReader)
+        {
+            PCRectFooting = new List<PCRectFooting>();
 
             List<LinearPath> lstPLine = CadHelper.PLinesGetByLayerName(cadReader, CadLayerName.PCFooting).Where(pl => pl.IsClosed).ToList();
 
             for (int i = 0; i < lstPLine.Count; i++)
             {
                 PCRectFooting footing = RectFootingCreate(lstPLine[i], PcThickness,"PC") as PCRectFooting;
-                PCFooting.Add(footing);
+                PCRectFooting.Add(footing);
             }
 
         }
 
-        private void GetRCFootings(ReadAutodesk cadReader)
+        private void GetRCRectFootings(ReadAutodesk cadReader)
         {
-            RCFooting = new List<RCRectFooting>();
+            RCRectFooting = new List<RCRectFooting>();
 
             List<LinearPath> lstPLine = CadHelper.PLinesGetByLayerName(cadReader, CadLayerName.RCFooting).Where(pl => pl.IsClosed).ToList();
 
             for (int i = 0; i < lstPLine.Count; i++)
             {
                 RCRectFooting footing = RectFootingCreate(lstPLine[i], RcThickness,"RC") as RCRectFooting;
-                RCFooting.Add(footing);
+                RCRectFooting.Add(footing);
             }
 
         }
@@ -90,15 +142,17 @@ namespace CADReader.BuildingElements
                 return new PCRectFooting(width, length, thickness, center, widthMidPt);
         }
 
-        private void GetRamps(ReadAutodesk cadReader)
+        private FootingBase RandomProfiletFootingCreate(LinearPath pLine, double thickness, string type)
         {
-            this.Ramps = new List<SlopedSlab>();
+            if (type == FoundationType.RC)
+                return new RCFooting(pLine, thickness);
+            else if(type == FoundationType.PC)
+                return new PCFooting(pLine, thickness);
 
-            List<LinearPath> lstPLine = CadHelper.PLinesGetByLayerName(cadReader, CadLayerName.Ramp);
-
-            List<SlopedSlab> lstSlopedSlab = lstPLine.Where(e => e is LinearPathEx).Select(s => new SlopedSlab(s.Vertices.ToList())).ToList();
-
-            Ramps.AddRange(lstSlopedSlab);
+            return null;
         }
+
+
+        
     }
 }

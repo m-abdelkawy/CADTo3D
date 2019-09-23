@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 
 namespace CADReader.Helpers
 {
+    internal class FoundationType
+    {
+        internal const string PC = "PC";
+        internal const string RC = "RC";
+    }
     internal class CadLayerName
     {
         internal const string Ramp = "Ramp";
@@ -16,5 +21,6 @@ namespace CADReader.Helpers
         internal const string PCFooting = "PCFooting";
         internal const string RCFooting = "RCFooting";
         internal const string Stair = "Stair";
+        internal const string ShearWall = "ShearWall";
     }
 }

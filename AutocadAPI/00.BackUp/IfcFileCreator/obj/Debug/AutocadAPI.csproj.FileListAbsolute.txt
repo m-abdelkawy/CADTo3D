@@ -1,0 +1,193 @@
+D:\Project Preparation\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\AutocadAPI.dll
+D:\Project Preparation\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\AutocadAPI.pdb
+D:\Project Preparation\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\accoremgd.dll
+D:\Project Preparation\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\AcCui.dll
+D:\Project Preparation\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\acdbmgd.dll
+D:\Project Preparation\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\acmgd.dll
+D:\Project Preparation\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\AcMNUParser.dll
+D:\Project Preparation\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\AdUiPalettes.dll
+D:\Project Preparation\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\AcDx.dll
+D:\Project Preparation\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\AcDxPublishUi.dll
+D:\Project Preparation\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\AdWindows.dll
+D:\Project Preparation\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\AcMr.dll
+D:\Project Preparation\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\AcWindows.dll
+D:\Project Preparation\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\AdUIMgd.dll
+D:\Project Preparation\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\AcTcMgd.dll
+D:\Project Preparation\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\ManagedMC3.dll
+D:\Project Preparation\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Autodesk.AutoCAD.Interop.Common.dll
+D:\Project Preparation\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\en-US\acdbmgd.resources.dll
+D:\Project Preparation\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\en-US\AcDx.resources.dll
+D:\Project Preparation\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\en-US\AcDxPublishUi.resources.dll
+D:\Project Preparation\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\en-US\AdWindows.resources.dll
+D:\Project Preparation\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\en-US\AcMr.resources.dll
+D:\Project Preparation\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\en-US\AcWindows.resources.dll
+D:\Project Preparation\AutocadAPI-master\AutocadAPI\AutocadAPI\obj\Debug\AutocadAPI.dll
+D:\Project Preparation\AutocadAPI-master\AutocadAPI\AutocadAPI\obj\Debug\AutocadAPI.pdb
+D:\Project Preparation\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Esent.Interop.dll
+D:\Project Preparation\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\ICSharpCode.SharpZipLib.dll
+D:\Project Preparation\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\log4net.dll
+D:\Project Preparation\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.CobieExpress.dll
+D:\Project Preparation\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Common.dll
+D:\Project Preparation\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Geometry.Engine.Interop.dll
+D:\Project Preparation\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Ifc.dll
+D:\Project Preparation\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Ifc.Extensions.dll
+D:\Project Preparation\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Ifc2x3.dll
+D:\Project Preparation\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Ifc2x3.IO.dll
+D:\Project Preparation\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Ifc4.dll
+D:\Project Preparation\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.IO.dll
+D:\Project Preparation\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.ModelGeometry.Scene.dll
+D:\Project Preparation\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Tessellator.dll
+D:\Project Preparation\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Esent.Interop.pdb
+D:\Project Preparation\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Esent.Interop.xml
+D:\Project Preparation\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\log4net.xml
+D:\Project Preparation\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.CobieExpress.pdb
+D:\Project Preparation\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.CobieExpress.xml
+D:\Project Preparation\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Common.pdb
+D:\Project Preparation\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Common.xml
+D:\Project Preparation\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Geometry.Engine.Interop.pdb
+D:\Project Preparation\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Geometry.Engine.Interop.xml
+D:\Project Preparation\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Ifc.pdb
+D:\Project Preparation\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Ifc.xml
+D:\Project Preparation\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Ifc.Extensions.pdb
+D:\Project Preparation\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Ifc.Extensions.xml
+D:\Project Preparation\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Ifc2x3.pdb
+D:\Project Preparation\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Ifc2x3.xml
+D:\Project Preparation\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Ifc2x3.IO.pdb
+D:\Project Preparation\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Ifc2x3.IO.xml
+D:\Project Preparation\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Ifc4.pdb
+D:\Project Preparation\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Ifc4.xml
+D:\Project Preparation\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.IO.pdb
+D:\Project Preparation\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.IO.xml
+D:\Project Preparation\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.ModelGeometry.Scene.pdb
+D:\Project Preparation\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.ModelGeometry.Scene.xml
+D:\Project Preparation\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Tessellator.pdb
+D:\Project Preparation\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Tessellator.xml
+F:\Work\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\AutocadAPI.dll
+F:\Work\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\AutocadAPI.pdb
+F:\Work\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\accoremgd.dll
+F:\Work\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\AcCui.dll
+F:\Work\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\acdbmgd.dll
+F:\Work\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\acmgd.dll
+F:\Work\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Esent.Interop.dll
+F:\Work\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\ICSharpCode.SharpZipLib.dll
+F:\Work\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\log4net.dll
+F:\Work\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.CobieExpress.dll
+F:\Work\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Common.dll
+F:\Work\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Geometry.Engine.Interop.dll
+F:\Work\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Ifc.dll
+F:\Work\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Ifc.Extensions.dll
+F:\Work\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Ifc2x3.dll
+F:\Work\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Ifc2x3.IO.dll
+F:\Work\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Ifc4.dll
+F:\Work\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.IO.dll
+F:\Work\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.ModelGeometry.Scene.dll
+F:\Work\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Tessellator.dll
+F:\Work\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\AcMNUParser.dll
+F:\Work\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\AdUiPalettes.dll
+F:\Work\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\AcDx.dll
+F:\Work\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\AcDxPublishUi.dll
+F:\Work\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\AdWindows.dll
+F:\Work\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\AcMr.dll
+F:\Work\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\AcWindows.dll
+F:\Work\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\AdUIMgd.dll
+F:\Work\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\AcTcMgd.dll
+F:\Work\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\ManagedMC3.dll
+F:\Work\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Autodesk.AutoCAD.Interop.Common.dll
+F:\Work\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Esent.Interop.pdb
+F:\Work\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Esent.Interop.xml
+F:\Work\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\log4net.xml
+F:\Work\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.CobieExpress.pdb
+F:\Work\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.CobieExpress.xml
+F:\Work\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Common.pdb
+F:\Work\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Common.xml
+F:\Work\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Geometry.Engine.Interop.pdb
+F:\Work\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Geometry.Engine.Interop.xml
+F:\Work\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Ifc.pdb
+F:\Work\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Ifc.xml
+F:\Work\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Ifc.Extensions.pdb
+F:\Work\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Ifc.Extensions.xml
+F:\Work\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Ifc2x3.pdb
+F:\Work\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Ifc2x3.xml
+F:\Work\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Ifc2x3.IO.pdb
+F:\Work\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Ifc2x3.IO.xml
+F:\Work\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Ifc4.pdb
+F:\Work\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Ifc4.xml
+F:\Work\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.IO.pdb
+F:\Work\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.IO.xml
+F:\Work\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.ModelGeometry.Scene.pdb
+F:\Work\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.ModelGeometry.Scene.xml
+F:\Work\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Tessellator.pdb
+F:\Work\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Tessellator.xml
+F:\Work\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\en-US\acdbmgd.resources.dll
+F:\Work\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\en-US\AcDx.resources.dll
+F:\Work\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\en-US\AcDxPublishUi.resources.dll
+F:\Work\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\en-US\AdWindows.resources.dll
+F:\Work\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\en-US\AcMr.resources.dll
+F:\Work\AutocadAPI-master\AutocadAPI\AutocadAPI\bin\Debug\en-US\AcWindows.resources.dll
+F:\Work\AutocadAPI-master\AutocadAPI\AutocadAPI\obj\Debug\AutocadAPI.dll
+F:\Work\AutocadAPI-master\AutocadAPI\AutocadAPI\obj\Debug\AutocadAPI.pdb
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\AutocadAPI\bin\Debug\AutocadAPI.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\AutocadAPI\bin\Debug\AutocadAPI.pdb
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\AutocadAPI\bin\Debug\accoremgd.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\AutocadAPI\bin\Debug\AcCui.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\AutocadAPI\bin\Debug\acdbmgd.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\AutocadAPI\bin\Debug\acmgd.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\AutocadAPI\bin\Debug\Esent.Interop.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\AutocadAPI\bin\Debug\ICSharpCode.SharpZipLib.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\AutocadAPI\bin\Debug\log4net.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\AutocadAPI\bin\Debug\Xbim.CobieExpress.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Common.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Geometry.Engine.Interop.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Ifc.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Ifc.Extensions.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Ifc2x3.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Ifc2x3.IO.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Ifc4.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\AutocadAPI\bin\Debug\Xbim.IO.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\AutocadAPI\bin\Debug\Xbim.ModelGeometry.Scene.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Tessellator.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\AutocadAPI\bin\Debug\AcMNUParser.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\AutocadAPI\bin\Debug\AdUiPalettes.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\AutocadAPI\bin\Debug\AcDx.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\AutocadAPI\bin\Debug\AcDxPublishUi.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\AutocadAPI\bin\Debug\AdWindows.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\AutocadAPI\bin\Debug\AcMr.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\AutocadAPI\bin\Debug\AcWindows.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\AutocadAPI\bin\Debug\AdUIMgd.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\AutocadAPI\bin\Debug\AcTcMgd.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\AutocadAPI\bin\Debug\ManagedMC3.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\AutocadAPI\bin\Debug\Autodesk.AutoCAD.Interop.Common.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\AutocadAPI\bin\Debug\Esent.Interop.pdb
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\AutocadAPI\bin\Debug\Esent.Interop.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\AutocadAPI\bin\Debug\log4net.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\AutocadAPI\bin\Debug\Xbim.CobieExpress.pdb
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\AutocadAPI\bin\Debug\Xbim.CobieExpress.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Common.pdb
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Common.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Geometry.Engine.Interop.pdb
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Geometry.Engine.Interop.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Ifc.pdb
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Ifc.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Ifc.Extensions.pdb
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Ifc.Extensions.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Ifc2x3.pdb
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Ifc2x3.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Ifc2x3.IO.pdb
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Ifc2x3.IO.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Ifc4.pdb
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Ifc4.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\AutocadAPI\bin\Debug\Xbim.IO.pdb
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\AutocadAPI\bin\Debug\Xbim.IO.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\AutocadAPI\bin\Debug\Xbim.ModelGeometry.Scene.pdb
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\AutocadAPI\bin\Debug\Xbim.ModelGeometry.Scene.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Tessellator.pdb
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\AutocadAPI\bin\Debug\Xbim.Tessellator.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\AutocadAPI\bin\Debug\en-US\acdbmgd.resources.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\AutocadAPI\bin\Debug\en-US\AcDx.resources.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\AutocadAPI\bin\Debug\en-US\AcDxPublishUi.resources.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\AutocadAPI\bin\Debug\en-US\AdWindows.resources.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\AutocadAPI\bin\Debug\en-US\AcMr.resources.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\AutocadAPI\bin\Debug\en-US\AcWindows.resources.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\AutocadAPI\obj\Debug\AutocadAPI.csprojResolveAssemblyReference.cache
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\AutocadAPI\obj\Debug\AutocadAPI.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\AutocadAPI\obj\Debug\AutocadAPI.pdb

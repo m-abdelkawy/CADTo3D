@@ -1,4 +1,5 @@
-﻿using devDept.Eyeshot.Entities;
+﻿using CADReader.Helpers;
+using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace CADReader
     public static class MathHelper
     {
         #region Geometry
-        internal static double LineGetSlope(Point3D pt1, Point3D pt2)
+        public static double LineGetSlope(Point3D pt1, Point3D pt2)
         {//needs reconsideration (more tight code)
             double yDiff = pt2.Y - pt1.Y;
             double xDiff = pt2.X - pt1.X;
@@ -21,7 +22,7 @@ namespace CADReader
             }
             return yDiff / xDiff;
         }
-        internal static double LineGetSlope(Line line)
+        public static double LineGetSlope(Line line)
         {//needs reconsideration
             double yDiff = Math.Abs(line.EndPoint.Y - line.StartPoint.Y);
             double xDiff = Math.Abs(line.EndPoint.X - line.StartPoint.X);
@@ -31,15 +32,15 @@ namespace CADReader
             }
             return yDiff / xDiff;
         }
-        internal static double LineGetEqnConst(double slope, Point3D pt)
+        public static double LineGetEqnConst(double slope, Point3D pt)
         {
             return (pt.Y - (slope * pt.X));
         }
-        internal static double LineGetEqnConst(double slope, Line line)
+        public static double LineGetEqnConst(double slope, Line line)
         {
             return (line.StartPoint.Y - (slope * line.StartPoint.X));
         }
-        internal static double DistanceBetweenTwoParallels(Line l1, Line l2)
+        public static double DistanceBetweenTwoParallels(Line l1, Line l2)
         {
             double m1 = LineGetSlope(l1);
             double m2 = LineGetSlope(l2);
@@ -71,7 +72,7 @@ namespace CADReader
             return new Point3D(vector.X, vector.Y, vector.Z);
         }
 
-        internal static double LineSlope(Line line)
+        public static double LineSlope(Line line)
         {//needs reconsideration
             #region Old code
             double yDiff = line.EndPoint.Y - line.StartPoint.Y;
@@ -82,6 +83,52 @@ namespace CADReader
             }
             return yDiff / xDiff;
             #endregion
+        }
+
+        //for convex polygon only (interior angels are all less than 180)
+        public static bool IsInPolygon(LinearPath inner, LinearPath outer)
+        {
+
+            for (int j = 0; j < inner.Vertices.Length; j++)
+            {
+                var coef = outer.Vertices.Skip(1).Select((p, i) =>
+                                           (inner.Vertices[j].Y - outer.Vertices[i].Y) * (p.X - outer.Vertices[i].X)
+                                         - (inner.Vertices[j].X - outer.Vertices[i].X) * (p.Y - outer.Vertices[i].Y))
+                                   .ToList();
+
+                if (coef.Any(p => p == 0))
+                    return true;
+
+                for (int i = 1; i < coef.Count(); i++)
+                {
+                    if (coef[i] * coef[i - 1] < 0)
+                        return false;
+                }
+            }
+            return true;
+        }
+
+        public static bool IsInsidePolygon(LinearPath inner, LinearPath outer)
+        {
+            Line[] outerLines = outer.ConvertToLines();
+
+            for (int i = 0; i < inner.Vertices.Length; i++)
+            {
+                Line l = new Line(inner.Vertices[i], 
+                    new Point3D(CADConfig.Units == linearUnitsType.Meters ? inner.Vertices[i].X + 1000 
+                    : inner.Vertices[i].X + 100000, inner.Vertices[i].Y, inner.Vertices[i].Z));
+
+
+                int countIntersect = 0;
+                for (int j = 0; j < outerLines.Length; j++)
+                {
+                    if (IntersectionOfTwoLineSegments(l, outerLines[j]))
+                        countIntersect++;
+                }
+                if (countIntersect % 2 == 0)
+                    return false;
+            }
+            return true;
         }
 
 
@@ -98,14 +145,14 @@ namespace CADReader
         {
             return Math.Sqrt(Math.Pow(pt1.X - pt2.X, 2) + Math.Pow(pt1.Y - pt2.Y, 2) + Math.Pow(pt1.Z - pt2.Z, 2));
         }
-        internal static double CalcDistanceBetweenTwoPoint2D(Point3D pt1, Point3D pt2)
+        public static double CalcDistanceBetweenTwoPoint2D(Point3D pt1, Point3D pt2)
         {
             return Math.Sqrt(Math.Pow(pt1.X - pt2.X, 2) + Math.Pow(pt1.Y - pt2.Y, 2));
         }
 
 
         #region UnitVectors
-        internal static Vector3D UnitVector3DFromPt1ToPt2(Point3D pt1, Point3D pt2)
+        public static Vector3D UnitVector3DFromPt1ToPt2(Point3D pt1, Point3D pt2)
         {//check
             Vector3D vector = (new Vector3D(pt2.X, pt2.Y, pt2.Z) - new Vector3D(pt1.X, pt1.Y, pt1.Z));
 
@@ -114,7 +161,7 @@ namespace CADReader
             return vector;
         }
 
-        internal static Vector3D UnitVector3DProjectedFromPt1ToPt2(Point3D pt1, Point3D pt2)
+        public static Vector3D UnitVector3DProjectedFromPt1ToPt2(Point3D pt1, Point3D pt2)
         {//check
             Vector3D vector = (new Vector3D(pt2.X, pt2.Y, pt1.Z) - new Vector3D(pt1.X, pt1.Y, pt1.Z));
 
@@ -123,7 +170,7 @@ namespace CADReader
             return vector;
         }
 
-        internal static Vector2D UnitVector2DFromPt1ToPt2(Point2D pt1, Point2D pt2)
+        public static Vector2D UnitVector2DFromPt1ToPt2(Point2D pt1, Point2D pt2)
         {//check
             Vector2D vector = (new Vector2D(pt2.X, pt2.Y) - new Vector2D(pt1.X, pt1.Y));
 
@@ -132,7 +179,7 @@ namespace CADReader
             return vector;
         }
 
-        internal static Vector3D UVPerpendicularToLine2DFromPt(Line line, Point3D pt)
+        public static Vector3D UVPerpendicularToLine2DFromPt(Line line, Point3D pt)
         {
             //Vector3D pt = line.StartPoint;
 
@@ -160,6 +207,90 @@ namespace CADReader
         }
 
         #endregion
+
+
+        #region Intesections
+        //بتشتغل على امتداد الخطوط
+        internal static bool IntersectionOfTwoLines(Line line1, Line line2)
+        {
+            double a1 = line1.EndPoint.Y - line1.StartPoint.Y;
+            double b1 = line1.StartPoint.X - line1.EndPoint.X;
+            double c1 = a1 * line1.StartPoint.X + b1 * line1.StartPoint.Y;
+
+            double a2 = line2.EndPoint.Y - line2.StartPoint.Y;
+            double b2 = line2.StartPoint.X - line2.EndPoint.X;
+            double c2 = a2 * line2.StartPoint.X + b2 * line2.StartPoint.Y;
+
+            double delta = a1 * b2 - a2 * b1;
+            return Math.Abs(delta) < 0.0001 ? false : true;
+        }
+
+        internal static bool IntersectionOfTwoLineSegments(Line line1, Line line2)
+        {
+            double a1 = line1.EndPoint.Y - line1.StartPoint.Y;
+            double b1 = line1.StartPoint.X - line1.EndPoint.X;
+            double c1 = a1 * line1.StartPoint.X + b1 * line1.StartPoint.Y;
+
+            double a2 = line2.EndPoint.Y - line2.StartPoint.Y;
+            double b2 = line2.StartPoint.X - line2.EndPoint.X;
+            double c2 = a2 * line2.StartPoint.X + b2 * line2.StartPoint.Y;
+
+            double delta = a1 * b2 - a2 * b1;
+            if (Math.Abs(delta) > 0.0001) // !=0
+            {
+                int o1 = orientation(line1.StartPoint, line1.EndPoint, line2.StartPoint);
+                int o2 = orientation(line1.StartPoint, line1.EndPoint, line2.EndPoint);
+                int o3 = orientation(line2.StartPoint, line2.EndPoint, line1.StartPoint);
+                int o4 = orientation(line2.StartPoint, line2.EndPoint, line1.EndPoint);
+
+                if (o1 != o2 && o3 != o4)
+                    return true;
+
+                // Special Cases 
+                // p1, q1 and p2 are colinear and p2 lies on segment p1q1 
+                if (o1 == 0 && onSegment(line1.StartPoint, line2.StartPoint, line1.EndPoint)) return true;
+
+                // p1, q1 and q2 are colinear and q2 lies on segment p1q1 
+                if (o2 == 0 && onSegment(line1.StartPoint, line2.EndPoint, line1.EndPoint)) return true;
+
+                // p2, q2 and p1 are colinear and p1 lies on segment p2q2 
+                if (o3 == 0 && onSegment(line2.StartPoint, line1.StartPoint, line2.EndPoint)) return true;
+
+                // p2, q2 and q1 are colinear and q1 lies on segment p2q2 
+                if (o4 == 0 && onSegment(line2.StartPoint, line1.EndPoint, line2.EndPoint)) return true;
+            }
+
+
+            return false; // Doesn't fall in any of the above cases
+        }
+
+        // Given three colinear points p, q, r, the function checks if 
+        // point q lies on line segment 'pr' 
+        static Boolean onSegment(Point3D p, Point3D q, Point3D r)
+        {
+            if (q.X <= Math.Max(p.X, r.X) && q.X >= Math.Min(p.X, r.X) &&
+                q.Y <= Math.Max(p.Y, r.Y) && q.Y >= Math.Min(p.Y, r.Y))
+                return true;
+
+            return false;
+        }
+
+        // To find orientation of ordered triplet (p, q, r). 
+        // The function returns following values 
+        // 0 --> p, q and r are colinear 
+        // 1 --> Clockwise 
+        // 2 --> Counterclockwise 
+        static int orientation(Point3D p, Point3D q, Point3D r)
+        {
+            // for details of below formula. 
+            int val = Convert.ToInt32((q.Y - p.Y) * (r.X - q.X) - (q.X - p.X) * (r.Y - q.Y));
+
+            if (val == 0) return 0; // colinear 
+
+            return (val > 0) ? 1 : 2; // clock or counterclock wise 
+        }
+        #endregion
+
 
         #endregion
     }

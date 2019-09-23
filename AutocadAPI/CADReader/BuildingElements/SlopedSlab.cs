@@ -10,6 +10,13 @@ namespace CADReader.BuildingElements
 {
     public class SlopedSlab
     {
+        #region Properties
+
+        public List<Point3D> LstFacePt { get; set; }
+
+        public double Thickness { get; set; } = DefaultValues.SlabThinkess;
+        #endregion
+
         #region Constructors
         public SlopedSlab(List<Point3D> vertices)
         {
@@ -17,12 +24,7 @@ namespace CADReader.BuildingElements
         }
         #endregion 
 
-        #region Properties
-        
-        public List<Point3D> LstFacePt { get; set; }
-
-        public double Thickness { get; set; } = DefaultValues.SlabThinkess;
-        #endregion
+       
          
     }
 }

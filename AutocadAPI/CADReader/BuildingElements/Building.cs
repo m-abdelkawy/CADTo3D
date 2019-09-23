@@ -11,7 +11,7 @@ namespace CADReader.BuildingElements
     public class Building
     {
         #region Properties
-        public List<IFloor> Floors { get; set; }
+        public List<FloorBase> Floors { get; set; }
         public string Name { get; set; }
         public CADConfig CadConfig { get; set; }
 
@@ -21,7 +21,7 @@ namespace CADReader.BuildingElements
         public Building(string buildingName)
         {
             CadConfig = new CADConfig();
-            Floors = new List<IFloor>();
+            Floors = new List<FloorBase>();
             Name = buildingName;
         }
         #endregion

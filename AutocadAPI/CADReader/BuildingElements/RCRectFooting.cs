@@ -9,16 +9,14 @@ using System.Threading.Tasks;
 
 namespace CADReader.BuildingElements
 {
-   public class RCRectFooting: IRectangleBase
+   public class RCRectFooting: FootingBase,  IRectangleBase
     {
-        #region Properties
+       
+        public override string Type { get; set; } = "RC";
         public double Width { get; set; }
         public double Length { get; set; }
         public Point3D CenterPt { get; set; }
         public Point3D PtLengthDir { get; set; }
-
-        public double Thickness { get; set; } = DefaultValues.RCFootingThinkess; 
-        #endregion
 
         public RCRectFooting(double _width, double _length,double _thickness, Point3D _cntrPt, Point3D _ptLngthDir)
         {

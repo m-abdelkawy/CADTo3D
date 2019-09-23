@@ -26,6 +26,11 @@ namespace CADReader.Helpers
             return cadReader.Entities.Where(e => e.LayerName == layerName && e is LinearPath).Cast<LinearPath>().ToList();
         }
 
+        public static List<LinearPathEx> PLinesXGetByLayerName(ReadAutodesk cadReader, string layerName)
+        {
+            return cadReader.Entities.Where(e => e.LayerName == layerName && e is LinearPathEx).Cast<LinearPathEx>().ToList();
+        }
+
         public static List<Line> LinesGetByLayerName(ReadAutodesk cadReader, string layerName)
         {
             return cadReader.Entities.Where(e => e.LayerName == layerName && e is Line).Cast<Line>().ToList();
