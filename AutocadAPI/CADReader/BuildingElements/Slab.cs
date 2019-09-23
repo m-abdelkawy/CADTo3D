@@ -1,5 +1,6 @@
-﻿using CADReader.Base;
-using CADReader.Helpers;
+﻿using CADReader.Helpers;
+using devDept.Eyeshot.Entities;
+using devDept.Eyeshot.Translators;
 using devDept.Geometry;
 using System;
 using System.Collections.Generic;
@@ -9,25 +10,70 @@ using System.Threading.Tasks;
 
 namespace CADReader.BuildingElements
 {
-    public class Slab: IRectangleBase
+    public class Slab
     {
         #region Properties
+
+        public List<Point3D> LstFacePt { get; set; }
+        public List<Opening> Openings { get; set; }
+
         public double Thickness { get; set; } = DefaultValues.SlabThinkess;
-        public double Width { get; set; }
-        public double Length { get; set; }
-        public Point3D CenterPt { get; set; }
-        public Point3D PtLengthDir { get; set; } 
         #endregion
 
-
-        public Slab(double _width, double _length, Point3D _cntrPt, Point3D _ptLngthDir )
+        #region Constructors
+        public Slab(ReadAutodesk cadFileReader, LinearPath path, double level)
         {
-            Width = _width;
-            Length = _length;
-            CenterPt = _cntrPt;
-            PtLengthDir = _ptLngthDir; 
+            LstFacePt = path.Vertices.Select(v => new Point3D(v.X, v.Y, v.Z + level)).ToList();
+            GetOpenings(cadFileReader, path, level);
+        }
+        #endregion
+
+        #region Methods
+        private void GetOpenings(ReadAutodesk cadFileReader,LinearPath path, double level)
+        {
+            Openings = new List<Opening>();
+
+            List<LinearPath> lstPolyLine = CadHelper.PLinesGetByLayerName(cadFileReader, CadLayerName.Opening, true);
+            List<LinearPath> PolyLines = new List<LinearPath>();
+            for (int i = 0; i < lstPolyLine.Count; i++)
+            {
+                if(MathHelper.IsInsidePolygon(lstPolyLine[i], path))
+                {
+                    PolyLines.Add(lstPolyLine[i]);
+                }
+            }
+
+            for (int i = 0; i < PolyLines.Count; i++)
+            {
+                double width = double.MaxValue;
+                double length = 0;
+                List<Point2D> lstVertices = new List<Point2D>();
+
+                Point3D widthMidPt = Point3D.Origin;
+                int nVertices = PolyLines[i].Vertices.Length;
+
+                for (int j = 0; j < nVertices - 1; j++)
+                {
+                    double dist = MathHelper.CalcDistanceBetweenTwoPoint3D(PolyLines[i].Vertices[j], PolyLines[i].Vertices[j + 1]);
+                    width = Math.Min(width, dist);
+                    if (width == dist)
+                    {
+                        widthMidPt = MathHelper.MidPoint3D(PolyLines[i].Vertices[j], PolyLines[i].Vertices[j + 1]);
+                    }
+                    length = Math.Max(length, dist);
+                }
+
+
+                Point3D center = MathHelper.MidPoint3D(PolyLines[i].Vertices[0], PolyLines[i].Vertices[2]);
+
+                center.Z = level;
+                widthMidPt.Z = level;
+
+                Openings.Add(new Opening(width, length, center, widthMidPt));
+            }
         }
 
-        
+
+        #endregion
     }
 }
