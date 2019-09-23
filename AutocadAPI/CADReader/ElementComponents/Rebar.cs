@@ -11,10 +11,9 @@ namespace CADReader.ElementComponents
     public class Rebar
     { 
 
-        public Rebar(Point3D location, double diameter)
+        public Rebar(Point3D location)
         {
-           LocationPt = location;
-           Diameter = diameter;
+           LocationPt = location; 
         }
         public Point3D LocationPt { get; set; }
 

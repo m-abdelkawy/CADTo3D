@@ -17,14 +17,9 @@ namespace CADReader.Helpers
             get { return cadReader; }
             set { cadReader = value; cadReader.DoWork(); }
         }
+         
 
-        static private linearUnitsType units;
-
-        static public linearUnitsType Units
-        {
-            get { return units ; }
-            set { units = value; }
-        }
+        static public linearUnitsType Units { get; set; }
 
     }
 }
