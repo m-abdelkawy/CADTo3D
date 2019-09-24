@@ -89,8 +89,8 @@ namespace IfcFileCreator
                                         IfcReinforcingBar bar = CreateIfcRebar(model, rebar, lvlDifference);
                                         building.AddElement(bar);
                                     }
-                                    int nStirrups = Convert.ToInt32((lvlDifference + (CADConfig.Units == linearUnitsType.Meters ? 1 : 1000)) / (rcCol.Spacing));
-                                    for (int j = 0; j < nStirrups - 1; j++)
+                                    int nstirrups = Convert.ToInt32((lvlDifference + (CADConfig.Units == linearUnitsType.Meters ? 1 : 1000)) / (rcCol.Spacing));
+                                    for (int j = 0; j < nstirrups - 1; j++)
                                     {
                                         IfcReinforcingBar stirrup = CreateIfcStirrup(model, rcCol.Stirrup, rcCol.Spacing);
                                         building.AddElement(stirrup);
@@ -264,10 +264,7 @@ namespace IfcFileCreator
                                         IfcReinforcingBar stirrup = CreateIfcStirrup(model, rcCol.Stirrup, rcCol.Spacing);
                                         building.AddElement(stirrup);
                                     }*/
-                                    //IfcReinforcingBar stirrup = CreateIfcStirrup(model, rcCol.stirrup, 0);
-                                    //IfcReinforcingBar stirrup2 = CreateIfcStirrup(model, rcCol.stirrup, 200);
-                                    //building.AddElement(stirrup);
-                                    //building.AddElement(stirrup2);
+                                   
                                     txn.Commit();
                                 }
                             }
@@ -1122,38 +1119,79 @@ namespace IfcFileCreator
 
         }
 
+        //private IfcReinforcingBar CreateIfcRebar(IfcStore model, Rebar rebar, double height)
+        //{
+        //    //rebar.LocationPt.X *= 1000;
+        //    //rebar.LocationPt.Y *= 1000;
+        //    //rebar.LocationPt.Z *= 1000;
+        //    //rebar.Diameter *= 1000;
+        //    rebar.LocationPt.Z += (CADConfig.Units == linearUnitsType.Meters ? 1 : 1000) + height;
+
+        //    Point3D endPoint = new Point3D(rebar.LocationPt.X, rebar.LocationPt.Y, rebar.LocationPt.Z - (CADConfig.Units == linearUnitsType.Meters ? 1 : 1000) - height);
+
+        //    //begin a transaction
+        //    //   using (var trans = model.BeginTransaction("Create column"))
+        //    //   {
+        //    IfcReinforcingBar rebarToCreate = model.Instances.New<IfcReinforcingBar>();
+        //    rebarToCreate.Name = "UC-Universal Rebar" + 1700;
+
+        //    //represent column as a rectangular profile
+        //    IfcCompositeCurveSegment segment = IFCHelper.CreateCurveSegment(model, rebar.LocationPt, endPoint);
+        //    List<IfcCompositeCurveSegment> segments = new List<IfcCompositeCurveSegment>
+        //        {
+        //            segment
+        //        };
+        //    IfcCompositeCurve compProf = IFCHelper.CreateCompositeProfile(model, segments);
+
+
+        //    //model as a swept disk solid 
+
+        //    IfcSweptDiskSolid body = IFCHelper.SweptDiskSolidCreate(model, compProf, rebar.Diameter / 2);
+
+
+        //    //Create a Definition shape to hold the geometry
+        //    IfcShapeRepresentation shape = IFCHelper.ShapeRepresentationCreate(model, "AdvancedSweptSolid", "Body");
+        //    shape.Items.Add(body);
+
+        //    //Create a Product Definition and add the model geometry to the wall
+        //    IfcProductDefinitionShape prDefShape = model.Instances.New<IfcProductDefinitionShape>();
+        //    prDefShape.Representations.Add(shape);
+        //    rebarToCreate.Representation = prDefShape;
+
+
+
+        //    //    trans.Commit();
+        //    return rebarToCreate;
+        //    // }
+
+        //}
+
         private IfcReinforcingBar CreateIfcRebar(IfcStore model, Rebar rebar, double height)
-        {
-            //rebar.LocationPt.X *= 1000;
-            //rebar.LocationPt.Y *= 1000;
-            //rebar.LocationPt.Z *= 1000;
-            //rebar.Diameter *= 1000;
-            rebar.LocationPt.Z += (CADConfig.Units == linearUnitsType.Meters ? 1 : 1000) + height;
-
-            Point3D endPoint = new Point3D(rebar.LocationPt.X, rebar.LocationPt.Y, rebar.LocationPt.Z - (CADConfig.Units == linearUnitsType.Meters ? 1 : 1000) - height);
-
-            //begin a transaction
-            //   using (var trans = model.BeginTransaction("Create column"))
-            //   {
+        { 
+            height += (CADConfig.Units == linearUnitsType.Meters ? 1 : 1000) ;
+            
             IfcReinforcingBar rebarToCreate = model.Instances.New<IfcReinforcingBar>();
             rebarToCreate.Name = "UC-Universal Rebar" + 1700;
 
             //represent column as a rectangular profile
-            IfcCompositeCurveSegment segment = IFCHelper.CreateCurveSegment(model, rebar.LocationPt, endPoint);
-            List<IfcCompositeCurveSegment> segments = new List<IfcCompositeCurveSegment>
-                {
-                    segment
-                };
-            IfcCompositeCurve compProf = IFCHelper.CreateCompositeProfile(model, segments);
+            IfcCircleProfileDef cirProf = IFCHelper.CircleProfileCreate(model, rebar.Diameter/2);
 
 
-            //model as a swept disk solid 
+            //Profile insertion point
+            cirProf.ProfileInsertionPointSet(model, 0, 0);
 
-            IfcSweptDiskSolid body = IFCHelper.SweptDiskSolidCreate(model, compProf, rebar.Diameter / 2);
+            //model as a swept area solid
+            IfcDirection extrusionDir = model.Instances.New<IfcDirection>();
+            extrusionDir.SetXYZ(0, 0, 1);
 
+            IfcExtrudedAreaSolid body = IFCHelper.ProfileSweptSolidCreate(model, height, cirProf, extrusionDir);
+
+
+            //parameters to insert the geometry in the model
+            body.BodyPlacementSet(model, 0, 0, 0);
 
             //Create a Definition shape to hold the geometry
-            IfcShapeRepresentation shape = IFCHelper.ShapeRepresentationCreate(model, "AdvancedSweptSolid", "Body");
+            IfcShapeRepresentation shape = IFCHelper.ShapeRepresentationCreate(model, "SweptSolid", "Body");
             shape.Items.Add(body);
 
             //Create a Product Definition and add the model geometry to the wall
@@ -1161,65 +1199,145 @@ namespace IfcFileCreator
             prDefShape.Representations.Add(shape);
             rebarToCreate.Representation = prDefShape;
 
+            //Create Local axes system and assign it to the column
+            IfcCartesianPoint location3D = model.Instances.New<IfcCartesianPoint>();
+            location3D.SetXYZ(rebar.LocationPt.X,rebar.LocationPt.Y,rebar.LocationPt.Z);
+             
+            IfcDirection localXDir = model.Instances.New<IfcDirection>();
+            localXDir.SetXYZ(1, 0, 0);
 
+            IfcDirection localZDir = model.Instances.New<IfcDirection>();
+            localZDir.SetXYZ(0, 0, 1);
 
-            //    trans.Commit();
+            IfcAxis2Placement3D ax3D = IFCHelper.LocalAxesSystemCreate(model, location3D, localXDir, localZDir);
+
+            //now place the wall into the model
+            IfcLocalPlacement lp = IFCHelper.LocalPlacemetCreate(model, ax3D);
+            rebarToCreate.ObjectPlacement = lp;
             return rebarToCreate;
             // }
 
         }
 
+        //private IfcReinforcingBar CreateIfcStirrup(IfcStore model, Stirrup stirrup, double zPosition)
+        //{
+        //    List<Line> lstBranchesNew = new List<Line>();
+        //    List<IfcCompositeCurveSegment> lstSegment = new List<IfcCompositeCurveSegment>();
+        //    IfcCompositeCurveSegment segment = null;
+        //    for (int i = 0; i < stirrup.LstBranch.Count; i++)
+        //    {
+
+
+        //        stirrup.LstBranch[i].StartPoint.Z += zPosition;
+        //        stirrup.LstBranch[i].EndPoint.Z += zPosition;
+
+
+        //        segment = IFCHelper.CreateCurveSegment(model, stirrup.LstBranch[i].StartPoint, stirrup.LstBranch[i].EndPoint);
+        //        lstSegment.Add(segment);
+        //    }
+        //    //stirrup.Diameter *= 1000;
+
+
+
+
+
+        //    //Point3D endPoint = new Point3D(stirrup.LocationPt.X, stirrup.LocationPt.Y, stirrup.LocationPt.Z - 1000 - height);
+
+        //    //begin a transaction
+        //    //   using (var trans = model.BeginTransaction("Create column"))
+        //    //   {
+        //    IfcReinforcingBar stirrupToCreate = model.Instances.New<IfcReinforcingBar>();
+        //    stirrupToCreate.Name = "UC-Universal Rebar" + 1700;
+
+        //    //represent column as a rectangular profile
+
+        //    IfcCompositeCurve compProf = IFCHelper.CreateCompositeProfile(model, lstSegment);
+
+
+        //    //model as a swept disk solid 
+
+        //    IfcSweptDiskSolid body = IFCHelper.SweptDiskSolidCreate(model, compProf, stirrup.Diameter / 2);
+
+
+        //    //Create a Definition shape to hold the geometry
+        //    IfcShapeRepresentation shape = IFCHelper.ShapeRepresentationCreate(model, "AdvancedSweptSolid", "Body");
+        //    shape.Items.Add(body);
+
+        //    //Create a Product Definition and add the model geometry to the wall
+        //    IfcProductDefinitionShape prDefShape = model.Instances.New<IfcProductDefinitionShape>();
+        //    prDefShape.Representations.Add(shape);
+        //    stirrupToCreate.Representation = prDefShape;
+
+
+
+        //    //    trans.Commit();
+        //    return stirrupToCreate;
+        //    // }
+
+        //}
+
         private IfcReinforcingBar CreateIfcStirrup(IfcStore model, Stirrup stirrup, double zPosition)
         {
-            List<Line> lstBranchesNew = new List<Line>();
-            List<IfcCompositeCurveSegment> lstSegment = new List<IfcCompositeCurveSegment>();
-            IfcCompositeCurveSegment segment = null;
+            List<IfcRepresentationItem> lstItems = new List<IfcRepresentationItem>();
+            IfcExtrudedAreaSolid body = null;
+
             for (int i = 0; i < stirrup.LstBranch.Count; i++)
             {
 
 
                 stirrup.LstBranch[i].StartPoint.Z += zPosition;
                 stirrup.LstBranch[i].EndPoint.Z += zPosition;
+                
+
+                //represent column as a rectangular profile
+                IfcCircleProfileDef cirProf = IFCHelper.CircleProfileCreate(model, stirrup.Diameter / 2);
+                var uv = MathHelper.UnitVector3DFromPt1ToPt2(stirrup.LstBranch[i].StartPoint, stirrup.LstBranch[i].EndPoint);
+                
+                
+                //Profile insertion point
+                cirProf.ProfileInsertionPointSet(model, 0, 0);
+
+                //model as a swept area solid
+                IfcDirection extrusionDir = model.Instances.New<IfcDirection>();
+                extrusionDir.SetXYZ(uv.X, uv.Y, uv.Z);
+
+                var barLength = MathHelper.CalcDistanceBetweenTwoPoint3D(stirrup.LstBranch[i].StartPoint, stirrup.LstBranch[i].EndPoint);
+
+                 body = IFCHelper.ProfileSweptSolidCreate(model, barLength, cirProf, extrusionDir);
 
 
-                segment = IFCHelper.CreateCurveSegment(model, stirrup.LstBranch[i].StartPoint, stirrup.LstBranch[i].EndPoint);
-                lstSegment.Add(segment);
+                //parameters to insert the geometry in the model
+                body.BodyPlacementSet(model, stirrup.LstBranch[i].StartPoint.X, stirrup.LstBranch[i].StartPoint.Y, stirrup.LstBranch[i].StartPoint.Z);
+                lstItems.Add(body);
             }
-            //stirrup.Diameter *= 1000;
 
-
-
-
-
-            //Point3D endPoint = new Point3D(stirrup.LocationPt.X, stirrup.LocationPt.Y, stirrup.LocationPt.Z - 1000 - height);
-
-            //begin a transaction
-            //   using (var trans = model.BeginTransaction("Create column"))
-            //   {
             IfcReinforcingBar stirrupToCreate = model.Instances.New<IfcReinforcingBar>();
-            stirrupToCreate.Name = "UC-Universal Rebar" + 1700;
-
-            //represent column as a rectangular profile
-
-            IfcCompositeCurve compProf = IFCHelper.CreateCompositeProfile(model, lstSegment);
-
-
-            //model as a swept disk solid 
-
-            IfcSweptDiskSolid body = IFCHelper.SweptDiskSolidCreate(model, compProf, stirrup.Diameter / 2);
-
+            stirrupToCreate.Name = "UC-Universal Rebar" + random.Next(1000);
 
             //Create a Definition shape to hold the geometry
-            IfcShapeRepresentation shape = IFCHelper.ShapeRepresentationCreate(model, "AdvancedSweptSolid", "Body");
-            shape.Items.Add(body);
+            IfcShapeRepresentation shape = IFCHelper.ShapeRepresentationCreate(model, "SweptSolid", "Body");
+            shape.Items.AddRange(lstItems);
 
             //Create a Product Definition and add the model geometry to the wall
             IfcProductDefinitionShape prDefShape = model.Instances.New<IfcProductDefinitionShape>();
             prDefShape.Representations.Add(shape);
             stirrupToCreate.Representation = prDefShape;
 
+            //Create Local axes system and assign it to the column
+            IfcCartesianPoint location3D = model.Instances.New<IfcCartesianPoint>();
+            location3D.SetXYZ(0,0,0);
 
+            IfcDirection localXDir = model.Instances.New<IfcDirection>();
+            localXDir.SetXYZ(1, 0, 0);
 
+            IfcDirection localZDir = model.Instances.New<IfcDirection>();
+            localZDir.SetXYZ(0, 0, 1);
+
+            IfcAxis2Placement3D ax3D = IFCHelper.LocalAxesSystemCreate(model, location3D, localXDir, localZDir);
+
+            //now place the wall into the model
+            IfcLocalPlacement lp = IFCHelper.LocalPlacemetCreate(model, ax3D);
+            stirrupToCreate.ObjectPlacement = lp;
             //    trans.Commit();
             return stirrupToCreate;
             // }
@@ -1227,11 +1345,11 @@ namespace IfcFileCreator
         }
 
 
-        /// <summary>
-        /// Add some properties to the wall,
-        /// </summary>
-        /// <param name="model">XbimModel</param>
-        /// <param name="wall"></param>
+
+
+
+
+
         private void AddPropertiesToWall(IfcStore model, IfcWallStandardCase wall)
         {
             using (var txn = model.BeginTransaction("Create Wall"))
