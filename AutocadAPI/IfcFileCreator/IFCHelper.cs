@@ -28,6 +28,14 @@ namespace IfcFileCreator
 
             return rectProf;
         }
+        internal static IfcCircleProfileDef CircleProfileCreate(IfcStore model, double radius)
+        {
+            IfcCircleProfileDef cirProf = model.Instances.New<IfcCircleProfileDef>();
+            cirProf.ProfileType = IfcProfileTypeEnum.AREA;
+            cirProf.Radius = radius; 
+
+            return cirProf;
+        }
 
         internal static IfcArbitraryClosedProfileDef ArbitraryClosedProfileCreate(IfcStore model, List<Point3D> lstPoints)
         {
@@ -53,8 +61,14 @@ namespace IfcFileCreator
             rectProf.Position = model.Instances.New<IfcAxis2Placement2D>();
             rectProf.Position.Location = insertionPoint;
         }
-
-        internal static void ProfileInsertionPointSet(this IfcParameterizedProfileDef prof, IfcStore model, IfcCartesianPoint insertionPt)
+        internal static void ProfileInsertionPointSet(this IfcCircleProfileDef cirProf, IfcStore model, double x, double y)
+        {
+            IfcCartesianPoint insertionPoint = model.Instances.New<IfcCartesianPoint>();
+            insertionPoint.SetXY(x, y);
+            cirProf.Position = model.Instances.New<IfcAxis2Placement2D>();
+            cirProf.Position.Location = insertionPoint;
+        }
+        public static void ProfileInsertionPointSet(this IfcParameterizedProfileDef prof, IfcStore model, IfcCartesianPoint insertionPt)
         {
             IfcCartesianPoint insertionPoint = model.Instances.New<IfcCartesianPoint>();
             insertionPoint.SetXYZ(insertionPt.X, insertionPt.Y, insertionPt.Z);
@@ -72,13 +86,21 @@ namespace IfcFileCreator
             return body;
         }
 
-        internal static void BodyPlacementSet(this IfcExtrudedAreaSolid areaSolidBody, IfcStore model, double x, double y, double z = 0)
+        internal static void BodyPlacementSet(this IfcExtrudedAreaSolid areaSolidBody, IfcStore model, double x, double y, double z = 0, Vector3D uv = null)
         {
             areaSolidBody.Position = model.Instances.New<IfcAxis2Placement3D>();
             IfcCartesianPoint location = model.Instances.New<IfcCartesianPoint>();
             location.SetXYZ(x, y, z);
             areaSolidBody.Position.Location = location;
+
+            if (uv != null)
+            {
+                IfcDirection dir = model.Instances.New<IfcDirection>();
+                dir.SetXYZ(uv.X, uv.Y, uv.Z);
+                areaSolidBody.Position.RefDirection = dir;
+            }
         }
+
 
         internal static void BodyPlacementSet(this IfcExtrudedAreaSolid areaSolidBody, IfcStore model, IfcCartesianPoint insertionPt)
         {

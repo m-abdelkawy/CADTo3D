@@ -197,6 +197,7 @@
         <button onclick="Reset()" class="btn btn-dark">Reset</button>
         <button onclick="ColorElement()" class="btn btn-dark">Override Color</button>
         <button onclick="ResetColor()" class="btn btn-dark">Reset Colors</button> 
+        <button onclick="Recolour()" class="btn btn-dark">Recolour by type</button>
     </div>
     <div style="position: absolute; right: 5px; bottom: 30px; padding: 5px;" id="toolbar" class="ui-widget-header ui-corner-all">
         <span style="color:white">Pick Color</span>
@@ -340,6 +341,22 @@
 
         viewer.start();
 
+        var Recolour = function () {
+            debugger;
+            if (!viewer) return;
+            var index = 0;
+            for (var i in xProductType) {
+                var type = xProductType[i];
+                var colour = [Math.random() * 255, Math.random() * 255, Math.random() * 255, 255];
+                viewer.defineStyle(index, colour);
+                viewer.setStyle(index, type);
+                index++;
+            }
+        };
+
+        viewer.on('loaded', function () {
+            Recolour();
+        });
 
         var HideElement = function () {
             if (id == null) return; 
