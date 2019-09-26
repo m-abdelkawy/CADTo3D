@@ -70,6 +70,7 @@ namespace CADReader.BuildingElements
                 widthMidPt.Z = level;
 
                 Openings.Add(new Opening(width, length, center, widthMidPt));
+                // 
             }
         }
 

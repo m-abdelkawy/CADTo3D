@@ -30,10 +30,10 @@ namespace BIMWebViewer
             }
             set { _products = value; }
         }
-        public static List<ProductCategory> Categories { get; set; }
+        public static List<ProductCategory> Categories { get; set; } = new List<ProductCategory>();
         public static List<IIfcRelDefinesByType> ModelTypes { get; set; }
-        public static Dictionary<int, List<Xbim.Ifc2x3.Kernel.IfcPropertySet>> propertySets2x3 { get; set; }
-        public static Dictionary<int, List<IIfcPropertySet>> propertySetsx4 { get; set; }
+        public static Dictionary<int, List<Xbim.Ifc2x3.Kernel.IfcPropertySet>> propertySets2x3 { get; set; } = new Dictionary<int, List<Xbim.Ifc2x3.Kernel.IfcPropertySet>>();
+        public static Dictionary<int, List<IIfcPropertySet>> propertySetsx4 { get; set; } = new Dictionary<int, List<IIfcPropertySet>>();
 
 
         public static IfcStore Model { get; set; }
@@ -50,7 +50,7 @@ namespace BIMWebViewer
                     context.CreateContext();
                     Model = model;
                     Products = GetProducts();
-                    ModelTypes= Model.Instances.OfType<IIfcRelDefinesByType>().ToList();
+                    ModelTypes = Model.Instances.OfType<IIfcRelDefinesByType>().ToList();
                     Categories = GetCategories();
                     if (model.IfcSchemaVersion == Xbim.Common.Step21.IfcSchemaVersion.Ifc4)
                         propertySetsx4 = GetPropertySets();
@@ -76,7 +76,6 @@ namespace BIMWebViewer
             }
             return wexBimFilename;
         }
-
         private static Dictionary<int, List<IIfcPropertySet>> GetPropertySets()
         {
             Dictionary<int, List<IIfcPropertySet>> propSets = new Dictionary<int, List<IIfcPropertySet>>();
@@ -124,10 +123,9 @@ namespace BIMWebViewer
             }
             return Products;
         }
-
         private static List<ProductCategory> GetCategories()
         {
-            List<IIfcRelDefinesByType> ifcRelDefinesByTypes = Model.Instances.OfType<IIfcRelDefinesByType>().ToList(); 
+            List<IIfcRelDefinesByType> ifcRelDefinesByTypes = Model.Instances.OfType<IIfcRelDefinesByType>().ToList();
             List<ProductCategory> Categories = new List<ProductCategory>();
 
             List<string> list = Products.Select(a => a.GetType().Name).ToList();
@@ -194,6 +192,22 @@ namespace BIMWebViewer
                 }
             }
             return Categories;
+        }
+
+        public static void CreateTree(string path)
+        {
+            string fileName = path;
+            using (var model = IfcStore.Open(fileName))
+            {
+                Model = model;
+                Products = GetProducts();
+                ModelTypes = Model.Instances.OfType<IIfcRelDefinesByType>().ToList();
+                Categories = GetCategories();
+                if (model.IfcSchemaVersion == Xbim.Common.Step21.IfcSchemaVersion.Ifc4)
+                    propertySetsx4 = GetPropertySets();
+                else
+                    propertySets2x3 = GetPropertySets2x3();
+            }
         }
 
 

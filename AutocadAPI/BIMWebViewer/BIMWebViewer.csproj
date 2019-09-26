@@ -476,14 +476,12 @@
     <Content Include="Content\Site.css" />
     <Content Include="Images\accent.png" />
     <Content Include="Images\bg-01.jpg" />
-    <Content Include="Images\BTL.png" />
     <Content Include="Images\Building A.png" />
     <Content Include="Images\Building B.png" />
     <Content Include="Images\bullet.png" />
     <Content Include="Images\cube_texture.png" />
     <Content Include="Images\heroAccent.png" />
     <Content Include="Images\icons\favicon.ico" />
-    <Content Include="Images\logo.png" />
     <Content Include="Images\orderedList0.png" />
     <Content Include="Images\orderedList1.png" />
     <Content Include="Images\orderedList2.png" />
