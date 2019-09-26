@@ -85,9 +85,9 @@ namespace BIMWebViewer.Controllers
         public ActionResult PreviewModel(string versionPath)
         {
             Building building = new Building("Building A");
-            building.AddNewFloor(@"D:\03_PROJECT PREPERATION\04_Drawings\CAD Template\03.Ground Roof Slab.dwg", 3);
-            building.AddNewFloor(@"D:\03_PROJECT PREPERATION\04_Drawings\CAD Template\02.Basement Roof SLab.dwg", 0);
-            building.AddBuildingFoundation(@"D:\03_PROJECT PREPERATION\04_Drawings\CAD Template\01.Foundation.dwg", -4);
+            building.AddNewFloor(@"E:\Work\CAD Template\03.Ground Roof Slab.dwg", 3);
+            building.AddNewFloor(@"E:\Work\CAD Template\02.Basement Roof SLab.dwg", 0);
+            building.AddBuildingFoundation(@"E:\Work\CAD Template\01.Foundation.dwg", -4);
 
             XbimCreateBuilding newBuilding = new XbimCreateBuilding(building,versionPath);
            // devDept.Eyeshot.Translators.ReadAutodesk.OnApplicationExit(null, null);

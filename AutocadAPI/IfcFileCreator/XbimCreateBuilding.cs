@@ -1294,14 +1294,15 @@ namespace IfcFileCreator
                 var uv = MathHelper.UnitVector3DFromPt1ToPt2(stirrup.LstBranch[i].StartPoint, stirrup.LstBranch[i].EndPoint);
 
                 var xxx = model.Instances.New<IfcAxis2Placement3D>();
-                cirProf.Position.RefDirection.;
+                //cirProf.Position.RefDirection.;
 
                 //Profile insertion point
                 cirProf.ProfileInsertionPointSet(model, 0, 0);
 
                 //model as a swept area solid
                 IfcDirection extrusionDir = model.Instances.New<IfcDirection>();
-                extrusionDir.SetXYZ(uv.X, uv.Y, uv.Z);
+                //extrusionDir.SetXYZ(uv.X, uv.Y, uv.Z);
+                extrusionDir.SetXYZ(0,0,1);
 
                 var barLength = MathHelper.CalcDistanceBetweenTwoPoint3D(stirrup.LstBranch[i].StartPoint, stirrup.LstBranch[i].EndPoint);
 
@@ -1310,6 +1311,15 @@ namespace IfcFileCreator
 
                 //parameters to insert the geometry in the model
                 body.BodyPlacementSet(model, stirrup.LstBranch[i].StartPoint.X, stirrup.LstBranch[i].StartPoint.Y, stirrup.LstBranch[i].StartPoint.Z);
+                IfcDirection zDir = model.Instances.New<IfcDirection>();
+                zDir.SetXYZ(uv.X, uv.Y, uv.Z);
+                IfcDirection xdir = model.Instances.New<IfcDirection>();
+                Vector3D uvPerp = MathHelper.UVPerpendicularToLine2DFromPt(new Line(stirrup.LstBranch[i].StartPoint, stirrup.LstBranch[i].EndPoint)
+                    , stirrup.LstBranch[i].StartPoint);
+                xdir.SetXYZ(uvPerp.X, uvPerp.Y, uvPerp.Z);
+                body.Position.RefDirection = xdir;
+
+                body.Position.Axis = zDir;
                 lstItems.Add(body);
             }
 
