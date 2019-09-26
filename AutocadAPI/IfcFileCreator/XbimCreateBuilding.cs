@@ -84,18 +84,21 @@ namespace IfcFileCreator
                                 {
                                     building.AddElement(column);
                                     //rebarStopAndOperate
-                                    foreach (var rebar in rcCol.LstRebar)
+                                    if (i == lstSortedFloors.Count-1)
                                     {
-                                        IfcReinforcingBar bar = CreateIfcRebar(model, rebar, lvlDifference);
-                                        building.AddElement(bar);
-                                    }
-                                    int nstirrups = Convert.ToInt32((lvlDifference + (CADConfig.Units == linearUnitsType.Meters ? 1 : 1000)) / (rcCol.Spacing));
-                                    for (int j = 0; j < nstirrups - 1; j++)
-                                    {
-                                        IfcReinforcingBar stirrup = CreateIfcStirrup(model, rcCol.Stirrup, rcCol.Spacing);
-                                        building.AddElement(stirrup);
-                                    }
+                                        foreach (var rebar in rcCol.LstRebar)
+                                        {
+                                            IfcReinforcingBar bar = CreateIfcRebar(model, rebar, lvlDifference);
+                                            building.AddElement(bar);
+                                        }
+                                        int nstirrups = Convert.ToInt32((lvlDifference + (CADConfig.Units == linearUnitsType.Meters ? 1 : 1000)) / (rcCol.Spacing));
+                                        for (int j = 0; j < nstirrups - 1; j++)
+                                        {
+                                            IfcReinforcingBar stirrup = CreateIfcStirrup(model, rcCol.Stirrup, rcCol.Spacing);
+                                            building.AddElement(stirrup);
+                                        }
 
+                                    }
                                     txn.Commit();
                                 }
                             }
@@ -579,7 +582,7 @@ namespace IfcFileCreator
 
         private IfcColumn CreateIfcShearWall(IfcStore model, ShearWall cadShearWall, double height)
         {
-
+            
             //begin a transaction
             using (var trans = model.BeginTransaction("Create Shear Wall"))
             {
@@ -845,7 +848,6 @@ namespace IfcFileCreator
             }
 
         }
-
 
         private IfcOpeningElement CreateIfcOpening(IfcStore model, Opening cadOpening, double thickness)
         {
@@ -1278,8 +1280,7 @@ namespace IfcFileCreator
 
         private IfcReinforcingBar CreateIfcStirrup(IfcStore model, Stirrup stirrup, double zPosition)
         {
-            List<IfcRepresentationItem> lstItems = new List<IfcRepresentationItem>();
-            IfcExtrudedAreaSolid body = null;
+            List<Point3D> lstPt = new List<Point3D>(); 
 
             for (int i = 0; i < stirrup.LstBranch.Count; i++)
             {
@@ -1288,37 +1289,25 @@ namespace IfcFileCreator
                 stirrup.LstBranch[i].StartPoint.Z += zPosition;
                 stirrup.LstBranch[i].EndPoint.Z += zPosition;
 
-
-                //represent column as a rectangular profile
-                IfcCircleProfileDef cirProf = IFCHelper.CircleProfileCreate(model, stirrup.Diameter / 2);
-                var uv = MathHelper.UnitVector3DFromPt1ToPt2(stirrup.LstBranch[i].StartPoint, stirrup.LstBranch[i].EndPoint);
-
-                var xxx = model.Instances.New<IfcAxis2Placement3D>();
-                cirProf.Position.RefDirection.;
-
-                //Profile insertion point
-                cirProf.ProfileInsertionPointSet(model, 0, 0);
-
-                //model as a swept area solid
-                IfcDirection extrusionDir = model.Instances.New<IfcDirection>();
-                extrusionDir.SetXYZ(uv.X, uv.Y, uv.Z);
-
-                var barLength = MathHelper.CalcDistanceBetweenTwoPoint3D(stirrup.LstBranch[i].StartPoint, stirrup.LstBranch[i].EndPoint);
-
-                body = IFCHelper.ProfileSweptSolidCreate(model, barLength, cirProf, extrusionDir);
-
-
-                //parameters to insert the geometry in the model
-                body.BodyPlacementSet(model, stirrup.LstBranch[i].StartPoint.X, stirrup.LstBranch[i].StartPoint.Y, stirrup.LstBranch[i].StartPoint.Z);
-                lstItems.Add(body);
+                lstPt.Add(stirrup.LstBranch[i].StartPoint);
+                lstPt.Add(stirrup.LstBranch[i].EndPoint);
             }
 
+            lstPt = lstPt.Distinct().ToList() ;
+            lstPt.Add(lstPt[0]);
             IfcReinforcingBar stirrupToCreate = model.Instances.New<IfcReinforcingBar>();
             stirrupToCreate.Name = "UC-Universal Rebar" + random.Next(1000);
 
+            IfcCircleProfileDef cirProf = IFCHelper.CircleProfileCreate(model, stirrup.Diameter / 2);
+            //Profile insertion point
+            cirProf.ProfileInsertionPointSet(model, 0, 0);
+
+            IfcSurfaceCurveSweptAreaSolid body = IFCHelper.ProfileSurfaceSweptSolidCreate(model,cirProf,lstPt);
+            //parameters to insert the geometry in the model
+
             //Create a Definition shape to hold the geometry
             IfcShapeRepresentation shape = IFCHelper.ShapeRepresentationCreate(model, "SweptSolid", "Body");
-            shape.Items.AddRange(lstItems);
+            shape.Items.Add(body);
 
             //Create a Product Definition and add the model geometry to the wall
             IfcProductDefinitionShape prDefShape = model.Instances.New<IfcProductDefinitionShape>();
@@ -1326,32 +1315,26 @@ namespace IfcFileCreator
             stirrupToCreate.Representation = prDefShape;
 
             //Create Local axes system and assign it to the column
-            IfcCartesianPoint location3D = model.Instances.New<IfcCartesianPoint>();
-            location3D.SetXYZ(0, 0, 0);
+            //IfcCartesianPoint location3D = model.Instances.New<IfcCartesianPoint>();
+            //location3D.SetXYZ(0, 0, 0);
 
-            IfcDirection localXDir = model.Instances.New<IfcDirection>();
-            localXDir.SetXYZ(1, 0, 0);
+            //IfcDirection localXDir = model.Instances.New<IfcDirection>();
+            //localXDir.SetXYZ(1, 0, 0);
 
-            IfcDirection localZDir = model.Instances.New<IfcDirection>();
-            localZDir.SetXYZ(0, 0, 1);
+            //IfcDirection localZDir = model.Instances.New<IfcDirection>();
+            //localZDir.SetXYZ(0, 0, 1);
 
-            IfcAxis2Placement3D ax3D = IFCHelper.LocalAxesSystemCreate(model, location3D, localXDir, localZDir);
+            //IfcAxis2Placement3D ax3D = IFCHelper.LocalAxesSystemCreate(model, location3D, localXDir, localZDir);
 
-            //now place the wall into the model
-            IfcLocalPlacement lp = IFCHelper.LocalPlacemetCreate(model, ax3D);
-            stirrupToCreate.ObjectPlacement = lp;
+            ////now place the wall into the model
+            //IfcLocalPlacement lp = IFCHelper.LocalPlacemetCreate(model, ax3D);
+            //stirrupToCreate.ObjectPlacement = lp;
             //    trans.Commit();
             return stirrupToCreate;
             // }
 
         }
-
-
-
-
-
-
-
+        
         private void AddPropertiesToWall(IfcStore model, IfcWallStandardCase wall)
         {
             using (var txn = model.BeginTransaction("Create Wall"))

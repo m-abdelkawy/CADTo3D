@@ -40,19 +40,18 @@ namespace BIMWebViewer.Controllers
         public ActionResult Viewer()
         {
             var filePath = "";
-             
-                filePath = TempData["wexbimFilePath"].ToString();
-                //// file = TempData["wexbimFilePath"].ToString();
-                ViewBag.FilePath = filePath;
-                ViewBag.IFCFilePath = TempData["IFCFilePath"].ToString();
-                ViewBag.VersionName = TempData["VersionName"].ToString();
-                if (TempData["ViewPoints"] != null)
-                    ViewBag.ViewPoints = TempData["ViewPoints"];
-            
+
+            filePath = TempData["wexbimFilePath"].ToString();
+            //// file = TempData["wexbimFilePath"].ToString();
+            ViewBag.FilePath = filePath; 
+            ViewBag.VersionName = TempData["VersionName"].ToString();
+            if (TempData["ViewPoints"] != null)
+                ViewBag.ViewPoints = TempData["ViewPoints"];
+
             List<ProductCategory> categories = IFCConverter.Categories;
             return View(categories);
         }
- 
+
 
         public ActionResult ViewerLoad(string FileName)
         {
@@ -66,7 +65,7 @@ namespace BIMWebViewer.Controllers
 
         [HttpPost]
         public ActionResult GetProperties(int productId)
-        { 
+        {
             if (IFCConverter.propertySetsx4 != null)
             {
                 if (IFCConverter.propertySetsx4.ContainsKey(productId))
@@ -89,22 +88,35 @@ namespace BIMWebViewer.Controllers
             building.AddNewFloor(@"D:\03_PROJECT PREPERATION\04_Drawings\CAD Template\02.Basement Roof SLab.dwg", 0);
             building.AddBuildingFoundation(@"D:\03_PROJECT PREPERATION\04_Drawings\CAD Template\01.Foundation.dwg", -4);
 
-            XbimCreateBuilding newBuilding = new XbimCreateBuilding(building,versionPath);
-           // devDept.Eyeshot.Translators.ReadAutodesk.OnApplicationExit(null, null);
+            XbimCreateBuilding newBuilding = new XbimCreateBuilding(building, versionPath);
+            // devDept.Eyeshot.Translators.ReadAutodesk.OnApplicationExit(null, null);
 
 
 
             List<string> files = Directory.GetFiles(versionPath).ToList();
-           // string wexFile = files.Where(a => Path.GetExtension(a) == ".wexBIM").FirstOrDefault();
+            // string wexFile = files.Where(a => Path.GetExtension(a) == ".wexBIM").FirstOrDefault();
             string IFCFile = files.Where(a => Path.GetExtension(a) == ".ifc").FirstOrDefault();
-
+            string wexFile = files.Where(a => Path.GetExtension(a) == ".wexBIM").FirstOrDefault();
             var verName = Path.GetFileName(versionPath);
             var proName = Path.GetFileName(Path.GetDirectoryName(versionPath));
             FileStruc.CurrentVersion = versionPath;
-            var newPath = IFCConverter.ToWexBIM(IFCFile);
-            TempData["wexbimFilePath"] = newPath;
-            TempData["IFCFilePath"] = IFCFile;
+
             TempData["VersionName"] = proName + "/" + verName;
+
+            if (wexFile != null)
+            {
+                TempData["wexbimFilePath"] = wexFile;
+                IFCConverter.CreateTree(IFCFile);
+                RedirectToAction("Viewer");
+            }
+            else
+            {
+                var newPath = IFCConverter.ToWexBIM(IFCFile);
+                TempData["wexbimFilePath"] = newPath;
+                TempData["IFCFilePath"] = IFCFile;
+
+            }
+
             RedirectToAction("Viewer");
 
             return RedirectToAction("Viewer");
@@ -160,7 +172,7 @@ namespace BIMWebViewer.Controllers
             IIfcRelDefinesByType relType = IFCConverter.ModelTypes.Where(t => t.RelatingType.EntityLabel == TypeId).FirstOrDefault();
             List<int> productIds = new List<int>();
             if (relType != null)
-                  productIds = relType.RelatedObjects.Select(a => a.EntityLabel).ToList();
+                productIds = relType.RelatedObjects.Select(a => a.EntityLabel).ToList();
             JsonResult result = new JsonResult();
             var jsonData = new { ProductIdList = productIds };
             var serializerSettings = new JsonSerializerSettings { PreserveReferencesHandling = PreserveReferencesHandling.Objects };
@@ -183,7 +195,7 @@ namespace BIMWebViewer.Controllers
                 string typeName = relType.RelatingType.Name.ToString();
                 return typeName;
             }
-              
+
         }
     }
 }
