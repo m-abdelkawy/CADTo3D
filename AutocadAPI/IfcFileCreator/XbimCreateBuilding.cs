@@ -1346,9 +1346,9 @@ namespace IfcFileCreator
 
         private void CreateSimpleProperty(IfcStore model, IfcWallStandardCase wall)
         {
-            var ifcPropertySingleValue = model.Instances.New<IfcPropertySingleValue>(psv =>
+            var Time = model.Instances.New<IfcPropertySingleValue>(psv =>
             {
-                psv.Name = "IfcPropertySingleValue:Time";
+                psv.Name = "Time";
                 psv.Description = "";
                 psv.NominalValue = new IfcTimeMeasure(150.0);
                 psv.Unit = model.Instances.New<IfcSIUnit>(siu =>
@@ -1357,14 +1357,37 @@ namespace IfcFileCreator
                     siu.Name = IfcSIUnitName.SECOND;
                 });
             });
+            var Sound = model.Instances.New<IfcPropertySingleValue>(psv =>
+            {
+                psv.Name = "Sound";
+                psv.Description = "";
+                psv.NominalValue = new IfcTimeMeasure(150.0);
+                psv.Unit = model.Instances.New<IfcSIUnit>(siu =>
+                {
+                    siu.UnitType = IfcUnitEnum.LENGTHUNIT;
+                    siu.Name = IfcSIUnitName.METRE;
+                });
+            });
 
-
+            var Material = model.Instances.New<IfcPropertySingleValue>(psv =>
+            {
+                psv.Name = "Material";
+                psv.Description = "";
+                psv.NominalValue = new IfcLabel("Concrete");
+                psv.Unit = model.Instances.New<IfcSIUnit>(siu =>
+                {
+                    siu.UnitType = IfcUnitEnum.LENGTHUNIT;
+                    siu.Name = IfcSIUnitName.METRE;
+                });
+            });
             //lets create the IfcElementQuantity
             var ifcPropertySet = model.Instances.New<IfcPropertySet>(ps =>
             {
-                ps.Name = "Test:IfcPropertySet";
+                ps.Name = "Element Property";
                 ps.Description = "Property Set";
-                ps.HasProperties.Add(ifcPropertySingleValue);
+                ps.HasProperties.Add(Time);
+                ps.HasProperties.Add(Material);
+                ps.HasProperties.Add(Sound);
             });
 
             //need to create the relationship
