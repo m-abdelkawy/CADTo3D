@@ -934,7 +934,7 @@ namespace IfcFileCreator
             using (var trans = model.BeginTransaction("Create Stair"))
             {
                 IfcStair stairToCreate = model.Instances.New<IfcStair>();
-                stairToCreate.Name = " stair - Wall:UC305x305x97:" + 1500;
+                stairToCreate.Name = " Stair :UC305x305x97:" + random.Next(10000);
 
 
                 IfcDirection extrusionDir = model.Instances.New<IfcDirection>();
@@ -953,41 +953,37 @@ namespace IfcFileCreator
 
                     shape.Items.Add(body);
                 }
-
-
-
-
-
-
+                
 
                 //Create a Product Definition and add the model geometry to the wall
                 IfcProductDefinitionShape prDefShape = model.Instances.New<IfcProductDefinitionShape>();
                 prDefShape.Representations.Add(shape);
 
                 IfcStairFlight flight = model.Instances.New<IfcStairFlight>();
+                flight.Name = " Stair :Flight:" + random.Next(10000);
                 flight.Representation = prDefShape;
 
                 IfcRelAggregates relAggregate = model.Instances.New<IfcRelAggregates>();
                 relAggregate.RelatingObject = stairToCreate;
                 relAggregate.RelatedObjects.Add(flight);
 
-                //Create Local axes system and assign it to the column
-                IfcCartesianPoint location3D = model.Instances.New<IfcCartesianPoint>();
-                location3D.SetXYZ(0, 0, 0);
+                ////Create Local axes system and assign it to the column
+                //IfcCartesianPoint location3D = model.Instances.New<IfcCartesianPoint>();
+                //location3D.SetXYZ(0, 0, 0);
 
-                //var uvColLongDir = MathHelper.UnitVectorPtFromPt1ToPt2(cadSlab.CenterPt, cadSlab.PtLengthDir);
+                ////var uvColLongDir = MathHelper.UnitVectorPtFromPt1ToPt2(cadSlab.CenterPt, cadSlab.PtLengthDir);
 
-                IfcDirection localXDir = model.Instances.New<IfcDirection>();
-                localXDir.SetXYZ(1, 0, 0);
+                //IfcDirection localXDir = model.Instances.New<IfcDirection>();
+                //localXDir.SetXYZ(1, 0, 0);
 
-                IfcDirection localZDir = model.Instances.New<IfcDirection>();
-                localZDir.SetXYZ(0, 0, 1);
+                //IfcDirection localZDir = model.Instances.New<IfcDirection>();
+                //localZDir.SetXYZ(0, 0, 1);
 
-                IfcAxis2Placement3D ax3D = IFCHelper.LocalAxesSystemCreate(model, location3D, localXDir, localZDir);
+                //IfcAxis2Placement3D ax3D = IFCHelper.LocalAxesSystemCreate(model, location3D, localXDir, localZDir);
 
-                //now place the slab into the model
-                IfcLocalPlacement lp = IFCHelper.LocalPlacemetCreate(model, ax3D);
-                flight.ObjectPlacement = lp;
+                ////now place the slab into the model
+                //IfcLocalPlacement lp = IFCHelper.LocalPlacemetCreate(model, ax3D);
+                //flight.ObjectPlacement = lp;
 
                 trans.Commit();
                 return stairToCreate;
@@ -1003,7 +999,7 @@ namespace IfcFileCreator
             {
 
                 IfcSlab landing = model.Instances.New<IfcSlab>();
-
+                landing.Name = " Landing :UC305x305x97:" + random.Next(10000);
 
                 IfcDirection extrusionDir = model.Instances.New<IfcDirection>();
                 extrusionDir.SetXYZ(0, 0, -1);
@@ -1067,7 +1063,7 @@ namespace IfcFileCreator
             using (var trans = model.BeginTransaction("Create column"))
             {
                 IfcColumn colToCreate = model.Instances.New<IfcColumn>();
-                colToCreate.Name = "UC-Universal Columns-Column:UC305x305x97:" + 1600;
+                colToCreate.Name = "UC-Universal Columns-Column:UC305x305x97:" + random.Next(10000);
 
                 //represent column as a rectangular profile
                 IfcRectangleProfileDef rectProf = IFCHelper.RectProfileCreate(model, length, width);
@@ -1173,7 +1169,7 @@ namespace IfcFileCreator
             height += (CADConfig.Units == linearUnitsType.Meters ? 1 : 1000);
 
             IfcReinforcingBar rebarToCreate = model.Instances.New<IfcReinforcingBar>();
-            rebarToCreate.Name = "UC-Universal Rebar" + 1700;
+            rebarToCreate.Name = "Rebar:UC305x305x97:" + random.Next(100000);
 
             //represent column as a rectangular profile
             IfcCircleProfileDef cirProf = IFCHelper.CircleProfileCreate(model, rebar.Diameter / 2);
@@ -1296,7 +1292,7 @@ namespace IfcFileCreator
             lstPt = lstPt.Distinct().ToList() ;
             lstPt.Add(lstPt[0]);
             IfcReinforcingBar stirrupToCreate = model.Instances.New<IfcReinforcingBar>();
-            stirrupToCreate.Name = "UC-Universal Rebar" + random.Next(1000);
+            stirrupToCreate.Name = "Rebar:UC305x305x97:" + random.Next(100000);
 
             IfcCircleProfileDef cirProf = IFCHelper.CircleProfileCreate(model, stirrup.Diameter / 2);
             //Profile insertion point
@@ -1346,9 +1342,9 @@ namespace IfcFileCreator
 
         private void CreateSimpleProperty(IfcStore model, IfcWallStandardCase wall)
         {
-            var ifcPropertySingleValue = model.Instances.New<IfcPropertySingleValue>(psv =>
+            var Time = model.Instances.New<IfcPropertySingleValue>(psv =>
             {
-                psv.Name = "IfcPropertySingleValue:Time";
+                psv.Name = "Time";
                 psv.Description = "";
                 psv.NominalValue = new IfcTimeMeasure(150.0);
                 psv.Unit = model.Instances.New<IfcSIUnit>(siu =>
@@ -1357,15 +1353,33 @@ namespace IfcFileCreator
                     siu.Name = IfcSIUnitName.SECOND;
                 });
             });
-
+            var Sound = model.Instances.New<IfcPropertySingleValue>(psv =>
+            {
+                psv.Name = "Sound";
+                psv.Description = "";
+                psv.NominalValue = new IfcTimeMeasure(150.0);
+                psv.Unit = model.Instances.New<IfcSIUnit>(siu =>
+                {
+                    siu.UnitType = IfcUnitEnum.POWERUNIT;
+                    siu.Name = IfcSIUnitName.COULOMB;
+                });
+            });
+            var Material = model.Instances.New<IfcPropertySingleValue>(psv =>
+            {
+                psv.Name = "Material";
+                psv.Description = "";
+                psv.NominalValue = new IfcLabel("Concrete");
+                  });
 
             //lets create the IfcElementQuantity
             var ifcPropertySet = model.Instances.New<IfcPropertySet>(ps =>
             {
-                ps.Name = "Test:IfcPropertySet";
+                ps.Name = "Element Properties";
                 ps.Description = "Property Set";
-                ps.HasProperties.Add(ifcPropertySingleValue);
-            });
+                ps.HasProperties.Add(Time);
+                ps.HasProperties.Add(Sound);
+                ps.HasProperties.Add(Material);
+            }); 
 
             //need to create the relationship
             model.Instances.New<IfcRelDefinesByProperties>(rdbp =>
@@ -1377,8 +1391,6 @@ namespace IfcFileCreator
             });
         }
 
-
-
-
+         
     }
 }

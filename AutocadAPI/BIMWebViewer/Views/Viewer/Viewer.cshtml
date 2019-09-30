@@ -55,6 +55,7 @@
     .ui-widget-header {
         background: #1b212e;
     }
+
     .collapsetree {
         width: 15px;
         background-image: url('../../Images/ui-icons_454545_256x240.png');
@@ -96,9 +97,11 @@
     .selected-ui-viewpoint {
         background-color: darkgray;
     }
-    body{
-        background-color:white;
+
+    body {
+        background-color: white;
     }
+
     .selected-ui-comment {
         background-color: dodgerblue;
     }
@@ -173,12 +176,16 @@
             <div id="attrprop">
 
             </div>
-        </div>      
+        </div>
     </div>
 </div>
 
 <div id="viewer-container" style="top:150px; background:#f9f9f9; left:310px;right:310px;">
     <canvas id="viewer-canvas"></canvas>
+    <div style="position: absolute; left: 5px; top: 5px; padding: 5px;" id="toolbar" class="ui-widget-header ui-corner-all">
+        <button id="btnClip">Clip</button>
+        <button id="btnUnclip">Unclip</button>
+    </div>
 
     <div style="position: absolute; right: 5px; top: 5px;" id="toolbar" class="ui-widget-header ui-corner-all">
 
@@ -196,21 +203,21 @@
         <button onclick="IsolateElement()" style="width:70px" class="btn btn-dark">Isolate</button>
         <button onclick="Reset()" class="btn btn-dark">Reset</button>
         <button onclick="ColorElement()" class="btn btn-dark">Override Color</button>
-        <button onclick="ResetColor()" class="btn btn-dark">Reset Colors</button> 
+        <button onclick="ResetColor()" class="btn btn-dark">Reset Colors</button>
         <button onclick="Recolour()" class="btn btn-dark">Recolour by type</button>
     </div>
     <div style="position: absolute; right: 5px; bottom: 30px; padding: 5px;" id="toolbar" class="ui-widget-header ui-corner-all">
         <span style="color:white">Pick Color</span>
-        <input id="color-picker" type="color" value="Red"  class="ui-widget-header ui-corner-all">
-</div>
+        <input id="color-picker" type="color" value="Red" class="ui-widget-header ui-corner-all">
     </div>
+</div>
 
 
 
 
 
 
-    <script type="text/javascript">
+<script type="text/javascript">
 
 
     var SelectedElementId;
@@ -232,7 +239,7 @@
                 data: { TypeId: id},
                 type: 'POST',
                  success: function (dat) {
-                     console.log(dat); 
+                     console.log(dat);
                      var Data = JSON.parse(dat);
                      var productIds = Data.ProductIdList;
                      viewer.setState(xState.HIGHLIGHTED, productIds);
@@ -258,7 +265,7 @@
 
   //Viewer inialize
 
-        var viewer = new xViewer("viewer-canvas"); 
+        var viewer = new xViewer("viewer-canvas");
     viewer.load('@Url.Action("ViewerLoad", "Viewer", new { FileName = ViewBag.FilePath })');
     //Inialize Timeliner
     var ShowTimeLine = function () {
@@ -272,6 +279,9 @@
         }
     }
 
+
+   
+
    // Camera position
     var viewPointsarr = [];
     var GetCamPos = function () {
@@ -282,7 +292,7 @@
         $('#pViews').append(span);
     }
 
-    var SetCamPos = function (event) { 
+    var SetCamPos = function (event) {
         if (Document._lastSelectionviewpoint)
             Document._lastSelectionviewpoint.removeClass("selected-ui-viewpoint");
         $(event.target).addClass("selected-ui-viewpoint");
@@ -297,7 +307,7 @@
         for (var i = 0; i < viewPointsarr.length; i++) {
             viewPointsJson.push(JSON.stringify(viewPointsarr[i]));
         }
-        var json = JSON.stringify(viewPointsarr) 
+        var json = JSON.stringify(viewPointsarr)
         $.ajax({
             type: 'POST',
             url: '@Url.Action("SaveViewList", "Viewer")',
@@ -321,6 +331,7 @@
             SelectedElementId = id;
             if (SelectedElementId == null) {
                 $('#Commentbtn').css("display", "none");
+                return;
             }
             else {
                 $('#Commentbtn').css("display", "inline-block");
@@ -328,6 +339,7 @@
             viewer.setState(xState.HIGHLIGHTED, [id]);
             HideStoredElements(hiddenIds)
             keepTarget = false;
+            GetProperties(id);
         });
         viewer.on("dblclick", function (args) {
             viewer.resetStates();
@@ -341,8 +353,7 @@
 
         viewer.start();
 
-        var Recolour = function () {
-            debugger;
+        var Recolour = function () { 
             if (!viewer) return;
             var index = 0;
             for (var i in xProductType) {
@@ -359,11 +370,11 @@
         });
 
         var HideElement = function () {
-            if (id == null) return; 
+            if (id == null) return;
             hiddenIds.push(id);
             viewer.setState(xState.HIDDEN, [id]);
         }
-        function HideStoredElements(arr) { 
+        function HideStoredElements(arr) {
             for (var i = 0; i < arr.length; i++) {
                 viewer.setState(xState.HIDDEN, [arr[i]]);
             }
@@ -436,75 +447,82 @@
             colorarr.push(colorIndex);
         }
 
-    $(document).ready(function () {
-        if (SelectedElementId == null) {
-            $('#Commentbtn').css("display", "none");
-        }
-        //Get View Points
-         $.ajax({
+        $(document).ready(function () {
+            if (SelectedElementId == null) {
+                $('#Commentbtn').css("display", "none");
+            }
+            //Get View Points
+            $.ajax({
                 url: '@Url.Action("GetViewPoints", "Viewer")',
                 type: 'GET',
-             success: function (dat) { 
+                success: function (dat) {
                     var Data = JSON.parse(dat);
                     var ViewPoints = JSON.parse(Data.ViewPointsList);
                     viewPointsarr = ViewPoints;
                     for (var i = 0; i < ViewPoints.length; i++) {
-                        var span = `<p id=${i} onclick="SetCamPos(event)"  class="ACY-Viewpoint" style="cursor:pointer;"> View ${i+1} </p>`;
+                        var span = `<p id=${i} onclick="SetCamPos(event)"  class="ACY-Viewpoint" style="cursor:pointer;"> View ${i + 1} </p>`;
                         $('#pViews').append(span);
                     }
-            },
+                },
                 error: function (err) {
-                console.log(err);
-            }
-        });
-         
-        $(".treeview li>ul").css('display', 'none');
-        $(".collapsible").click(function (e) {
-            e.preventDefault();
-            $(this).toggleClass("collapsetree expandtree");
-            $(this).closest('li').children('ul').slideToggle();
-        });
-        $(".ACY-entity").dblclick(function (e) {
-            viewer.resetStates();
-            viewer.renderingMode = "x-ray"; 
-            var id = e.target.id;
-            SelectedElementId = id;
-            if (SelectedElementId == "") {
-                $('#Commentbtn').css("display", "none");
-            }
-            else {
-                $('#Commentbtn').css("display", "inline-block");
-            }
-            viewer.setState(xState.HIGHLIGHTED, [id]);
-            viewer.zoomTo(id);
-            keepTarget = true;
-        });
-        $(".ACY-entity").click(function (e) {
-            SelectedClass = "";
-            if (Document._lastSelection)
-                Document._lastSelection.removeClass("ui-selected");
-            $(this).addClass("ui-selected");
-            Document._lastSelection = $(this);
-            var id = e.target.id;
+                    console.log(err);
+                }
+            });
 
-            if (id == "") {
-                $("#attrprop").html("");
-                return;
-            }
+            $(".treeview li>ul").css('display', 'none');
+            $(".collapsible").click(function (e) {
+                e.preventDefault();
+                $(this).toggleClass("collapsetree expandtree");
+                $(this).closest('li').children('ul').slideToggle();
+            });
+            $(".ACY-entity").dblclick(function (e) {
+                viewer.resetStates();
+                viewer.renderingMode = "x-ray";
+                var id = e.target.id;
+                console.log(id);
+                SelectedElementId = id;
+                if (SelectedElementId == "") {
+                    $('#Commentbtn').css("display", "none");
+                    viewer.resetStates();
+                    return;
+                }
+                else {
+                    $('#Commentbtn').css("display", "inline-block");
+                }
+                viewer.setState(xState.HIGHLIGHTED, [id]);
+                viewer.zoomTo(id);
+                keepTarget = true;
+            });
+            $(".ACY-entity").click(function (e) {
+                SelectedClass = "";
+                if (Document._lastSelection)
+                    Document._lastSelection.removeClass("ui-selected");
+                $(this).addClass("ui-selected");
+                Document._lastSelection = $(this);
+                var id = e.target.id;
 
-            $.ajax({
-                url: '@Url.Action("GetProperties", "Viewer")',
-                data: { productId: id},
-                type: 'POST',
-                success: function (dat) {
-                    $("#attrprop").html(dat);
-                console.log(dat);
-            },
-                error: function (err) {
-                console.log(err);
-            }
-        });
-        })
+                if (id == "") {
+                    $("#attrprop").html("");
+                    return;
+                }
+                GetProperties(id);
+
+            })
+
+            GetProperties = function (id) {
+                $.ajax({
+                    url: '@Url.Action("GetProperties", "Viewer")',
+                    data: { productId: id },
+                    type: 'POST',
+                    success: function (dat) {
+                        $("#attrprop").html(dat);
+                        console.log(dat);
+                    },
+                    error: function (err) {
+                        console.log(err);
+                    }
+                });
+            };
         $('.ACY-Type').dblclick(function (e) {
             SelectedClass = 'ACY-Type';
             viewer.resetStates();
@@ -515,7 +533,7 @@
                 data: { TypeId: id},
                 type: 'POST',
                  success: function (dat) {
-                     console.log(dat); 
+                     console.log(dat);
                      var Data = JSON.parse(dat);
                      var productIds = Data.ProductIdList;
                      viewer.setState(xState.HIGHLIGHTED, productIds);
@@ -562,4 +580,4 @@
         });
 
     });
-    </script>
+</script>
