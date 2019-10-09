@@ -510,7 +510,6 @@
     <Content Include="img\e-solution logo.png" />
     <Content Include="img\favicon.png" />
     <Content Include="img\footer_logo.png" />
-    <Content Include="img\full logo %404x.png" />
     <Content Include="img\hover_patten_bg.png" />
     <Content Include="img\icon\bathtub.svg" />
     <Content Include="img\icon\bed.svg" />
@@ -519,7 +518,6 @@
     <Content Include="img\icon\icon_2.svg" />
     <Content Include="img\icon\icon_3.svg" />
     <Content Include="img\icon\icon_4.svg" />
-    <Content Include="img\logo.png" />
     <Content Include="img\nlogo.png" />
     <Content Include="img\passion_bg.png" />
     <Content Include="img\patten_bg.png" />
@@ -777,6 +775,9 @@
     <Content Include="fonts\poppins\Poppins-SemiBoldItalic.ttf" />
     <Content Include="fonts\poppins\Poppins-Thin.ttf" />
     <Content Include="fonts\poppins\Poppins-ThinItalic.ttf" />
+    <Content Include="CAD Files\01.Foundation.dwg" />
+    <Content Include="CAD Files\02.Basement Roof SLab.dwg" />
+    <Content Include="CAD Files\03.Ground Roof Slab.dwg" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Properties\PublishProfiles\CustomProfile1.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />

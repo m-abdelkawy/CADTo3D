@@ -17,6 +17,7 @@ namespace CADReader.BuildingElements
         public List<Wall> Walls { get; set; }
         public List<RectColumn> Columns { get; set; }
         public List<ReinforcedCadColumn> RcColumns { get; set; }
+        public List<ReinforcedCadSlab> RcSlab { get; set; }
         public List<Slab> Slabs { get; set; }
         public List<Stair> Stairs { get; set; }
         public List<LinearPath> Landings { get; set; }
@@ -42,6 +43,8 @@ namespace CADReader.BuildingElements
 
             Ramps = GetRamps(cadReader);
 
+
+            GetRcSLabs();
         }
         #endregion
 
@@ -62,7 +65,15 @@ namespace CADReader.BuildingElements
             }
 
         }
-
+        
+        private void GetRcSLabs()
+        {
+            this.RcSlab = new List<ReinforcedCadSlab>();
+            for (int i = 0; i < Slabs.Count; i++)
+            {
+                RcSlab.Add(new ReinforcedCadSlab(Slabs[i]));
+            }
+        }
 
         private void GetStairs(ReadAutodesk cadFileReader)
         {

@@ -114,8 +114,8 @@ namespace CADReader
 
             for (int i = 0; i < inner.Vertices.Length; i++)
             {
-                Line l = new Line(inner.Vertices[i], 
-                    new Point3D(CADConfig.Units == linearUnitsType.Meters ? inner.Vertices[i].X + 1000 
+                Line l = new Line(inner.Vertices[i],
+                    new Point3D(CADConfig.Units == linearUnitsType.Meters ? inner.Vertices[i].X + 1000
                     : inner.Vertices[i].X + 100000, inner.Vertices[i].Y, inner.Vertices[i].Z));
 
 
@@ -128,6 +128,28 @@ namespace CADReader
                 if (countIntersect % 2 == 0)
                     return false;
             }
+            return true;
+        }
+
+        public static bool IsInsidePolygon(Point3D pt, LinearPath outer)
+        {
+            Line[] outerLines = outer.ConvertToLines();
+
+
+            Line l = new Line(pt,
+                new Point3D(CADConfig.Units == linearUnitsType.Meters ? pt.X + 1000 : pt.X + 100000, pt.Y, pt.Z));
+
+
+            int countIntersect = 0;
+
+            for (int j = 0; j < outerLines.Length; j++)
+            {
+                if (IntersectionOfTwoLineSegments(l, outerLines[j]))
+                    countIntersect++;
+            }
+            if (countIntersect % 2 == 0)
+                return false;
+
             return true;
         }
 
@@ -149,6 +171,42 @@ namespace CADReader
         {
             return Math.Sqrt(Math.Pow(pt1.X - pt2.X, 2) + Math.Pow(pt1.Y - pt2.Y, 2));
         }
+
+
+        public static bool IsRectangle(LinearPath linPath,double tolerance)
+        {
+            
+            int nVertices = linPath.Vertices.Count();
+            if (nVertices > 5)
+                return false;
+
+            for (int i = 0; i < nVertices; i++)
+            {
+                linPath.Vertices[i].X = Math.Round(linPath.Vertices[i].X, 1);
+                linPath.Vertices[i].Y = Math.Round(linPath.Vertices[i].Y, 1);
+            }
+
+            double dist1;
+            double dist2;
+            double dist3;
+            double dist4;
+            double distDiagonal;
+
+            dist1 = CalcDistanceBetweenTwoPoint3D(linPath.Vertices[0], linPath.Vertices[1]);
+            dist2 = CalcDistanceBetweenTwoPoint3D(linPath.Vertices[1], linPath.Vertices[2]);
+            dist3 = CalcDistanceBetweenTwoPoint3D(linPath.Vertices[2], linPath.Vertices[3]);
+            dist4 = CalcDistanceBetweenTwoPoint3D(linPath.Vertices[3], linPath.Vertices[4]);
+
+            distDiagonal = CalcDistanceBetweenTwoPoint3D(linPath.Vertices[1], linPath.Vertices[3]);
+
+            if ((Math.Pow(dist1, 2) + Math.Pow(dist2, 2) - Math.Pow(distDiagonal, 2) < tolerance)
+                &&
+                (Math.Pow(dist3, 2) + Math.Pow(dist4, 2) - Math.Pow(distDiagonal, 2) < tolerance))
+                return true;
+
+            return false;
+        }
+        #endregion
 
 
         #region UnitVectors
@@ -264,6 +322,93 @@ namespace CADReader
             return false; // Doesn't fall in any of the above cases
         }
 
+        internal static bool IntersectionOfLineWithPolygon(LinearPath linPath, Line line2)
+        {
+            foreach (Line line1 in linPath.ConvertToLines())
+            {
+                double a1 = line1.EndPoint.Y - line1.StartPoint.Y;
+                double b1 = line1.StartPoint.X - line1.EndPoint.X;
+                double c1 = a1 * line1.StartPoint.X + b1 * line1.StartPoint.Y;
+
+                double a2 = line2.EndPoint.Y - line2.StartPoint.Y;
+                double b2 = line2.StartPoint.X - line2.EndPoint.X;
+                double c2 = a2 * line2.StartPoint.X + b2 * line2.StartPoint.Y;
+
+                double delta = a1 * b2 - a2 * b1;
+                if (Math.Abs(delta) > 0.0001) // !=0
+                {
+                    int o1 = orientation(line1.StartPoint, line1.EndPoint, line2.StartPoint);
+                    int o2 = orientation(line1.StartPoint, line1.EndPoint, line2.EndPoint);
+                    int o3 = orientation(line2.StartPoint, line2.EndPoint, line1.StartPoint);
+                    int o4 = orientation(line2.StartPoint, line2.EndPoint, line1.EndPoint);
+
+                    if (o1 != o2 && o3 != o4)
+                        return true;
+
+                    // Special Cases 
+                    // p1, q1 and p2 are colinear and p2 lies on segment p1q1 
+                    if (o1 == 0 && onSegment(line1.StartPoint, line2.StartPoint, line1.EndPoint)) return true;
+
+                    // p1, q1 and q2 are colinear and q2 lies on segment p1q1 
+                    if (o2 == 0 && onSegment(line1.StartPoint, line2.EndPoint, line1.EndPoint)) return true;
+
+                    // p2, q2 and p1 are colinear and p1 lies on segment p2q2 
+                    if (o3 == 0 && onSegment(line2.StartPoint, line1.StartPoint, line2.EndPoint)) return true;
+
+                    // p2, q2 and q1 are colinear and q1 lies on segment p2q2 
+                    if (o4 == 0 && onSegment(line2.StartPoint, line1.EndPoint, line2.EndPoint)) return true;
+                }
+            }
+
+
+
+            return false; // Doesn't fall in any of the above cases
+        }
+
+        internal static List<Point3D> PointsIntersectOfLineWithPolygon(LinearPath linPath, Line line2)
+        {
+            List<Point3D> lstIntersecionPts = new List<Point3D>();
+            foreach (Line line1 in linPath.ConvertToLines())
+            {
+                double a1 = line1.EndPoint.Y - line1.StartPoint.Y;
+                double b1 = line1.StartPoint.X - line1.EndPoint.X;
+                double c1 = a1 * line1.StartPoint.X + b1 * line1.StartPoint.Y;
+
+                double a2 = line2.EndPoint.Y - line2.StartPoint.Y;
+                double b2 = line2.StartPoint.X - line2.EndPoint.X;
+                double c2 = a2 * line2.StartPoint.X + b2 * line2.StartPoint.Y;
+
+                double delta = a1 * b2 - a2 * b1;
+                if (Math.Abs(delta) > 0.0001) // !=0
+                {
+                    int o1 = orientation(line1.StartPoint, line1.EndPoint, line2.StartPoint);
+                    int o2 = orientation(line1.StartPoint, line1.EndPoint, line2.EndPoint);
+                    int o3 = orientation(line2.StartPoint, line2.EndPoint, line1.StartPoint);
+                    int o4 = orientation(line2.StartPoint, line2.EndPoint, line1.EndPoint);
+
+                    if ((o1 != o2 && o3 != o4)
+                        ||
+                        (o1 == 0 && onSegment(line1.StartPoint, line2.StartPoint, line1.EndPoint))
+                        ||
+                        (o2 == 0 && onSegment(line1.StartPoint, line2.EndPoint, line1.EndPoint))
+                        ||
+                        (o3 == 0 && onSegment(line2.StartPoint, line1.StartPoint, line2.EndPoint))
+                        ||
+                        (o4 == 0 && onSegment(line2.StartPoint, line1.EndPoint, line2.EndPoint))
+                        )
+                    {
+                        lstIntersecionPts.Add(new Point3D((b2 * c1 - b1 * c2) / delta, (a1 * c2 - a2 * c1) / delta, line2.StartPoint.Z));
+                    }
+                }
+            }
+
+
+
+            return lstIntersecionPts; // Doesn't fall in any of the above cases
+        }
+
+
+
         // Given three colinear points p, q, r, the function checks if 
         // point q lies on line segment 'pr' 
         static Boolean onSegment(Point3D p, Point3D q, Point3D r)
@@ -292,6 +437,5 @@ namespace CADReader
         #endregion
 
 
-        #endregion
     }
 }

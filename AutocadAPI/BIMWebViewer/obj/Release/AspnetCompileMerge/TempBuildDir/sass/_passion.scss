@@ -1,0 +1,140 @@
+/************passion css start***************/
+.passion_part{
+    @include background("../img/passion_bg.png");
+    background-position: top;
+    padding: 250px 0px 130px;
+    position: relative;
+    z-index: 1;
+    margin-top: -125px;
+    @media #{$small_mobile}{
+        margin-top: 70px;
+        padding: 70px 0px 50px;
+    }
+    @media #{$large_mobile}{
+        margin-top: 70px;
+        padding: 70px 0px 50px;
+    }
+    @media #{$tab_device}{
+        margin-top: 70px;
+        padding: 70px 0px 50px;
+    }
+    @media #{$medium_device}{
+    
+    }
+    &:after{
+        position: absolute;
+        content: "";
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgb(29, 46, 74);
+        opacity: 0.651;
+        z-index: -1;
+        @include transform_time(1s);
+    }
+    .single_passion{
+        @include transform_time(1s);
+        .single_passion_item{
+            padding: 40px 30px 45px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            @include transform_time(1s);
+            &:after{
+                position: absolute;
+                content: "";
+                width: 100%;
+                height: 100%;
+                left: 0;
+                top: 0;
+                background-image: url(../img/patten_bg.png);
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: cover;
+                z-index: -1;
+                @include transform_time(1s);
+            }
+            .passion_icon{
+                height: 80px;
+                width: 80px;
+                display: inline-block;
+                text-align: center;
+                line-height: 80px;
+                border: 1px solid rgb(175, 181, 190);
+                border-radius: 5px;
+                margin-bottom: 35px;
+                i{
+                    font-size: 42px;
+                    color: $white_color;
+                    display: inline-block;
+                }
+            }
+            h4{
+                font-size: 20px;
+                color: $white_color;
+                font-weight: 600;
+                margin-bottom: 25px;
+            }
+            p{
+                line-height: 1.857;
+                color: $white_color;
+            }
+            .btn_2{
+                margin-top: 30px;
+            }
+            @media #{$small_mobile}{
+                padding: 30px 20px 35px;
+            }
+            @media #{$large_mobile}{
+                padding: 30px 20px 35px;
+            }
+            @media #{$tab_device}{
+                padding: 30px 20px 35px;
+            }
+            @media #{$medium_device}{
+            
+            }
+        }
+        @media #{$small_mobile}{
+            margin-bottom: 25px;
+        }
+        @media #{$large_mobile}{
+            margin-bottom: 25px;
+        }
+        @media #{$tab_device}{
+            margin-bottom: 25px;
+        }
+        @media #{$medium_device}{
+        
+        }
+    }
+    .single_passion{
+        @include transform_time(1s);
+        &:hover
+         .single_passion_item {
+            @include transform_time(1s);
+            &:after{
+                @include transform_time(1s);
+                background-image: none;
+                background-color: #fff;
+            }
+            .passion_icon{
+                border: 1px solid rgb(175, 181, 190);
+                i{
+                    color: $btn_bg;
+                }
+            }
+            h4{
+                color: $heading_color;
+            }
+            p{
+                color: $font_3;
+            }
+            .btn_2{
+                margin-top: 30px;
+                color: $heading_color;
+            }
+        }
+    }
+}

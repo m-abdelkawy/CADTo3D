@@ -1,4 +1,5 @@
-﻿using devDept.Geometry;
+﻿using devDept.Eyeshot.Entities;
+using devDept.Geometry;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,17 +12,13 @@ namespace CADReader.BuildingElements
     {
 
         #region Properties
-        public double Thickness { get; set; }
-        public Point3D StPt { get; set; }
-        public Point3D EndPt { get; set; } 
+        public LinearPath LinPathWall { get; set; }
         #endregion
 
 
-        public Wall(double _thick, Point3D _stPt, Point3D _endPt)
+        public Wall(LinearPath wallLinPath)
         {
-            Thickness = _thick;
-            StPt = _stPt;
-            EndPt = _endPt;
+            this.LinPathWall = wallLinPath;
         }
 
 

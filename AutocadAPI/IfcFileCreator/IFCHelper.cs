@@ -9,6 +9,7 @@ using Xbim.Ifc4.GeometricConstraintResource;
 using Xbim.Ifc4.GeometricModelResource;
 using Xbim.Ifc4.GeometryResource;
 using Xbim.Ifc4.Interfaces;
+using Xbim.Ifc4.Kernel;
 using Xbim.Ifc4.MeasureResource;
 using Xbim.Ifc4.ProductExtension;
 using Xbim.Ifc4.ProfileResource;
@@ -104,6 +105,34 @@ namespace IfcFileCreator
             //body.FixedReference.SetXYZ(1, 0, 0);
             return body;
         }
+        internal static IfcSurfaceCurveSweptAreaSolid ProfileSurfaceSweptSolidCreate(IfcStore model, IfcProfileDef prof, List<Point3D> lstPoints, IfcDirection planeZaxis = null, IfcDirection refDir=null)
+        {
+            IfcSurfaceCurveSweptAreaSolid body = model.Instances.New<IfcSurfaceCurveSweptAreaSolid>();
+            IfcPolyline pLine = model.Instances.New<IfcPolyline>();
+            for (int i = 0; i < lstPoints.Count; i++)
+            {
+                IfcCartesianPoint point = model.Instances.New<IfcCartesianPoint>();
+                point.SetXYZ(lstPoints[i].X, lstPoints[i].Y, lstPoints[i].Z);
+                pLine.Points.Add(point);
+
+            }
+
+            body.Directrix = pLine;
+            body.SweptArea = prof;
+            
+            var plane = model.Instances.New<IfcPlane>();
+            plane.Position = model.Instances.New<IfcAxis2Placement3D>();
+            plane.Position.Location = model.Instances.New<IfcCartesianPoint>();
+            plane.Position.Location.SetXYZ(lstPoints[0].X, lstPoints[0].Y, lstPoints[0].Z);
+
+            plane.Position.Axis = planeZaxis;
+            plane.Position.RefDirection = refDir;
+
+            body.ReferenceSurface = plane;
+            //body.FixedReference.SetXYZ(1, 0, 0);
+            return body;
+        }
+
         internal static IfcSurfaceCurveSweptAreaSolid ProfileSurfaceSweptSolidCreate(IfcStore model, IfcProfileDef prof, List<Point3D> lstPoints)
         {
             IfcSurfaceCurveSweptAreaSolid body = model.Instances.New<IfcSurfaceCurveSweptAreaSolid>();
@@ -122,14 +151,16 @@ namespace IfcFileCreator
             plane.Position = model.Instances.New<IfcAxis2Placement3D>();
             plane.Position.Location = model.Instances.New<IfcCartesianPoint>();
             plane.Position.Location.SetXYZ(lstPoints[0].X, lstPoints[0].Y, lstPoints[0].Z);
-           
+
             plane.Position.Axis = model.Instances.New<IfcDirection>();
             plane.Position.Axis.SetXYZ(0, 0, 1);
-
+            plane.Position.RefDirection = model.Instances.New<IfcDirection>();
+            plane.Position.RefDirection.SetXYZ(1, 0, 0);
             body.ReferenceSurface = plane;
             //body.FixedReference.SetXYZ(1, 0, 0);
             return body;
         }
+
         internal static void BodyPlacementSet(this IfcExtrudedAreaSolid areaSolidBody, IfcStore model, double x, double y, double z = 0, Vector3D uv = null)
         {
             areaSolidBody.Position = model.Instances.New<IfcAxis2Placement3D>();
@@ -185,11 +216,11 @@ namespace IfcFileCreator
             return localPlacement;
         }
 
-        internal static void AttchOpening(this IfcSlab slab, IfcStore model, IfcOpeningElement opening)
+        internal static void AttchOpening(this IfcElement element, IfcStore model, IfcOpeningElement opening)
         {
             IfcRelVoidsElement relVoids = model.Instances.New<IfcRelVoidsElement>();
             relVoids.RelatedOpeningElement = opening;
-            relVoids.RelatingBuildingElement = slab;
+            relVoids.RelatingBuildingElement = element;
         }
 
         #region For Rebar

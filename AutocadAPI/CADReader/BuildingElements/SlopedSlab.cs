@@ -1,4 +1,5 @@
 ﻿using CADReader.Helpers;
+using devDept.Eyeshot.Translators;
 using devDept.Geometry;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace CADReader.BuildingElements
     {
         #region Properties
 
-        public List<Point3D> LstFacePt { get; set; }
+        public LinearPathEx LinPathSlopedSlab { get; set; }
 
         public double Thickness { get; set; } = DefaultValues.SlabThinkess;
         #endregion
@@ -20,11 +21,11 @@ namespace CADReader.BuildingElements
         #region Constructors
         public SlopedSlab(List<Point3D> vertices)
         {
-            LstFacePt = vertices;
+            LinPathSlopedSlab = new LinearPathEx(vertices.ToArray());
         }
-        #endregion 
+        #endregion
 
-       
-         
+
+
     }
 }

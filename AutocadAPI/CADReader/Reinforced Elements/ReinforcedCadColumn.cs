@@ -68,11 +68,11 @@ namespace CADReader.Reinforced_Elements
         public void StirrupPopulate(double lvl)
         {
             LinearPath stirrupLp = (LinearPath)RectColumn.ColPath.Offset(-RectColumn.Cover * 1.2);
-            for (int i = 0; i < stirrupLp.Vertices.Length; i++)
-            {
-                //stirrupLp.Vertices[i].Z += CADConfig.Units == linearUnitsType.Meters?lvl+1:lvl+1000;
-                stirrupLp.Vertices[i].Z += lvl;
-            }
+            //for (int i = 0; i < stirrupLp.Vertices.Length; i++)
+            //{
+            //    //stirrupLp.Vertices[i].Z += CADConfig.Units == linearUnitsType.Meters?lvl+1:lvl+1000;
+            //    //stirrupLp.Vertices[i].Z += lvl;
+            //}
 
             Stirrup = new Stirrup(stirrupLp);
         }

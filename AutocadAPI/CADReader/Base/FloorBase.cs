@@ -13,73 +13,95 @@ namespace CADReader.BuildingElements
     {
         public double Level { get; set; }
 
+        
+        //public List<Wall> GetWalls(ReadAutodesk CadReader)
+        //{
+
+        //    List<Wall> Walls = new List<Wall>();
+        //    List<List<Point3D>> lstMidPoints = new List<List<Point3D>>();
+        //    List<double> lstThickness = new List<double>();
+
+        //    List<Line> lstWallLines = CadHelper.LinesGetByLayerName(CadReader, CadLayerName.Wall);
+
+
+        //    List<List<Line>> lstWalls = new List<List<Line>>();
+
+        //    for (int i = 0; i < lstWallLines.Count; i++)
+        //    {
+        //        if (lstWallLines[i] == null)
+        //            continue;
+        //        Line parallel = lstWallLines[i].LineGetNearestParallelByNormalVector(lstWallLines.ToArray());
+
+
+        //        if (parallel != null)
+        //        {//Exclude Lines from list
+        //            lstWalls.Add(new List<Line> { lstWallLines[i], parallel });
+
+        //            //exclude line and parallel from lstWallLines
+        //            lstThickness.Add(MathHelper.DistanceBetweenTwoParallels(lstWallLines[i], parallel));
+        //            lstWallLines[lstWallLines.IndexOf(parallel)] = null;
+        //            lstWallLines[i] = null;
+        //        }
+
+        //    }
+
+        //    foreach (List<Line> lstParallels in lstWalls)
+        //    {
+        //        Point3D stPt1 = lstParallels[0].StartPoint;
+        //        Point3D stPt2 = lstParallels[1].StartPoint;
+
+        //        Point3D endPt1 = lstParallels[0].EndPoint;
+        //        Point3D endPt2 = lstParallels[1].EndPoint;
+
+
+        //        Point3D midStart = MathHelper.MidPoint3D(stPt1, stPt2);
+        //        midStart.Z = Level /*- DefaultValues.SlabThinkess*/;
+
+        //        Point3D midEnd = MathHelper.MidPoint3D(endPt1, endPt2);
+        //        midEnd.Z = Level /*- DefaultValues.SlabThinkess*/;
+
+        //        if (stPt1.DistanceTo(stPt2) < stPt1.DistanceTo(endPt2))
+        //        {
+        //            lstMidPoints.Add(new List<Point3D> { midStart, midEnd });
+        //        }
+        //        else
+        //        {
+        //            midStart = MathHelper.MidPoint3D(stPt1, endPt2);
+        //            midStart.Z = Level /*- DefaultValues.SlabThinkess*/;
+
+        //            midEnd = MathHelper.MidPoint3D(endPt1, stPt2);
+        //            midEnd.Z = Level /*- DefaultValues.SlabThinkess*/;
+
+        //            lstMidPoints.Add(new List<Point3D> { midEnd, midStart });
+        //        }
+        //    }
+
+
+        //    for (int i = 0; i < lstMidPoints.Count; i++)
+        //    {
+        //        Walls.Add(new Wall(lstThickness[i], lstMidPoints[i][0], lstMidPoints[i][1], ));
+        //    }
+
+        //    return Walls;
+        //}
+        
         public List<Wall> GetWalls(ReadAutodesk CadReader)
         {
-
             List<Wall> Walls = new List<Wall>();
-            List<List<Point3D>> lstMidPoints = new List<List<Point3D>>();
-            List<double> lstThickness = new List<double>();
 
-            List<Line> lstWallLines = CadHelper.LinesGetByLayerName(CadReader, CadLayerName.Wall);
+            List<LinearPath> lstLinPathWall = CadHelper.PLinesGetByLayerName(CadReader, CadLayerName.Wall);
 
-
-            List<List<Line>> lstWalls = new List<List<Line>>();
-
-            for (int i = 0; i < lstWallLines.Count; i++)
+            for (int i = 0; i < lstLinPathWall.Count; i++)
             {
-                if (lstWallLines[i] == null)
-                    continue;
-                Line parallel = lstWallLines[i].LineGetNearestParallelByNormalVector(lstWallLines.ToArray());
-
-
-                if (parallel != null)
-                {//Exclude Lines from list
-                    lstWalls.Add(new List<Line> { lstWallLines[i], parallel });
-
-                    //exclude line and parallel from lstWallLines
-                    lstThickness.Add(MathHelper.DistanceBetweenTwoParallels(lstWallLines[i], parallel));
-                    lstWallLines[lstWallLines.IndexOf(parallel)] = null;
-                    lstWallLines[i] = null;
-                }
-
-            }
-
-            foreach (List<Line> lstParallels in lstWalls)
-            {
-                Point3D stPt1 = lstParallels[0].StartPoint;
-                Point3D stPt2 = lstParallels[1].StartPoint;
-
-                Point3D endPt1 = lstParallels[0].EndPoint;
-                Point3D endPt2 = lstParallels[1].EndPoint;
-
-
-                Point3D midStart = MathHelper.MidPoint3D(stPt1, stPt2);
-                midStart.Z = Level /*- DefaultValues.SlabThinkess*/;
-
-                Point3D midEnd = MathHelper.MidPoint3D(endPt1, endPt2);
-                midEnd.Z = Level /*- DefaultValues.SlabThinkess*/;
-
-                if (stPt1.DistanceTo(stPt2) < stPt1.DistanceTo(endPt2))
+                for (int j = 0; j < lstLinPathWall[i].Vertices.Length; j++)
                 {
-                    lstMidPoints.Add(new List<Point3D> { midStart, midEnd });
+                    lstLinPathWall[i].Vertices[j].Z = Level;
                 }
-                else
-                {
-                    midStart = MathHelper.MidPoint3D(stPt1, endPt2);
-                    midStart.Z = Level /*- DefaultValues.SlabThinkess*/;
-
-                    midEnd = MathHelper.MidPoint3D(endPt1, stPt2);
-                    midEnd.Z = Level /*- DefaultValues.SlabThinkess*/;
-
-                    lstMidPoints.Add(new List<Point3D> { midEnd, midStart });
-                }
+                Wall wall = new Wall(lstLinPathWall[i]);
+                Walls.Add(wall);
             }
 
-
-            for (int i = 0; i < lstMidPoints.Count; i++)
-            {
-                Walls.Add(new Wall(lstThickness[i], lstMidPoints[i][0], lstMidPoints[i][1]));
-            }
+            
 
             return Walls;
         }
@@ -115,6 +137,11 @@ namespace CADReader.BuildingElements
                 center.Z = Level;
                 widthMidPt.Z = Level;
 
+                for (int j = 0; j < lstPolyLine[i].Vertices.Length; j++)
+                {
+                    lstPolyLine[i].Vertices[j].Z = Level;
+                }
+
                 RectColumn col = new RectColumn(width, length, center, widthMidPt, lstPolyLine[i]);
                 Columns.Add(col);
             }
@@ -132,6 +159,8 @@ namespace CADReader.BuildingElements
 
             return RcColumns;
         }
+
+
 
         public List<ShearWall> GetShearWalls(ReadAutodesk cadFileReader)
         {

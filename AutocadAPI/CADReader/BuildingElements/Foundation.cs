@@ -16,16 +16,17 @@ namespace CADReader.BuildingElements
     {
         #region Properties
         private double PcThickness { get; set; } = DefaultValues.PCFootingThinkess;
-        private double RcThickness { get; set; } = DefaultValues.RCFootingThinkess; 
+        private double RcThickness { get; set; } = DefaultValues.RCFootingThinkess;
         public List<PCRectFooting> PCRectFooting { get; set; }
         public List<RCRectFooting> RCRectFooting { get; set; }
         public List<SlopedSlab> Ramps { get; set; }
-        public List<Wall> RetainingWalls{ get; set; }
-        public List<ReinforcedCadColumn> RcColumns{ get; set; }
+        public List<Wall> RetainingWalls { get; set; }
+        public List<ReinforcedCadColumn> RcColumns { get; set; }
         public List<ShearWall> ShearWalls { get; set; }
 
         public List<PCFooting> PCFooting { get; set; }
         public List<RCFooting> RCFooting { get; set; }
+        public List<ReinforcedCadFooting> ReinforcedCadFootings{ get; set; }
         #endregion
 
         #region Constructor
@@ -41,6 +42,8 @@ namespace CADReader.BuildingElements
             GetPCFooting(cadReader);
             GetRCFooting(cadReader);
             ShearWalls = GetShearWalls(cadReader);
+
+            ReinforcedCadFootings = GetReinforcedFootings(RCFooting);
         }
         #endregion
 
@@ -92,7 +95,7 @@ namespace CADReader.BuildingElements
 
             for (int i = 0; i < lstPLine.Count; i++)
             {
-                PCRectFooting footing = RectFootingCreate(lstPLine[i], PcThickness,"PC") as PCRectFooting;
+                PCRectFooting footing = RectFootingCreate(lstPLine[i], PcThickness, "PC") as PCRectFooting;
                 PCRectFooting.Add(footing);
             }
 
@@ -106,7 +109,7 @@ namespace CADReader.BuildingElements
 
             for (int i = 0; i < lstPLine.Count; i++)
             {
-                RCRectFooting footing = RectFootingCreate(lstPLine[i], RcThickness,"RC") as RCRectFooting;
+                RCRectFooting footing = RectFootingCreate(lstPLine[i], RcThickness, "RC") as RCRectFooting;
                 RCRectFooting.Add(footing);
             }
 
@@ -146,13 +149,26 @@ namespace CADReader.BuildingElements
         {
             if (type == FoundationType.RC)
                 return new RCFooting(pLine, thickness);
-            else if(type == FoundationType.PC)
+            else if (type == FoundationType.PC)
                 return new PCFooting(pLine, thickness);
 
             return null;
         }
 
 
-        
+        public List<ReinforcedCadFooting> GetReinforcedFootings(List<RCFooting> LstRcFootings)
+        {
+            List<ReinforcedCadFooting> RcFootings = new List<ReinforcedCadFooting>();
+            ReinforcedCadFooting RcFooting = null;
+            foreach (var footing in LstRcFootings)
+            {
+                RcFooting = new ReinforcedCadFooting(footing);
+                RcFootings.Add(RcFooting);
+            }
+
+            return RcFootings;
+        }
+
+
     }
 }

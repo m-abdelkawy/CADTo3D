@@ -1,0 +1,73 @@
+﻿
+@{
+    ViewBag.Title = "GanttChartTest";
+}
+<div class="row" style="height:300px">
+
+@Html.Partial("_GanttChartPartial")
+</div>
+
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script src="~/Scripts/jsrender.min.js"></script>
+<script src="~/Scripts/ej.gantt.min.js"></script>
+<script src="~/Scripts/jquery.ui.resizable.js"></script>
+<script>
+
+    $(function () {
+        //$.ajax({
+        //    type: "POST",
+        //    url: '/Test_Page_/getGanttData',
+        //    data: {
+        //        path: url + '/Output'
+        //    },
+        //    success: function (data) {
+        var defaultGanttData = [{
+            TaskID: 1, TaskName: "Task1", StartDate: "02/23/2017", EndDate: "02/28/2017", BaselineStartDate: "02/21/2017", BaselineEndDate: "03/1/2017", Progress: 90,
+            Children: [{ TaskID: 2, TaskName: "Task2", StartDate: "02/23/2017", EndDate: "02/24/2017", Progress: 80 },
+            { TaskID: 3, TaskName: "Task3", StartDate: "02/24/2017", EndDate: "02/25/2017", Progress: 70 },
+            { TaskID: 4, TaskName: "Task4", StartDate: "02/26/2017", EndDate: "02/27/2017", Progress: 60 }]
+        },
+        {
+            TaskID: 1, TaskName: "Task1", StartDate: "02/23/2017", EndDate: "02/28/2017", BaselineStartDate: "02/21/2017", BaselineEndDate: "03/1/2017", Progress: 90,
+            Children: [{ TaskID: 2, TaskName: "Task2", StartDate: "02/23/2017", EndDate: "02/24/2017", Progress: 80 },
+            { TaskID: 3, TaskName: "Task3", StartDate: "02/24/2017", EndDate: "02/25/2017", Progress: 70 },
+            { TaskID: 4, TaskName: "Task4", StartDate: "02/26/2017", EndDate: "02/27/2017", Progress: 60 }]
+        }, {
+            TaskID: 1, TaskName: "Task1", StartDate: "02/23/2017", EndDate: "02/28/2017", BaselineStartDate: "02/21/2017", BaselineEndDate: "03/1/2017", Progress: 90,
+            Children: [{ TaskID: 2, TaskName: "Task2", StartDate: "02/23/2017", EndDate: "02/24/2017", Progress: 80 },
+            { TaskID: 3, TaskName: "Task3", StartDate: "02/24/2017", EndDate: "02/25/2017", Progress: 70 },
+            { TaskID: 4, TaskName: "Task4", StartDate: "02/26/2017", EndDate: "02/27/2017", Progress: 60 }]
+        }]
+        $("#GanttContainer").ejGantt({
+            dataSource: defaultGanttData,
+            allowSelection: true,
+            allowColumnResize: true,
+            taskIdMapping: "TaskID",
+            taskNameMapping: "TaskName",
+            scheduleStartDate: new Date("02/23/2017"),
+            scheduleEndDate: new Date("03/31/2017"),
+            startDateMapping: "StartDate",
+            endDateMapping: "EndDate",
+            progressMapping: "Progress",
+            childMapping: "Children",
+            allowDragAndDrop: true,
+            baselineStartDateMapping: "BaselineStartDate",
+            baselineEndDateMapping: "BaselineEndDate",
+            renderBaseline: true,
+            rowHeight: window.theme == "material" ? 48 : window.theme == "office-365" ? 36 : 30,
+            treeColumnIndex: 1,
+            isResponsive: true,
+            dragTooltip: {
+                showTooltip: true
+            },
+            load: function () {
+                this.getColumns()[0].width = window.theme == "material" ? 60 : 30;
+            }
+        });
+        //    },
+        //    error: function () {
+        //    }
+        //});
+    });
+
+</script>

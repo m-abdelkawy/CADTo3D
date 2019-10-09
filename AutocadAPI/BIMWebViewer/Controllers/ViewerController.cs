@@ -18,13 +18,17 @@ using Xbim.ModelGeometry.Scene.Extensions;
 using Newtonsoft.Json.Serialization;
 using CADReader.BuildingElements;
 using IfcFileCreator;
+using Xbim.Ifc4.SharedComponentElements;
+using Xbim.Ifc4.StructuralElementsDomain;
 
 namespace BIMWebViewer.Controllers
 {
     //[Authorize]
     public class ViewerController : Controller
     {
-
+        static XbimCreateBuilding newBuilding;
+        static int counter=0;
+        List<object> ElementIDsToRenders = new List<object>();
         // GET: Upload
         public ActionResult Index()
         {
@@ -38,7 +42,7 @@ namespace BIMWebViewer.Controllers
         }
 
         public ActionResult Viewer()
-        {
+      {
             var filePath = "";
 
             filePath = TempData["wexbimFilePath"].ToString();
@@ -83,12 +87,14 @@ namespace BIMWebViewer.Controllers
         }
         public ActionResult PreviewModel(string versionPath)
         {
+            var CADFileDirectory = $"{Server.MapPath("~")}\\CAD Files";
+            var cadfiles = Directory.GetFiles(CADFileDirectory).ToList();
             Building building = new Building("Building A");
-            building.AddNewFloor(@"E:\Work\CAD Template\03.Ground Roof Slab.dwg", 3);
-            building.AddNewFloor(@"E:\Work\CAD Template\02.Basement Roof SLab.dwg", 0);
-            building.AddBuildingFoundation(@"E:\Work\CAD Template\01.Foundation.dwg", -4);
+            building.AddNewFloor(cadfiles.Where(e=>e.Contains("Ground")).FirstOrDefault(), 3);
+            building.AddNewFloor(cadfiles.Where(e => e.Contains("Basement")).FirstOrDefault(), 0);
+            building.AddBuildingFoundation(cadfiles.Where(e => e.Contains("Foundation")).FirstOrDefault(), -4);
 
-            XbimCreateBuilding newBuilding = new XbimCreateBuilding(building, versionPath);
+            newBuilding = new XbimCreateBuilding(building, versionPath);
             // devDept.Eyeshot.Translators.ReadAutodesk.OnApplicationExit(null, null);
 
 
@@ -121,7 +127,26 @@ namespace BIMWebViewer.Controllers
 
             return RedirectToAction("Viewer");
         }
-
+        [HttpPost]
+        public ActionResult GetElemetsToRender()
+        {
+            if (newBuilding.BuildingSubmissions.SubmittedElems.Count == counter)
+            {
+                return new EmptyResult();
+            }
+           ElementIDsToRenders.AddRange(newBuilding.BuildingSubmissions.SubmittedElems[counter].Select(p => new {Id= p.EntityLabel,  isFormWork= p is IfcBuildingElementPart, isReinforcement = p is IfcReinforcingBar }));
+            counter++;
+            JsonResult result = new JsonResult();
+            var jsonData = new { ProductIdList = ElementIDsToRenders };
+            var serializerSettings = new JsonSerializerSettings { PreserveReferencesHandling = PreserveReferencesHandling.Objects };
+            return new JsonResult { Data = JsonConvert.SerializeObject(jsonData, Formatting.Indented, serializerSettings), MaxJsonLength = Int32.MaxValue, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+ 
+        }
+        [HttpPost]
+        public void ResetCounter()
+        {
+            counter = 0;
+        }
         [HttpPost]
         public void UploadPic(string imageData)
         {
