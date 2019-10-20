@@ -13,7 +13,7 @@ namespace CADReader.BuildingElements
     {
         public double Level { get; set; }
 
-        
+
         //public List<Wall> GetWalls(ReadAutodesk CadReader)
         //{
 
@@ -84,7 +84,7 @@ namespace CADReader.BuildingElements
 
         //    return Walls;
         //}
-        
+
         public List<Wall> GetWalls(ReadAutodesk CadReader)
         {
             List<Wall> Walls = new List<Wall>();
@@ -195,5 +195,19 @@ namespace CADReader.BuildingElements
 
             return Ramps;
         }
+
+        public List<ReinforcedCadWall> GetRCWalls(List<Wall> lstWall)
+        {
+            List<ReinforcedCadWall> lstRcWall = new List<ReinforcedCadWall>();
+            ReinforcedCadWall rcWall = null;
+            foreach (var wall in lstWall)
+            {
+                rcWall = new ReinforcedCadWall(wall);
+                lstRcWall.Add(rcWall);
+            }
+
+            return lstRcWall;
+        }
+
     }
 }

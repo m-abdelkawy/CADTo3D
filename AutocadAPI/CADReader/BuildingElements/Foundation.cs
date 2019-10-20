@@ -26,7 +26,12 @@ namespace CADReader.BuildingElements
 
         public List<PCFooting> PCFooting { get; set; }
         public List<RCFooting> RCFooting { get; set; }
+        public List<Semelle> Semelles { get; set; }
+        public List<ReinforcedCadSemelle> ReinforcedSemelles { get; set; }
         public List<ReinforcedCadFooting> ReinforcedCadFootings{ get; set; }
+
+        public List<ReinforcedCadWall> ReinforcedCadWalls { get; set; }
+
         #endregion
 
         #region Constructor
@@ -41,9 +46,49 @@ namespace CADReader.BuildingElements
 
             GetPCFooting(cadReader);
             GetRCFooting(cadReader);
+            GetSmelles(cadReader);
             ShearWalls = GetShearWalls(cadReader);
 
+            GetReinforcedSemelles(cadReader);
+
             ReinforcedCadFootings = GetReinforcedFootings(RCFooting);
+
+            ReinforcedCadWalls = base.GetRCWalls(this.RetainingWalls);
+        }
+
+        private void GetReinforcedSemelles(ReadAutodesk cadReader)
+        {
+            this.ReinforcedSemelles = new List<ReinforcedCadSemelle>();
+            for (int i = 0; i < this.Semelles.Count(); i++)
+            {
+                this.ReinforcedSemelles.Add(new ReinforcedCadSemelle(cadReader, Semelles[i]));
+            }
+        }
+
+        private void GetSmelles(ReadAutodesk cadReader)
+        {
+            Semelles = new List<Semelle>();
+            List<LinearPath> lstPLine = CadHelper.PLinesGetByLayerName(cadReader, CadLayerName.Semelle);
+            for (int i = 0; i < lstPLine.Count; i++)
+            {
+                for (int j = 0; j < lstPLine[i].Vertices.Length; j++)
+                {
+                    lstPLine[i].Vertices[j].Z = Level+DefaultValues.PCFootingThinkess;
+                }
+            }
+
+            for (int i = 0; i < lstPLine.Count; i++)
+            {
+                Line shortestLine = CadHelper.ShortestLineGet(lstPLine[i]);
+                
+
+                List<LinearPath> lstCol = CadHelper.PLinesGetByLayerName(cadReader, CadLayerName.Column);
+                double thickness = CadHelper.IsIntersectingWithElmCategory(shortestLine, lstCol) ? DefaultValues.SmellesWithColumnThickness : DefaultValues.SmellesWithFootingThickness;
+
+                Semelle semelle = new Semelle(lstPLine[i], thickness);
+
+                Semelles.Add(semelle);
+            }
         }
         #endregion
 

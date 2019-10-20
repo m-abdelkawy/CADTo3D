@@ -14,7 +14,7 @@ namespace CADReader.BuildingElements
     public class Floor : FloorBase
     {
         #region Properties
-        public List<Wall> Walls { get; set; }
+        public List<Wall> RetainingWalls { get; set; }
         public List<RectColumn> Columns { get; set; }
         public List<ReinforcedCadColumn> RcColumns { get; set; }
         public List<ReinforcedCadSlab> RcSlab { get; set; }
@@ -24,6 +24,8 @@ namespace CADReader.BuildingElements
 
         public List<ShearWall> ShearWalls { get; set; }
         public List<SlopedSlab> Ramps { get; set; }
+
+        public List<ReinforcedCadWall> ReinforcedCadWalls { get; set; }
 
 
 
@@ -36,7 +38,7 @@ namespace CADReader.BuildingElements
 
             GetSlabs(cadReader);
             Columns = base.GetColumns(cadReader);
-            this.Walls = base.GetWalls(cadReader);
+            this.RetainingWalls = base.GetWalls(cadReader);
             GetStairs(cadReader);
             RcColumns = base.GetRCColumns(this.Columns);
             ShearWalls = GetShearWalls(cadReader);
@@ -45,6 +47,8 @@ namespace CADReader.BuildingElements
 
 
             GetRcSLabs();
+
+            this.ReinforcedCadWalls = base.GetRCWalls(this.RetainingWalls);
         }
         #endregion
 

@@ -20,6 +20,7 @@ using CADReader.BuildingElements;
 using IfcFileCreator;
 using Xbim.Ifc4.SharedComponentElements;
 using Xbim.Ifc4.StructuralElementsDomain;
+using devDept.Geometry;
 
 namespace BIMWebViewer.Controllers
 {
@@ -87,14 +88,21 @@ namespace BIMWebViewer.Controllers
         }
         public ActionResult PreviewModel(string versionPath)
         {
-            var CADFileDirectory = $"{Server.MapPath("~")}\\CAD Files";
-            var cadfiles = Directory.GetFiles(CADFileDirectory).ToList();
-            Building building = new Building("Building A");
-            building.AddNewFloor(cadfiles.Where(e=>e.Contains("Ground")).FirstOrDefault(), 3);
-            building.AddNewFloor(cadfiles.Where(e => e.Contains("Basement")).FirstOrDefault(), 0);
-            building.AddBuildingFoundation(cadfiles.Where(e => e.Contains("Foundation")).FirstOrDefault(), -4);
+            var CADFileDirectoryBuildingA = $"{Server.MapPath("~")}\\CAD Files\\BuildingA";
+            //var CADFileDirectoryBuildingB = $"{Server.MapPath("~")}\\CAD Files\\BuildingB";
+            var cadfilesBuildingA = Directory.GetFiles(CADFileDirectoryBuildingA).ToList();
+            //var cadfilesBuildingB = Directory.GetFiles(CADFileDirectoryBuildingB).ToList();
+            Building buildingA = new Building("Building A",new Point3D(0,0,0));
+            //Building buildingB = new Building("Building B", new Point3D(500, 0, 0));
+            //building.AddNewFloor(cadfiles.Where(e=>e.Contains("Ground")).FirstOrDefault(), 3);
+            buildingA.AddNewFloor(cadfilesBuildingA.Where(e => e.Contains("Ground")).FirstOrDefault(), 3);
+            buildingA.AddNewFloor(cadfilesBuildingA.Where(e => e.Contains("Basement")).FirstOrDefault(), 0);
+            buildingA.AddBuildingFoundation(cadfilesBuildingA.Where(e => e.Contains("Foundation")).FirstOrDefault(), -4);
 
-            newBuilding = new XbimCreateBuilding(building, versionPath);
+            //buildingB.AddNewFloor(cadfilesBuildingB.Where(e => e.Contains("Basement")).FirstOrDefault(), 0);
+            //buildingB.AddBuildingFoundation(cadfilesBuildingB.Where(e => e.Contains("Foundation")).FirstOrDefault(), -4);
+
+            newBuilding = new XbimCreateBuilding(buildingA, versionPath);
             // devDept.Eyeshot.Translators.ReadAutodesk.OnApplicationExit(null, null);
 
 

@@ -1,5 +1,6 @@
 ﻿using CADReader.Helpers;
 using devDept.Eyeshot.Translators;
+using devDept.Geometry;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,15 +15,17 @@ namespace CADReader.BuildingElements
         public List<FloorBase> Floors { get; set; }
         public string Name { get; set; }
         public CADConfig CadConfig { get; set; }
+        public Point3D Location { get; set; }
 
         #endregion
 
         #region Constructor
-        public Building(string buildingName)
+        public Building(string buildingName, Point3D _location)
         {
             CadConfig = new CADConfig();
             Floors = new List<FloorBase>();
             Name = buildingName;
+            Location = _location;
         }
         #endregion
 

@@ -1,0 +1,12 @@
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\FormworkTrials\bin\Debug\FormworkTrials.exe.config
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\FormworkTrials\bin\Debug\FormworkTrials.exe
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\FormworkTrials\bin\Debug\FormworkTrials.pdb
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\FormworkTrials\bin\Debug\devDept.Eyeshot.Control.Wpf.v12.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\FormworkTrials\bin\Debug\devDept.Geometry.v12.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\FormworkTrials\bin\Debug\devDept.Graphics.Wpf.v12.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\FormworkTrials\bin\Debug\devDept.Graphics.Shaders.v12.dll
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\FormworkTrials\bin\Debug\devDept.Eyeshot.Control.Wpf.v12.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\FormworkTrials\bin\Debug\devDept.Geometry.v12.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\FormworkTrials\bin\Debug\devDept.Graphics.Wpf.v12.xml
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\FormworkTrials\obj\Debug\FormworkTrials.exe
+D:\Coding Trials\GIT\CADTo3D\AutocadAPI\FormworkTrials\obj\Debug\FormworkTrials.pdb

@@ -73,7 +73,7 @@ namespace CADReader.Reinforced_Elements
 
                 for (int k = 0; k < RFT.Count; k++)
                 {
-                    if (MathHelper.IntersectionOfLineWithPolygon(Slab.Openings[i].LinPathOpening, new Line(RFT[k].LinearPath.StartPoint, RFT[k].LinearPath.EndPoint)))
+                    if (MathHelper.IsLineSegmentIntersectingPolygon(Slab.Openings[i].LinPathOpening, new Line(RFT[k].LinearPath.StartPoint, RFT[k].LinearPath.EndPoint)))
                     {
                         lstRebar.Add(RFT[k]);
 
