@@ -23,5 +23,6 @@ namespace CADReader.Helpers
         internal const string Stair = "Stair";
         internal const string ShearWall = "ShearWall";
         internal const string Semelle = "Semelle";
+        internal const string ElecConduit = "ElecConduit";
     }
 }

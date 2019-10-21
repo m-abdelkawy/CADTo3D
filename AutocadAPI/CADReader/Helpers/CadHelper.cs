@@ -17,6 +17,22 @@ namespace CADReader.Helpers
             return cadReader.Entities.Where(e => e.LayerName == layerName && e is LinearPath).Cast<LinearPath>().ToList();
         }
 
+        public static List<Entity> EntitiesGetByLayerName(ReadAutodesk cadReader, string layerName)
+        {
+            return cadReader.Entities.Where(e => e.LayerName == layerName).ToList();
+        }
+
+        public static List<LinearPath> PLinesGetByLayerName(ReadAutodesk cadReader, params string[] layers)
+        {
+            List<LinearPath> lstEntity = new List<LinearPath>();
+            for (int i = 0; i < layers.Length; i++)
+            {
+                lstEntity.AddRange(cadReader.Entities.Where(e => e.LayerName == layers[i] && e is LinearPath).Cast<LinearPath>().ToList());
+            }
+            return lstEntity;
+        }
+
+
         public static List<LinearPath> PLinesGetByLayerName(ReadAutodesk cadReader, string layerName, bool isClosed)
         {
             if (isClosed)
@@ -116,9 +132,9 @@ namespace CADReader.Helpers
         }
         #endregion
 
-        public static List<LinearPath> FootingsWithSemelles(LinearPath semelleLinPath, List<LinearPath> lstFootingLinPath, out List<Line> lstSemelleLongLine)
+        public static List<LinearPath> EntitiesIntersectingSemelleGet(LinearPath semelleLinPath, List<LinearPath> lstCadFooting, out List<Line> lstSemelleLongLine)
         {
-            HashSet<LinearPath> lstFooting = new HashSet<LinearPath>();
+            HashSet<LinearPath> lstIntersectingEntity = new HashSet<LinearPath>();
             Line[] lstSemelleLine = semelleLinPath.ConvertToLines();
 
             lstSemelleLongLine = new List<Line>();
@@ -126,24 +142,23 @@ namespace CADReader.Helpers
             for (int i = 0; i < lstSemelleLine.Length; i++)
             {
                 int counter = 0;
-                for (int j = 0; j < lstFootingLinPath.Count; j++)
+                for (int j = 0; j < lstCadFooting.Count; j++)
                 {
-
-                    if (MathHelper.IsLineSegmentIntersectingPolygon(lstFootingLinPath[j], lstSemelleLine[i]))
+                    if (MathHelper.IsLineSegmentIntersectingPolygon(lstCadFooting[j], lstSemelleLine[i]) /*&& (lstCadFooting[j] != semelleLinPath)*/)
                     {
                         counter++;
-                        lstFooting.Add(lstFootingLinPath[j]);
+                        lstIntersectingEntity.Add(lstCadFooting[j]);
                     }
                 }
-                if (counter == 2) lstSemelleLongLine.Add(lstSemelleLine[i]);
+                if (counter >= 2) lstSemelleLongLine.Add(lstSemelleLine[i]);
             }
-            
-            return lstFooting.ToList();
+
+            return lstIntersectingEntity.ToList();
         }
 
         public static Line CenterLineBetweenTwoParallelsGet(Line line1, Line line2)
         {
-            if (Math.Abs(MathHelper.LineGetSlope(line1)) - Math.Abs(MathHelper.LineGetSlope(line2)) > 0.001)
+            if (Math.Abs(MathHelper.LineGetSlope(line1)) - Math.Abs(MathHelper.LineGetSlope(line2)) > 0.01)
             {
                 return null;
             }
@@ -169,31 +184,55 @@ namespace CADReader.Helpers
         /// Returns List Of Columns and Shear Walls insidy Footing
         /// </summary>
         /// <param name="linPathFooting">Polygon of footing</param>
-        /// <param name="lstColLinPath">List of Columns and Shear walls in the drawing</param>
+        /// <param name="lstColLinPath">List of Columns, Walls and Shear walls in the drawing</param>
         /// <returns></returns>
-        public static List<LinearPath> ColumnsInsideFootingGet(LinearPath linPathFooting, List<LinearPath> lstColumnLinPath)
+        public static List<LinearPath> EntitiesInsideFootingGet(LinearPath linPathFooting, List<LinearPath> lstEntityLinPath)
         {
-            List<LinearPath> lstColInsideFooting = new List<LinearPath>();
-            for (int i = 0; i < lstColumnLinPath.Count(); i++)
+            List<LinearPath> lstEntityInsideFooting = new List<LinearPath>();
+            for (int i = 0; i < lstEntityLinPath.Count(); i++)
             {
-                if(MathHelper.IsInsidePolygon(lstColumnLinPath[i], linPathFooting))
+                if (MathHelper.IsInsidePolygon(lstEntityLinPath[i], linPathFooting))
                 {
-                    lstColInsideFooting.Add(lstColumnLinPath[i]);
+                    lstEntityInsideFooting.Add(lstEntityLinPath[i]);
                 }
             }
-            return lstColInsideFooting;
+            return lstEntityInsideFooting;
         }
 
-        public static Point3D PointIntersectionSemelleWithColumn(Line line, List<LinearPath> lstLinPathCol)
+        //public static Point3D PointIntersectionSemelleWithEntity(Line line, List<LinearPath> lstLinPathCol)
+        //{
+        //    List<Point3D> lstIntersectionPts = new List<Point3D>();
+        //    for (int i = 0; i < lstLinPathCol.Count; i++)
+        //    {
+        //        lstIntersectionPts =MathHelper.PointsIntersectOfLineWithPolygon(lstLinPathCol[i], line);
+        //        if (lstIntersectionPts.Count == 2) break;
+        //    }
+        //    if (lstIntersectionPts.Count == 0) return null;
+        //    return MathHelper.MidPoint3D(lstIntersectionPts[0], lstIntersectionPts[1]);
+        //}
+        public static Point3D PointIntersectSemelleWithNearEntity(Line line, List<LinearPath> lstLinPathEntityInsideFooting)
         {
-            List<Point3D> lstIntersectionPts = new List<Point3D>();
-            for (int i = 0; i < lstLinPathCol.Count; i++)
-            {
-                lstIntersectionPts =MathHelper.PointsIntersectOfLineWithPolygon(lstLinPathCol[i], line);
-                if (lstIntersectionPts.Count == 2) break;
+            //intersection points with the nearest polygon ionside footing
+            List<Point3D> lstNearIntersectionPts = new List<Point3D>();
+
+            double dist = double.MaxValue;
+            for (int i = 0; i < lstLinPathEntityInsideFooting.Count; i++)
+            {//loop over entities inside footing
+                //points of intersection of centerline with polygon inside footing
+                List<Point3D> lstIntersectionPts = MathHelper.PointsIntersectOfLineWithPolygon(lstLinPathEntityInsideFooting[i], line);
+                lstIntersectionPts = MathHelper.PointsIntersectOfLineWithPolygon(lstLinPathEntityInsideFooting[i], line);
+
+                //calculate distance from centerline start to intersection point of index "0"
+                if (dist >= MathHelper.CalcDistanceBetweenTwoPoint3D(line.StartPoint, lstIntersectionPts[0]))
+                {
+                    dist = MathHelper.CalcDistanceBetweenTwoPoint3D(line.StartPoint, lstIntersectionPts[0]);
+                    lstNearIntersectionPts = lstIntersectionPts;
+                }
+
+                //if (lstIntersectionPts.Count == 2) break;
             }
-            if (lstIntersectionPts.Count == 0) return null;
-            return MathHelper.MidPoint3D(lstIntersectionPts[0], lstIntersectionPts[1]);
+            if (lstNearIntersectionPts.Count == 0) return null;
+            return MathHelper.MidPoint3D(lstNearIntersectionPts[0], lstNearIntersectionPts[1]);
         }
     }
 }

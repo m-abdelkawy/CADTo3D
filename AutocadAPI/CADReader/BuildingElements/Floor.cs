@@ -1,4 +1,5 @@
-﻿using CADReader.Helpers;
+﻿using CADReader.ElectricalElements;
+using CADReader.Helpers;
 using CADReader.Reinforced_Elements;
 using devDept.Eyeshot.Entities;
 using devDept.Eyeshot.Translators;
@@ -26,6 +27,9 @@ namespace CADReader.BuildingElements
         public List<SlopedSlab> Ramps { get; set; }
 
         public List<ReinforcedCadWall> ReinforcedCadWalls { get; set; }
+        public List<ElectricalConduit> ElecConduits { get; set; }
+
+
 
 
 
@@ -41,14 +45,22 @@ namespace CADReader.BuildingElements
             this.RetainingWalls = base.GetWalls(cadReader);
             GetStairs(cadReader);
             RcColumns = base.GetRCColumns(this.Columns);
-            ShearWalls = GetShearWalls(cadReader);
-
-            Ramps = GetRamps(cadReader);
-
-
-            GetRcSLabs();
-
+            ShearWalls = GetShearWalls(cadReader); 
+            Ramps = GetRamps(cadReader); 
+            GetRcSLabs(); 
             this.ReinforcedCadWalls = base.GetRCWalls(this.RetainingWalls);
+
+            GetElectricalConduit(cadReader);
+        }
+
+        private void GetElectricalConduit(ReadAutodesk cadReader)
+        {
+            ElecConduits = new List<ElectricalConduit>();
+            List<Entity> lstElecConduit = CadHelper.EntitiesGetByLayerName(cadReader, CadLayerName.ElecConduit);
+            for (int i = 0; i < lstElecConduit.Count; i++)
+            {
+                ElecConduits.Add(new ElectricalConduit(lstElecConduit[i]));
+            }
         }
         #endregion
 

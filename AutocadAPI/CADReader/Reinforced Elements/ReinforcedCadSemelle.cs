@@ -21,10 +21,10 @@ namespace CADReader.Reinforced_Elements
         public Point3D StartPt { get; set; }
         public Point3D EndPt { get; set; }
 
-        public ReinforcedCadSemelle(ReadAutodesk cadreader,Semelle semelle)
+        public ReinforcedCadSemelle(ReadAutodesk cadreader, Semelle semelle)
         {
             Semelle = semelle;
-            
+
 
             LstRebarPopulate(cadreader);
         }
@@ -37,55 +37,81 @@ namespace CADReader.Reinforced_Elements
         //    StirrupPopulate();
         //}
 
+
+
         private void LstRebarPopulate(ReadAutodesk cadreader)
         {
-            this.Rebars = new List<Rebar>();
+            //instantiate rebar property
+            Rebars = new List<Rebar>();
 
-            List<LinearPath> lstFootingLinPath = CadHelper.PLinesGetByLayerName(cadreader, CadLayerName.RCFooting);
+            // All Entites
+            List<LinearPath> lstEntity = CadHelper.PLinesGetByLayerName(cadreader, CadLayerName.RCFooting);
+
+            //entities intersecting with semelles
             List<Line> lstSemelleLongLine;
-            List<LinearPath> lstFootingWithSemelle = CadHelper.FootingsWithSemelles(Semelle.HzLinPath, lstFootingLinPath, out lstSemelleLongLine);
 
-            if (lstSemelleLongLine.Count != 2) return;
+            List<LinearPath> lstIntersectingFooting = CadHelper.EntitiesIntersectingSemelleGet(Semelle.HzLinPath, lstEntity, out lstSemelleLongLine);
 
-            //center line
-            Line centerLine = CadHelper.CenterLineBetweenTwoParallelsGet(lstSemelleLongLine[0], lstSemelleLongLine[1]);
 
-            //Columns inside footings
-            List<LinearPath> lstVlElements = CadHelper.PLinesGetByLayerName(cadreader, CadLayerName.Column);
 
-            lstVlElements.AddRange(CadHelper.PLinesGetByLayerName(cadreader, CadLayerName.ShearWall));
-
-            List<LinearPath> lstColFooting1 = CadHelper.ColumnsInsideFootingGet(lstFootingWithSemelle[0], lstVlElements);
-            List<LinearPath> lstColFooting2 = CadHelper.ColumnsInsideFootingGet(lstFootingWithSemelle[1], lstVlElements);
-
-            //Get Intersection points of centerline with vl elements inside footing
-            
-            Point3D pt1 = CadHelper.PointIntersectionSemelleWithColumn(centerLine, lstColFooting1);
-            Point3D pt2 = CadHelper.PointIntersectionSemelleWithColumn(centerLine, lstColFooting2);
-
-            //offset the two ling lines
-            if(pt1 != null && pt2 != null)
+            if (lstSemelleLongLine.Count == 2)
             {
-                LinearPath centerRebarBot = new LinearPath(pt1 + (Vector3D.AxisZ * DefaultValues.SemelleCover), pt2 + (Vector3D.AxisZ * DefaultValues.SemelleCover));
-                double width = MathHelper.DistanceBetweenTwoParallels(lstSemelleLongLine[0], lstSemelleLongLine[1]);
-                LinearPath l1RebarBot = (LinearPath)centerRebarBot.Offset(width / 2 - DefaultValues.SemelleCover);
-                LinearPath l2RebarBot = (LinearPath)centerRebarBot.Offset((width / 2 - DefaultValues.SemelleCover) * -1);
+                //Check type of intersecting entities
+                Line centerLine = CadHelper.CenterLineBetweenTwoParallelsGet(lstSemelleLongLine[0], lstSemelleLongLine[1]);
 
-                //offset to get the top rebar
-                LinearPath centerRebarTop = new LinearPath(pt1 + (Vector3D.AxisZ * (Semelle.Thickness - DefaultValues.SemelleCover)), pt2 + (Vector3D.AxisZ * (Semelle.Thickness - DefaultValues.SemelleCover)));
-                LinearPath l1RebarTop = (LinearPath)centerRebarTop.Offset(width / 2 - DefaultValues.SemelleCover);
-                LinearPath l2RebarTop = (LinearPath)centerRebarTop.Offset((width / 2 - DefaultValues.SemelleCover) * -1);
 
-                //create rebars
-                Rebars.Add(new Rebar(centerRebarBot));
-                Rebars.Add(new Rebar(l1RebarBot));
-                Rebars.Add(new Rebar(l2RebarBot));
+                //for (int i = 0; i < lstIntersectingFooting.Count; i++)
+                //{
 
-                Rebars.Add(new Rebar(centerRebarTop));
-                Rebars.Add(new Rebar(l1RebarTop));
-                Rebars.Add(new Rebar(l2RebarTop));
+                //(columns, shearwalls, walls) inside footings
+                string[] layerArr = { CadLayerName.Column, CadLayerName.ShearWall, CadLayerName.Wall };
+
+
+
+                // Get entities inside footing
+                List<LinearPath> lstVlElements = CadHelper.PLinesGetByLayerName(cadreader, layerArr);
+                List<LinearPath> lstEntityInsideFooting1 = CadHelper.EntitiesInsideFootingGet(lstIntersectingFooting[0], lstVlElements);
+
+                //intersection point of Semelle Center Line with the nearest entity inside the footing polygon
+                Point3D pt1 = CadHelper.PointIntersectSemelleWithNearEntity(centerLine, lstEntityInsideFooting1);
+
+                //2 points of Center Line intersection with polygon
+                List<LinearPath> lstEntityInsideFooting2 = CadHelper.EntitiesInsideFootingGet(lstIntersectingFooting[1], lstVlElements);
+
+                //intersection point of Semelle Center Line with the nearest entity inside the footing polygon
+                Point3D pt2 = CadHelper.PointIntersectSemelleWithNearEntity(centerLine, lstEntityInsideFooting2);
+
+
+
+
+
+                //}
+
+                //offset the two ling lines
+                if (pt1 != null && pt2 != null)
+                {
+                    LinearPath centerRebarBot = new LinearPath(pt1 + (Vector3D.AxisZ * DefaultValues.SemelleCover), pt2 + (Vector3D.AxisZ * DefaultValues.SemelleCover));
+                    double width = MathHelper.DistanceBetweenTwoParallels(lstSemelleLongLine[0], lstSemelleLongLine[1]);
+                    LinearPath l1RebarBot = (LinearPath)centerRebarBot.Offset(width / 2 - DefaultValues.SemelleCover);
+                    LinearPath l2RebarBot = (LinearPath)centerRebarBot.Offset((width / 2 - DefaultValues.SemelleCover) * -1);
+
+                    //offset to get the top rebar
+                    LinearPath centerRebarTop = new LinearPath(pt1 + (Vector3D.AxisZ * (Semelle.Thickness - DefaultValues.SemelleCover)),
+                        pt2 + (Vector3D.AxisZ * (Semelle.Thickness - DefaultValues.SemelleCover)));
+                    LinearPath l1RebarTop = (LinearPath)centerRebarTop.Offset(width / 2 - DefaultValues.SemelleCover);
+                    LinearPath l2RebarTop = (LinearPath)centerRebarTop.Offset((width / 2 - DefaultValues.SemelleCover) * -1);
+
+                    //create rebars
+                    Rebars.Add(new Rebar(centerRebarBot));
+                    Rebars.Add(new Rebar(l1RebarBot));
+                    Rebars.Add(new Rebar(l2RebarBot));
+
+                    Rebars.Add(new Rebar(centerRebarTop));
+                    Rebars.Add(new Rebar(l1RebarTop));
+                    Rebars.Add(new Rebar(l2RebarTop));
+                }
             }
-            
+
         }
 
         //private void StirrupPopulate()

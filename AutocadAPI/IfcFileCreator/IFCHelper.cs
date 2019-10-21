@@ -1,4 +1,5 @@
-﻿using devDept.Geometry;
+﻿using devDept.Eyeshot.Entities;
+using devDept.Geometry;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -151,6 +152,71 @@ namespace IfcFileCreator
             plane.Position = model.Instances.New<IfcAxis2Placement3D>();
             plane.Position.Location = model.Instances.New<IfcCartesianPoint>();
             plane.Position.Location.SetXYZ(lstPoints[0].X, lstPoints[0].Y, lstPoints[0].Z);
+
+            plane.Position.Axis = model.Instances.New<IfcDirection>();
+            plane.Position.Axis.SetXYZ(0, 0, 1);
+            plane.Position.RefDirection = model.Instances.New<IfcDirection>();
+            plane.Position.RefDirection.SetXYZ(1, 0, 0);
+            body.ReferenceSurface = plane;
+            //body.FixedReference.SetXYZ(1, 0, 0);
+            return body;
+        }
+
+        internal static IfcSurfaceCurveSweptAreaSolid ProfileSurfaceSweptSolidCreateByCompositeCurve(IfcStore model, IfcProfileDef prof, Entity profPath)
+        {
+            IfcSurfaceCurveSweptAreaSolid body = model.Instances.New<IfcSurfaceCurveSweptAreaSolid>();
+            IfcCompositeCurve compositeCurve = model.Instances.New<IfcCompositeCurve>();
+            if(profPath is LinearPath)
+            {
+                LinearPath linearPath = profPath as LinearPath;
+                IfcCompositeCurveSegment segment = model.Instances.New<IfcCompositeCurveSegment>();
+                IfcPolyline pLine = model.Instances.New<IfcPolyline>();
+                for (int i = 0; i < linearPath.Vertices.Length; i++)
+                {
+                    IfcCartesianPoint point = model.Instances.New<IfcCartesianPoint>();
+                    point.SetXYZ(linearPath.Vertices[i].X, linearPath.Vertices[i].Y, linearPath.Vertices[i].Z);
+                    pLine.Points.Add(point);
+                }
+                segment.ParentCurve = pLine;
+                segment.Transition = IfcTransitionCode.CONTINUOUS;
+                compositeCurve.Segments.Add(segment);
+            }
+            else
+            {
+                CompositeCurve compCurvePath = profPath as CompositeCurve;
+                for (int i = 0; i < compCurvePath.CurveList.Count; i++)
+                {
+                    if(compCurvePath.CurveList[i] is Line)
+                    {
+                        Line line = compCurvePath.CurveList[i] as Line;
+                        IfcCompositeCurveSegment segment = model.Instances.New<IfcCompositeCurveSegment>();
+                        IfcPolyline pLine = model.Instances.New<IfcPolyline>();
+                        for (int j = 0; j < line.Vertices.Length; j++)
+                        {
+                            IfcCartesianPoint point = model.Instances.New<IfcCartesianPoint>();
+                            point.SetXYZ(line.Vertices[j].X, line.Vertices[j].Y, line.Vertices[j].Z);
+                            pLine.Points.Add(point);
+                        }
+                        segment.ParentCurve = pLine;
+                        segment.Transition = IfcTransitionCode.CONTINUOUS;
+                        compositeCurve.Segments.Add(segment);
+                    }
+                    else
+                    {
+                        Arc arc = compCurvePath.CurveList[i] as Arc;
+                        IfcTrimmedCurve trimmedCurve = model.Instances.New<IfcTrimmedCurve>();
+                    }
+                }
+            }
+             
+
+
+            body.Directrix = compositeCurve;
+            body.SweptArea = prof;
+            var plane = model.Instances.New<IfcPlane>();
+            plane.Position = model.Instances.New<IfcAxis2Placement3D>();
+            plane.Position.Location = model.Instances.New<IfcCartesianPoint>();
+            //plane.Position.Location.SetXYZ(lstPoints[0].X, lstPoints[0].Y, lstPoints[0].Z);
 
             plane.Position.Axis = model.Instances.New<IfcDirection>();
             plane.Position.Axis.SetXYZ(0, 0, 1);

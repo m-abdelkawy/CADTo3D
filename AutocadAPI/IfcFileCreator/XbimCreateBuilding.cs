@@ -34,6 +34,8 @@ using CADReader.Reinforced_Elements;
 using CADReader.ElementComponents;
 using devDept.Geometry;
 using Xbim.Ifc4.SharedComponentElements;
+using Xbim.Ifc4.ElectricalDomain;
+using CADReader.ElectricalElements;
 
 namespace IfcFileCreator
 {
@@ -127,7 +129,6 @@ namespace IfcFileCreator
                                         IfcReinforcingBar stirrup = CreateIfcStirrup(model, rcWall.Stirrup, DefaultValues.StirrupsSpacing);
                                         storey.AddElement(stirrup);
                                         //lstColRebar.Add(stirrup);
-
                                     }
 
                                     txn.Commit();
@@ -848,13 +849,7 @@ namespace IfcFileCreator
 
 
 
-                if (cadFooting.Type == "RC")
-                {
-                    for (int i = 0; i < cadFooting.ProfilePath.Vertices.Length; i++)
-                    {
-                        cadFooting.ProfilePath.Vertices[i].Z += DefaultValues.PCFootingThinkess;
-                    }
-                }
+                
                 //represent footing as a rectangular profile
                 IfcArbitraryClosedProfileDef rectProf = IFCHelper.ArbitraryClosedProfileCreate(model, cadFooting.ProfilePath.Vertices.ToList());
 
@@ -1660,7 +1655,33 @@ namespace IfcFileCreator
 
             return stirrupToCreate;
 
-        }
+        } 
+      //  private IfcCableCarrierSegment CreateIfcConduit(IfcStore model, ElectricalConduit conduit, double height)
+        //{
+            //IfcCableCarrierSegment conduitToCreate = model.Instances.New<IfcCableCarrierSegment>();
+            //conduitToCreate.Name = "Conduit:UC305x305x97:" + random.Next(100000);
+
+            ////represent column as a rectangular profile
+            //IfcCircleProfileDef cirProf = IFCHelper.CircleProfileCreate(model, conduit.Diameter / 2);
+            // //Profile insertion point
+            //cirProf.ProfileInsertionPointSet(model, 0, 0); 
+
+
+            //IfcSurfaceCurveSweptAreaSolid body = IFCHelper.ProfileSurfaceSweptSolidCreate(model, cirProf, lstVertices);
+             
+            //    //Create a Definition shape to hold the geometry
+            //IfcShapeRepresentation shape = IFCHelper.ShapeRepresentationCreate(model, "SweptSolid", "Body");
+            //shape.Items.Add(body);
+
+            //    //Create a Product Definition and add the model geometry to the wall
+            //    IfcProductDefinitionShape prDefShape = model.Instances.New<IfcProductDefinitionShape>();
+            //    prDefShape.Representations.Add(shape);
+            //    conduitToCreate.Representation = prDefShape;
+
+            //return conduitToCreate;
+            //// }
+
+        //}
 
         private void AddPropertiesToWall(IfcStore model, IfcWallStandardCase wall)
         {
@@ -1720,10 +1741,7 @@ namespace IfcFileCreator
                 rdbp.RelatedObjects.Add(wall);
                 rdbp.RelatingPropertyDefinition = ifcPropertySet;
             });
-        }
-
-
-
+        } 
         #region formwork
         private IfcBuildingElementPart CreateFormWork(IfcStore model, LinearPath linPathElem, double formWorkThickness, double extrusionHeight
             , out IfcOpeningElement open, bool isSlabOrBeam = false)

@@ -23,5 +23,6 @@ namespace CADReader.Helpers
         public static double FormWorkThickness { get; set; } = CADConfig.Units == linearUnitsType.Meters ? 0.025 : 25;
         public static double SmellesWithFootingThickness { get; set; } = CADConfig.Units == linearUnitsType.Meters ? 0.5 : 500;
         public static double SmellesWithColumnThickness { get; set; } = CADConfig.Units == linearUnitsType.Meters ? 0.7 : 700;
+        public static double ConduitDiameter { get; set; } = CADConfig.Units == linearUnitsType.Meters ? 0.03 : 30;
     }
 }

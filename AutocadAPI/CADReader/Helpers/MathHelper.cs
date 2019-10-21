@@ -342,17 +342,17 @@ namespace CADReader
         {
             foreach (Line line1 in linPath.ConvertToLines())
             {
-                double a1 = line1.EndPoint.Y - line1.StartPoint.Y;
-                double b1 = line1.StartPoint.X - line1.EndPoint.X;
-                double c1 = a1 * line1.StartPoint.X + b1 * line1.StartPoint.Y;
+                //double a1 = line1.EndPoint.Y - line1.StartPoint.Y;
+                //double b1 = line1.StartPoint.X - line1.EndPoint.X;
+                //double c1 = a1 * line1.StartPoint.X + b1 * line1.StartPoint.Y;
 
-                double a2 = line2.EndPoint.Y - line2.StartPoint.Y;
-                double b2 = line2.StartPoint.X - line2.EndPoint.X;
-                double c2 = a2 * line2.StartPoint.X + b2 * line2.StartPoint.Y;
+                //double a2 = line2.EndPoint.Y - line2.StartPoint.Y;
+                //double b2 = line2.StartPoint.X - line2.EndPoint.X;
+                //double c2 = a2 * line2.StartPoint.X + b2 * line2.StartPoint.Y;
 
-                double delta = a1 * b2 - a2 * b1;
-                if (Math.Abs(delta) > 0.0001) // !=0
-                {
+                //double delta = a1 * b2 - a2 * b1;
+                //if (Math.Abs(delta) > 0.0001) // !=0
+                //{
                     int o1 = orientation(line1.StartPoint, line1.EndPoint, line2.StartPoint);
                     int o2 = orientation(line1.StartPoint, line1.EndPoint, line2.EndPoint);
                     int o3 = orientation(line2.StartPoint, line2.EndPoint, line1.StartPoint);
@@ -373,7 +373,7 @@ namespace CADReader
 
                     // p2, q2 and q1 are colinear and q1 lies on segment p2q2 
                     if (o4 == 0 && onSegment(line2.StartPoint, line1.EndPoint, line2.EndPoint)) return true;
-                }
+                //}
             }
 
 
@@ -463,9 +463,9 @@ namespace CADReader
         static int orientation(Point3D p, Point3D q, Point3D r)
         {
             // for details of below formula. 
-            int val = Convert.ToInt32((q.Y - p.Y) * (r.X - q.X) - (q.X - p.X) * (r.Y - q.Y));
+            double val = (q.Y - p.Y) * (r.X - q.X) - (q.X - p.X) * (r.Y - q.Y);
 
-            if (val == 0) return 0; // colinear 
+            if (Math.Abs(val)<0.001) return 0; // colinear 
 
             return (val > 0) ? 1 : 2; // clock or counterclock wise 
         }

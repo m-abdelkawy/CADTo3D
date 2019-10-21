@@ -53,6 +53,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -71,10 +72,12 @@
     <Compile Include="BuildingElements\Slab.cs" />
     <Compile Include="BuildingElements\Semelle.cs" />
     <Compile Include="BuildingElements\Stair.cs" />
+    <Compile Include="ElectricalElements\ElectricalConduit.cs" />
     <Compile Include="ElementComponents\Rebar.cs" />
     <Compile Include="ElementComponents\Stirrup.cs" />
     <Compile Include="Helpers\CADConfig.cs" />
     <Compile Include="Helpers\CadHelper.cs" />
+    <Compile Include="Helpers\PointEqualityComparer.cs" />
     <Compile Include="Helpers\DefaultValues.cs" />
     <Compile Include="Helpers\Extensions.cs" />
     <Compile Include="BuildingElements\Building.cs" />

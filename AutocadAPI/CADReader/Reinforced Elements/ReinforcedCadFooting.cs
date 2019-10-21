@@ -42,7 +42,7 @@ namespace CADReader.Reinforced_Elements
 
             for (int i = 0; i < linPathFooting.Vertices.Count(); i++)
             {
-                linPathFooting.Vertices[i].Z += DefaultValues.FootingCover + DefaultValues.PCFootingThinkess;
+                linPathFooting.Vertices[i].Z += DefaultValues.FootingCover/* + DefaultValues.PCFootingThinkess*/;
             }
 
             Line[] pathLines = linPathFooting.ConvertToLines();
