@@ -229,7 +229,7 @@ namespace IfcFileCreator
             var plane = model.Instances.New<IfcPlane>();
             plane.Position = model.Instances.New<IfcAxis2Placement3D>();
             plane.Position.Location = model.Instances.New<IfcCartesianPoint>();
-            plane.Position.Location.SetXYZ(profPath.X, lstPoints[0].Y, lstPoints[0].Z);
+            //plane.Position.Location.SetXYZ(profPath.X, lstPoints[0].Y, lstPoints[0].Z);
 
             plane.Position.Axis = model.Instances.New<IfcDirection>();
             plane.Position.Axis.SetXYZ(0, 0, 1);
@@ -237,6 +237,76 @@ namespace IfcFileCreator
             plane.Position.RefDirection.SetXYZ(1, 0, 0);
             body.ReferenceSurface = plane;
             //body.FixedReference.SetXYZ(1, 0, 0);
+            return body;
+        }
+        internal static IfcSweptDiskSolid ProfileSweptDiskSolidByCompositeCurve(IfcStore model, Entity profPath, double raduis)
+        {
+            IfcSweptDiskSolid body = model.Instances.New<IfcSweptDiskSolid>();
+            IfcCompositeCurve compositeCurve = model.Instances.New<IfcCompositeCurve>();
+            compositeCurve.SelfIntersect = false;
+            if (profPath is LinearPath)
+            {
+                LinearPath linearPath = profPath as LinearPath;
+                IfcCompositeCurveSegment segment = model.Instances.New<IfcCompositeCurveSegment>();
+                IfcPolyline pLine = model.Instances.New<IfcPolyline>();
+                for (int i = 0; i < linearPath.Vertices.Length; i++)
+                {
+                    IfcCartesianPoint point = model.Instances.New<IfcCartesianPoint>();
+                    point.SetXYZ(linearPath.Vertices[i].X , linearPath.Vertices[i].Y , linearPath.Vertices[i].Z );
+                    pLine.Points.Add(point);
+                }
+                segment.ParentCurve = pLine;
+                segment.Transition = IfcTransitionCode.CONTINUOUS;
+                compositeCurve.Segments.Add(segment);
+            }
+            else
+            {
+                CompositeCurve compCurvePath = profPath as CompositeCurve;
+                for (int i = 0; i < compCurvePath.CurveList.Count; i++)
+                {
+                    IfcCompositeCurveSegment segment = model.Instances.New<IfcCompositeCurveSegment>();
+                    //segment.Transition = i == compCurvePath.CurveList.Count - 1 ? IfcTransitionCode.DISCONTINUOUS : IfcTransitionCode.CONTINUOUS;
+                    segment.Transition = IfcTransitionCode.DISCONTINUOUS;
+                    if (compCurvePath.CurveList[i] is Line)
+                    {
+                        segment.SameSense = true;
+                        Line line = compCurvePath.CurveList[i] as Line;
+                        IfcPolyline pLine = model.Instances.New<IfcPolyline>();
+                        for (int j = 0; j < line.Vertices.Length; j++)
+                        {
+                            IfcCartesianPoint point = model.Instances.New<IfcCartesianPoint>();
+                            point.SetXYZ(line.Vertices[j].X , line.Vertices[j].Y , line.Vertices[j].Z );
+                            pLine.Points.Add(point);
+                        }
+                        segment.ParentCurve = pLine;
+                        compositeCurve.Segments.Add(segment);
+                    }
+                    else
+                    {
+                        Arc arc = compCurvePath.CurveList[i] as Arc;
+                        IfcTrimmedCurve trimmedCurve = model.Instances.New<IfcTrimmedCurve>();
+                        IfcCircle cir = model.Instances.New<IfcCircle>(e => e.Radius = arc.Radius );
+                        cir.Position = model.Instances.New<IfcAxis2Placement3D>(e =>
+                        e.Location = model.Instances.New<IfcCartesianPoint>(p => p.SetXYZ(arc.Center.X , arc.Center.Y , arc.Center.Z )));
+
+                        trimmedCurve.BasisCurve = cir;
+                        trimmedCurve.Trim1.Add(model.Instances.New<IfcCartesianPoint>(p => p.SetXYZ(arc.StartPoint.X , arc.StartPoint.Y , arc.StartPoint.Z )));
+                        trimmedCurve.Trim2.Add(model.Instances.New<IfcCartesianPoint>(p => p.SetXYZ(arc.EndPoint.X , arc.EndPoint.Y , arc.EndPoint.Z )));
+                        trimmedCurve.SenseAgreement = arc.Plane.AxisZ == Vector3D.AxisZ ? true : false;
+                        //segment.SameSense = arc.Plane.AxisZ == Vector3D.AxisZ ? false : true;
+                        trimmedCurve.MasterRepresentation = IfcTrimmingPreference.CARTESIAN;
+                        segment.ParentCurve = trimmedCurve;
+                        compositeCurve.Segments.Add(segment);
+
+                    }
+                }
+            }
+
+
+
+            body.Directrix = compositeCurve;
+            body.Radius = raduis;
+            body.InnerRadius = raduis * .75;
             return body;
         }
 

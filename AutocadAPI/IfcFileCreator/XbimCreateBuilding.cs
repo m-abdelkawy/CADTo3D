@@ -1671,17 +1671,11 @@ namespace IfcFileCreator
         {
             IfcCableCarrierSegment conduitToCreate = model.Instances.New<IfcCableCarrierSegment>();
             conduitToCreate.Name = "Conduit:UC305x305x97:" + random.Next(100000);
-
-            //represent column as a rectangular profile
-            IfcCircleProfileDef cirProf = IFCHelper.CircleProfileCreate(model, conduit.Diameter / 2);
-            //Profile insertion point
-            cirProf.ProfileInsertionPointSet(model, 0, 0);
-
-
-            IfcSurfaceCurveSweptAreaSolid body = IFCHelper.ProfileSurfaceSweptSolidCreateByCompositeCurve(model, cirProf,conduit.CurvePath);
+             
+            IfcSweptDiskSolid body = IFCHelper.ProfileSweptDiskSolidByCompositeCurve(model, conduit.CurvePath, conduit.Diameter);
 
             //Create a Definition shape to hold the geometry
-            IfcShapeRepresentation shape = IFCHelper.ShapeRepresentationCreate(model, "SweptSolid", "Body");
+            IfcShapeRepresentation shape = IFCHelper.ShapeRepresentationCreate(model, "AdvancedSweptSolid", "Body");
             shape.Items.Add(body);
 
             //Create a Product Definition and add the model geometry to the wall
@@ -1690,7 +1684,6 @@ namespace IfcFileCreator
             conduitToCreate.Representation = prDefShape;
 
             return conduitToCreate;
-            // }
 
         }
 
