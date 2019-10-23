@@ -109,6 +109,7 @@ namespace CADReader
         }
 
         public static bool IsInsidePolygon(LinearPath inner, LinearPath outer)
+
         {
             Line[] outerLines = outer.ConvertToLines();
 
@@ -117,15 +118,19 @@ namespace CADReader
                 Line l = new Line(inner.Vertices[i],
                     new Point3D(CADConfig.Units == linearUnitsType.Meters ? inner.Vertices[i].X + 1000
                     : inner.Vertices[i].X + 100000, inner.Vertices[i].Y, inner.Vertices[i].Z));
+                bool colinear = false;
 
 
                 int countIntersect = 0;
                 for (int j = 0; j < outerLines.Length; j++)
                 {
-                    if (IsLineSegmentsIntersected(l, outerLines[j]))
+                    if (IsLineSegmentsIntersected(l, outerLines[j], ref colinear))
+                    {
                         countIntersect++;
+                    }
                 }
-                if (countIntersect % 2 == 0)
+
+                if (!colinear && countIntersect % 2 == 0)
                     return false;
             }
             return true;
@@ -173,9 +178,9 @@ namespace CADReader
         }
 
 
-        public static bool IsRectangle(LinearPath linPath,double tolerance)
+        public static bool IsRectangle(LinearPath linPath, double tolerance)
         {
-            
+
             int nVertices = linPath.Vertices.Count();
             if (nVertices > 5)
                 return false;
@@ -338,6 +343,41 @@ namespace CADReader
             return false; // Doesn't fall in any of the above cases
         }
 
+        internal static bool IsLineSegmentsIntersected(Line line1, Line line2, ref bool colinear)
+        {
+            //colinear = false;
+
+            int o1 = orientation(line1.StartPoint, line1.EndPoint, line2.StartPoint);
+            int o2 = orientation(line1.StartPoint, line1.EndPoint, line2.EndPoint);
+            int o3 = orientation(line2.StartPoint, line2.EndPoint, line1.StartPoint);
+            int o4 = orientation(line2.StartPoint, line2.EndPoint, line1.EndPoint);
+
+            if (o1 == 0 || o2 == 0 || o3 == 0 || o4 == 0)
+            {
+                colinear = true;
+            }
+            if (o1 != o2 && o3 != o4)
+                return true;
+
+            // Special Cases 
+            // p1, q1 and p2 are colinear and p2 lies on segment p1q1 
+            if (o1 == 0 && onSegment(line1.StartPoint, line2.StartPoint, line1.EndPoint)) return true;
+
+            // p1, q1 and q2 are colinear and q2 lies on segment p1q1 
+            if (o2 == 0 && onSegment(line1.StartPoint, line2.EndPoint, line1.EndPoint)) return true;
+
+            // p2, q2 and p1 are colinear and p1 lies on segment p2q2 
+            if (o3 == 0 && onSegment(line2.StartPoint, line1.StartPoint, line2.EndPoint)) return true;
+
+            // p2, q2 and q1 are colinear and q1 lies on segment p2q2 
+            if (o4 == 0 && onSegment(line2.StartPoint, line1.EndPoint, line2.EndPoint)) return true;
+
+
+
+            return false; // Doesn't fall in any of the above cases
+        }
+
+
         internal static bool IsLineSegmentIntersectingPolygon(LinearPath linPath, Line line2)
         {
             foreach (Line line1 in linPath.ConvertToLines())
@@ -353,26 +393,26 @@ namespace CADReader
                 //double delta = a1 * b2 - a2 * b1;
                 //if (Math.Abs(delta) > 0.0001) // !=0
                 //{
-                    int o1 = orientation(line1.StartPoint, line1.EndPoint, line2.StartPoint);
-                    int o2 = orientation(line1.StartPoint, line1.EndPoint, line2.EndPoint);
-                    int o3 = orientation(line2.StartPoint, line2.EndPoint, line1.StartPoint);
-                    int o4 = orientation(line2.StartPoint, line2.EndPoint, line1.EndPoint);
+                int o1 = orientation(line1.StartPoint, line1.EndPoint, line2.StartPoint);
+                int o2 = orientation(line1.StartPoint, line1.EndPoint, line2.EndPoint);
+                int o3 = orientation(line2.StartPoint, line2.EndPoint, line1.StartPoint);
+                int o4 = orientation(line2.StartPoint, line2.EndPoint, line1.EndPoint);
 
-                    if (o1 != o2 && o3 != o4)
-                        return true;
+                if (o1 != o2 && o3 != o4)
+                    return true;
 
-                    // Special Cases 
-                    // p1, q1 and p2 are colinear and p2 lies on segment p1q1 
-                    if (o1 == 0 && onSegment(line1.StartPoint, line2.StartPoint, line1.EndPoint)) return true;
+                // Special Cases 
+                // p1, q1 and p2 are colinear and p2 lies on segment p1q1 
+                if (o1 == 0 && onSegment(line1.StartPoint, line2.StartPoint, line1.EndPoint)) return true;
 
-                    // p1, q1 and q2 are colinear and q2 lies on segment p1q1 
-                    if (o2 == 0 && onSegment(line1.StartPoint, line2.EndPoint, line1.EndPoint)) return true;
+                // p1, q1 and q2 are colinear and q2 lies on segment p1q1 
+                if (o2 == 0 && onSegment(line1.StartPoint, line2.EndPoint, line1.EndPoint)) return true;
 
-                    // p2, q2 and p1 are colinear and p1 lies on segment p2q2 
-                    if (o3 == 0 && onSegment(line2.StartPoint, line1.StartPoint, line2.EndPoint)) return true;
+                // p2, q2 and p1 are colinear and p1 lies on segment p2q2 
+                if (o3 == 0 && onSegment(line2.StartPoint, line1.StartPoint, line2.EndPoint)) return true;
 
-                    // p2, q2 and q1 are colinear and q1 lies on segment p2q2 
-                    if (o4 == 0 && onSegment(line2.StartPoint, line1.EndPoint, line2.EndPoint)) return true;
+                // p2, q2 and q1 are colinear and q1 lies on segment p2q2 
+                if (o4 == 0 && onSegment(line2.StartPoint, line1.EndPoint, line2.EndPoint)) return true;
                 //}
             }
 
@@ -465,13 +505,13 @@ namespace CADReader
             // for details of below formula. 
             double val = (q.Y - p.Y) * (r.X - q.X) - (q.X - p.X) * (r.Y - q.Y);
 
-            if (Math.Abs(val)<0.001) return 0; // colinear 
+            if (Math.Abs(val) < 0.001) return 0; // colinear 
 
             return (val > 0) ? 1 : 2; // clock or counterclock wise 
         }
         #endregion
 
 
-        
+
     }
 }

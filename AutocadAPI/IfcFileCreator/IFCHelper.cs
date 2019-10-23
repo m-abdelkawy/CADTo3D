@@ -204,7 +204,20 @@ namespace IfcFileCreator
                     else
                     {
                         Arc arc = compCurvePath.CurveList[i] as Arc;
+                        IfcCompositeCurveSegment segment = model.Instances.New<IfcCompositeCurveSegment>();
                         IfcTrimmedCurve trimmedCurve = model.Instances.New<IfcTrimmedCurve>();
+                        IfcCircle cir = model.Instances.New<IfcCircle>(e => e.Radius = arc.Radius);
+                        cir.Position = model.Instances.New<IfcAxis2Placement3D>(e=>e.Location=model.Instances.New<IfcCartesianPoint>(p=>p.SetXYZ(arc.Center.X,arc.Center.Y,arc.Center.Z)));
+                                                 
+                        trimmedCurve.BasisCurve = cir;
+                        trimmedCurve.Trim1.Add(model.Instances.New<IfcCartesianPoint>(p => p.SetXYZ(arc.StartPoint.X, arc.StartPoint.Y, arc.StartPoint.Z)));
+                        trimmedCurve.Trim2.Add(model.Instances.New<IfcCartesianPoint>(p => p.SetXYZ(arc.EndPoint.X, arc.EndPoint.Y, arc.EndPoint.Z)));
+                        trimmedCurve.SenseAgreement = arc.Plane.AxisZ == Vector3D.AxisZ ? false : true;
+                        trimmedCurve.MasterRepresentation = IfcTrimmingPreference.CARTESIAN;
+                        segment.ParentCurve = trimmedCurve;
+                        segment.Transition = IfcTransitionCode.CONTINUOUS;
+                        compositeCurve.Segments.Add(segment);
+
                     }
                 }
             }
@@ -216,7 +229,7 @@ namespace IfcFileCreator
             var plane = model.Instances.New<IfcPlane>();
             plane.Position = model.Instances.New<IfcAxis2Placement3D>();
             plane.Position.Location = model.Instances.New<IfcCartesianPoint>();
-            //plane.Position.Location.SetXYZ(lstPoints[0].X, lstPoints[0].Y, lstPoints[0].Z);
+            plane.Position.Location.SetXYZ(profPath.X, lstPoints[0].Y, lstPoints[0].Z);
 
             plane.Position.Axis = model.Instances.New<IfcDirection>();
             plane.Position.Axis.SetXYZ(0, 0, 1);

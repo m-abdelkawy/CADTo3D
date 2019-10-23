@@ -134,6 +134,7 @@ namespace CADReader.Helpers
 
         public static List<LinearPath> EntitiesIntersectingSemelleGet(LinearPath semelleLinPath, List<LinearPath> lstCadFooting, out List<Line> lstSemelleLongLine)
         {
+            //intersected footings
             HashSet<LinearPath> lstIntersectingEntity = new HashSet<LinearPath>();
             Line[] lstSemelleLine = semelleLinPath.ConvertToLines();
 
@@ -215,14 +216,30 @@ namespace CADReader.Helpers
             //intersection points with the nearest polygon ionside footing
             List<Point3D> lstNearIntersectionPts = new List<Point3D>();
 
+            #region Calculate Modified Line
+
+            Line linemodified = LineModify(line, CADConfig.Units == linearUnitsType.Meters ? 15 : 15000
+                , CADConfig.Units == linearUnitsType.Meters ? 15 : 15000);
+            
+
+            //Line linemod2 = new Line(line.StartPoint, line.EndPoint);
+            //linemod2.Scale(100);
+
+            //Line lineMod3 = new Line(line.StartPoint, line.EndPoint);
+            //lineMod3.Scale(uv12 * 100);
+            #endregion
             double dist = double.MaxValue;
             for (int i = 0; i < lstLinPathEntityInsideFooting.Count; i++)
             {//loop over entities inside footing
                 //points of intersection of centerline with polygon inside footing
-                List<Point3D> lstIntersectionPts = MathHelper.PointsIntersectOfLineWithPolygon(lstLinPathEntityInsideFooting[i], line);
-                lstIntersectionPts = MathHelper.PointsIntersectOfLineWithPolygon(lstLinPathEntityInsideFooting[i], line);
+                List<Point3D> lstIntersectionPts = MathHelper.PointsIntersectOfLineSegmentWithPolygon(lstLinPathEntityInsideFooting[i], linemodified);
+
 
                 //calculate distance from centerline start to intersection point of index "0"
+                if (lstIntersectionPts.Count == 0)
+                {
+                    return null;
+                }
                 if (dist >= MathHelper.CalcDistanceBetweenTwoPoint3D(line.StartPoint, lstIntersectionPts[0]))
                 {
                     dist = MathHelper.CalcDistanceBetweenTwoPoint3D(line.StartPoint, lstIntersectionPts[0]);
@@ -233,6 +250,17 @@ namespace CADReader.Helpers
             }
             if (lstNearIntersectionPts.Count == 0) return null;
             return MathHelper.MidPoint3D(lstNearIntersectionPts[0], lstNearIntersectionPts[1]);
+        }
+
+        public static Line LineModify(Line line, double scaleStPt, double scaleEndPt)
+        {
+            Vector3D uv12 = MathHelper.UnitVector3DFromPt1ToPt2(line.StartPoint, line.EndPoint);
+            Vector3D uv21 = MathHelper.UnitVector3DFromPt1ToPt2(line.EndPoint, line.StartPoint);
+
+            Point3D lineModifiedStPt = line.StartPoint + uv21 * scaleStPt;
+            Point3D lineModifiedEndPt = line.EndPoint + uv12 * scaleEndPt;
+
+            return new Line(lineModifiedStPt, lineModifiedEndPt);
         }
     }
 }

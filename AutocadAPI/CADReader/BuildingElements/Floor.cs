@@ -45,9 +45,9 @@ namespace CADReader.BuildingElements
             this.RetainingWalls = base.GetWalls(cadReader);
             GetStairs(cadReader);
             RcColumns = base.GetRCColumns(this.Columns);
-            ShearWalls = GetShearWalls(cadReader); 
-            Ramps = GetRamps(cadReader); 
-            GetRcSLabs(); 
+            ShearWalls = GetShearWalls(cadReader);
+            Ramps = GetRamps(cadReader);
+            GetRcSLabs();
             this.ReinforcedCadWalls = base.GetRCWalls(this.RetainingWalls);
 
             GetElectricalConduit(cadReader);
@@ -59,6 +59,38 @@ namespace CADReader.BuildingElements
             List<Entity> lstElecConduit = CadHelper.EntitiesGetByLayerName(cadReader, CadLayerName.ElecConduit);
             for (int i = 0; i < lstElecConduit.Count; i++)
             {
+
+                if(lstElecConduit[i] is LinearPath)
+                {
+                    for (int j = 0; j < lstElecConduit[i].Vertices.Length; j++)
+                    {
+                        lstElecConduit[i].Vertices[j].Z = Level;
+                    }
+                }
+                else if(lstElecConduit[i] is CompositeCurve)
+                {
+                    CompositeCurve compCurve = lstElecConduit[i] as CompositeCurve;
+                    for (int j = 0; j < compCurve.CurveList.Count; j++)
+                    {
+                       Line line = compCurve.CurveList[j] as Line;
+                        if (line!=null)
+                        {
+                            for (int k = 0; k < line.Vertices.Count(); k++)
+                            {
+                                line.Vertices[k].Z = Level;
+                            } 
+                        }
+                        else
+                        {
+                            Arc arc = compCurve.CurveList[j] as Arc;
+                            arc.StartPoint.Z = Level;
+                            arc.EndPoint.Z = Level;
+                            arc.Center.Z = Level;
+                        }
+                    }
+                }
+                
+
                 ElecConduits.Add(new ElectricalConduit(lstElecConduit[i]));
             }
         }
@@ -81,7 +113,7 @@ namespace CADReader.BuildingElements
             }
 
         }
-        
+
         private void GetRcSLabs()
         {
             this.RcSlab = new List<ReinforcedCadSlab>();

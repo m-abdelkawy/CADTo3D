@@ -44,13 +44,13 @@ namespace CADReader.Reinforced_Elements
             //instantiate rebar property
             Rebars = new List<Rebar>();
 
-            // All Entites
-            List<LinearPath> lstEntity = CadHelper.PLinesGetByLayerName(cadreader, CadLayerName.RCFooting);
+            // Get footings in the drawing
+            List<LinearPath> lstFooting = CadHelper.PLinesGetByLayerName(cadreader, CadLayerName.RCFooting);
 
-            //entities intersecting with semelles
+            //footings intersecting with semelles
             List<Line> lstSemelleLongLine;
 
-            List<LinearPath> lstIntersectingFooting = CadHelper.EntitiesIntersectingSemelleGet(Semelle.HzLinPath, lstEntity, out lstSemelleLongLine);
+            List<LinearPath> lstIntersectingFooting = CadHelper.EntitiesIntersectingSemelleGet(Semelle.HzLinPath, lstFooting, out lstSemelleLongLine);
 
 
 
@@ -74,12 +74,29 @@ namespace CADReader.Reinforced_Elements
 
                 //intersection point of Semelle Center Line with the nearest entity inside the footing polygon
                 Point3D pt1 = CadHelper.PointIntersectSemelleWithNearEntity(centerLine, lstEntityInsideFooting1);
+                if(pt1 == null)
+                {
+                    Line lineModified = CadHelper.LineModify(centerLine, CADConfig.Units == linearUnitsType.Meters ? 15 : 15000
+                        , CADConfig.Units == linearUnitsType.Meters ? 15 : 15000);
+                    List<Point3D> lstPtIntersection = MathHelper.PointsIntersectOfLineSegmentWithPolygon(lstIntersectingFooting[0], lineModified);
+
+                    pt1 = MathHelper.MidPoint3D(lstPtIntersection[0], lstPtIntersection[1]);
+                }
 
                 //2 points of Center Line intersection with polygon
                 List<LinearPath> lstEntityInsideFooting2 = CadHelper.EntitiesInsideFootingGet(lstIntersectingFooting[1], lstVlElements);
 
+
                 //intersection point of Semelle Center Line with the nearest entity inside the footing polygon
                 Point3D pt2 = CadHelper.PointIntersectSemelleWithNearEntity(centerLine, lstEntityInsideFooting2);
+                if (pt2 == null)
+                {
+                    Line lineModified = CadHelper.LineModify(centerLine, CADConfig.Units == linearUnitsType.Meters ? 15 : 15000
+                        , CADConfig.Units == linearUnitsType.Meters ? 15 : 15000);
+                    List<Point3D> lstPtIntersection = MathHelper.PointsIntersectOfLineSegmentWithPolygon(lstIntersectingFooting[1], lineModified);
+
+                    pt2 = MathHelper.MidPoint3D(lstPtIntersection[0], lstPtIntersection[1]);
+                }
 
 
 
@@ -113,6 +130,8 @@ namespace CADReader.Reinforced_Elements
             }
 
         }
+
+       
 
         //private void StirrupPopulate()
         //{

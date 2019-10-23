@@ -320,6 +320,17 @@ namespace IfcFileCreator
                                 }
                             }
 
+                            foreach (ElectricalConduit cadConduit in floor.ElecConduits)
+                            {
+
+                                using (var txn = model.BeginTransaction("Add conduit"))
+                                {
+                                IfcCableCarrierSegment conduit = CreateIfcConduit(model, cadConduit);
+                                    storey.AddElement(conduit);
+                                    txn.Commit();
+                                }
+                            }
+
 
                             BuildingSubmissions.SubmittedElems.Add(lstStair);
                             BuildingSubmissions.SubmittedElems.Add(lstSlabFormWork);
@@ -849,7 +860,7 @@ namespace IfcFileCreator
 
 
 
-                
+
                 //represent footing as a rectangular profile
                 IfcArbitraryClosedProfileDef rectProf = IFCHelper.ArbitraryClosedProfileCreate(model, cadFooting.ProfilePath.Vertices.ToList());
 
@@ -1655,33 +1666,33 @@ namespace IfcFileCreator
 
             return stirrupToCreate;
 
-        } 
-      //  private IfcCableCarrierSegment CreateIfcConduit(IfcStore model, ElectricalConduit conduit, double height)
-        //{
-            //IfcCableCarrierSegment conduitToCreate = model.Instances.New<IfcCableCarrierSegment>();
-            //conduitToCreate.Name = "Conduit:UC305x305x97:" + random.Next(100000);
+        }
+        private IfcCableCarrierSegment CreateIfcConduit(IfcStore model, ElectricalConduit conduit)
+        {
+            IfcCableCarrierSegment conduitToCreate = model.Instances.New<IfcCableCarrierSegment>();
+            conduitToCreate.Name = "Conduit:UC305x305x97:" + random.Next(100000);
 
-            ////represent column as a rectangular profile
-            //IfcCircleProfileDef cirProf = IFCHelper.CircleProfileCreate(model, conduit.Diameter / 2);
-            // //Profile insertion point
-            //cirProf.ProfileInsertionPointSet(model, 0, 0); 
+            //represent column as a rectangular profile
+            IfcCircleProfileDef cirProf = IFCHelper.CircleProfileCreate(model, conduit.Diameter / 2);
+            //Profile insertion point
+            cirProf.ProfileInsertionPointSet(model, 0, 0);
 
 
-            //IfcSurfaceCurveSweptAreaSolid body = IFCHelper.ProfileSurfaceSweptSolidCreate(model, cirProf, lstVertices);
-             
-            //    //Create a Definition shape to hold the geometry
-            //IfcShapeRepresentation shape = IFCHelper.ShapeRepresentationCreate(model, "SweptSolid", "Body");
-            //shape.Items.Add(body);
+            IfcSurfaceCurveSweptAreaSolid body = IFCHelper.ProfileSurfaceSweptSolidCreateByCompositeCurve(model, cirProf,conduit.CurvePath);
 
-            //    //Create a Product Definition and add the model geometry to the wall
-            //    IfcProductDefinitionShape prDefShape = model.Instances.New<IfcProductDefinitionShape>();
-            //    prDefShape.Representations.Add(shape);
-            //    conduitToCreate.Representation = prDefShape;
+            //Create a Definition shape to hold the geometry
+            IfcShapeRepresentation shape = IFCHelper.ShapeRepresentationCreate(model, "SweptSolid", "Body");
+            shape.Items.Add(body);
 
-            //return conduitToCreate;
-            //// }
+            //Create a Product Definition and add the model geometry to the wall
+            IfcProductDefinitionShape prDefShape = model.Instances.New<IfcProductDefinitionShape>();
+            prDefShape.Representations.Add(shape);
+            conduitToCreate.Representation = prDefShape;
 
-        //}
+            return conduitToCreate;
+            // }
+
+        }
 
         private void AddPropertiesToWall(IfcStore model, IfcWallStandardCase wall)
         {
@@ -1741,7 +1752,7 @@ namespace IfcFileCreator
                 rdbp.RelatedObjects.Add(wall);
                 rdbp.RelatingPropertyDefinition = ifcPropertySet;
             });
-        } 
+        }
         #region formwork
         private IfcBuildingElementPart CreateFormWork(IfcStore model, LinearPath linPathElem, double formWorkThickness, double extrusionHeight
             , out IfcOpeningElement open, bool isSlabOrBeam = false)
