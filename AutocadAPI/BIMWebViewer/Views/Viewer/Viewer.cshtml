@@ -185,6 +185,8 @@
     <div style="position: absolute; left: 5px; top: 5px; padding: 5px;" id="toolbar" class="ui-widget-header ui-corner-all">
         <button id="btnClip">Clip</button>
         <button id="btnUnclip">Unclip</button>
+        <button id="btnClipAxis1">ClipAxis1</button>
+        <button id="btnClipAxis2">ClipAxis2</button>
     </div>
 
     <div style="position: absolute; right: 5px; top: 5px;" id="toolbar" class="ui-widget-header ui-corner-all">
@@ -224,7 +226,7 @@
     var SelectedClass;
   // Comment function
 
-    var GetElement = function (event) {
+        var GetElement = function (event) {
         if (Document._lastSelectioncomment)
             Document._lastSelectioncomment.removeClass("selected-ui-comment");
         $(event.target).addClass("selected-ui-comment");
@@ -266,7 +268,8 @@
   //Viewer inialize
 
         var viewer = new xViewer("viewer-canvas");
-    viewer.load('@Url.Action("ViewerLoad", "Viewer", new { FileName = ViewBag.FilePath })');
+        viewer.load('@Url.Action("ViewerLoad", "Viewer", new { FileName = ViewBag.FilePath })');
+        console.log("viewer", viewer);
     //Inialize Timeliner
     var ShowTimeLine = function () {
         if ($('#TimeLine').css("display") == "none")
@@ -321,7 +324,7 @@
         var hiddenIds = [];
 
         var id;
-    viewer.on("pick", function (args) {
+        viewer.on("pick", function (args) { 
         SelectedClass = "";
             viewer.resetStates();
             browser.activateEntity(args.id);
@@ -363,12 +366,12 @@
                 viewer.setStyle(index, type);
                 index++;
             }
-        };
-
-        viewer.on('loaded', function () {
+        }; 
+        viewer.on('loaded', function (args) {
+            debugger;
+            console.log(args);
             Recolour();
-        });
-
+        }); 
         var HideElement = function () {
             if (id == null) return;
             hiddenIds.push(id);

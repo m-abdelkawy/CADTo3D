@@ -726,3 +726,4 @@ D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\bin\WIPEOUT_20.5_11.TX
 D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\obj\Debug\BIMWebViewer.csprojResolveAssemblyReference.cache
 D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\obj\Debug\BIMWebViewer.dll
 D:\Coding Trials\GIT\CADTo3D\AutocadAPI\BIMWebViewer\obj\Debug\BIMWebViewer.pdb
+D:\03_PROJECT PREPERATION\01_AutocadAPI\03_AutocadAPI-master_190904\CADTo3D\AutocadAPI\BIMWebViewer\bin\devDept.Eyeshot.Control.x86.Wpf.v12.dll
