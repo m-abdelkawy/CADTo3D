@@ -25,7 +25,7 @@ namespace CADReader.Reinforced_Elements
         public ReinforcedCadColumn(RectColumn column, double lvl)
         {
             RectColumn = column;
-            ReinforcementPopulate(lvl);
+            ReinforcementPopulate();
         } 
         #endregion
 
@@ -65,22 +65,22 @@ namespace CADReader.Reinforced_Elements
             };
         }
 
-        public void StirrupPopulate(double lvl)
+        public void StirrupPopulate()
         {
             LinearPath stirrupLp = (LinearPath)RectColumn.ColPath.Offset(-RectColumn.Cover * 1.2);
-            for (int i = 0; i < stirrupLp.Vertices.Length; i++)
-            {
-                //stirrupLp.Vertices[i].Z += CADConfig.Units == linearUnitsType.Meters?lvl+1:lvl+1000;
-                stirrupLp.Vertices[i].Z += lvl;
-            }
+            //for (int i = 0; i < stirrupLp.Vertices.Length; i++)
+            //{
+            //    //stirrupLp.Vertices[i].Z += CADConfig.Units == linearUnitsType.Meters?lvl+1:lvl+1000;
+            //    //stirrupLp.Vertices[i].Z += lvl;
+            //}
 
             Stirrup = new Stirrup(stirrupLp);
         }
 
-        public override void ReinforcementPopulate(double lvl)
+        public override void ReinforcementPopulate()
         {
             LstRebarPopulate();
-            StirrupPopulate(lvl);
+            StirrupPopulate();
         }
 
         #endregion

@@ -14,7 +14,7 @@ namespace CADReader.BuildingElements
     {
         #region Properties
 
-        public List<Point3D> LstFacePt { get; set; }
+        public LinearPath linPathSlab { get; set; }
         public List<Opening> Openings { get; set; }
 
         public double Thickness { get; set; } = DefaultValues.SlabThinkess;
@@ -23,7 +23,7 @@ namespace CADReader.BuildingElements
         #region Constructors
         public Slab(ReadAutodesk cadFileReader, LinearPath path, double level)
         {
-            LstFacePt = path.Vertices.Select(v => new Point3D(v.X, v.Y, v.Z + level)).ToList();
+            linPathSlab = new LinearPath( path.Vertices.Select(v => new Point3D(v.X, v.Y, v.Z + level)).ToArray());
             GetOpenings(cadFileReader, path, level);
         }
         #endregion
@@ -69,7 +69,12 @@ namespace CADReader.BuildingElements
                 center.Z = level;
                 widthMidPt.Z = level;
 
-                Openings.Add(new Opening(width, length, center, widthMidPt));
+                for (int j = 0; j < PolyLines[i].Vertices.Length; j++)
+                {
+                    PolyLines[i].Vertices[j].Z = level;
+                }
+
+                Openings.Add(new Opening(PolyLines[i],width, length, center, widthMidPt));
                 // 
             }
         }

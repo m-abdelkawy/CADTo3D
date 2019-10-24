@@ -113,7 +113,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <nav class="navbar navbar-expand-lg navbar-light">
-                    <a class="navbar-brand" href="/Home/Home"> <img src="~/img/nlogo.png" width="300" alt="logo"></a>
+                    <a class="navbar-brand" href="/Home/Home"> <img src="~/img/nlogo.png" width="130" alt="logo"></a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
@@ -185,8 +185,8 @@
     <div style="position: absolute; left: 5px; top: 5px; padding: 5px;" id="toolbar" class="ui-widget-header ui-corner-all">
         <button id="btnClip">Clip</button>
         <button id="btnUnclip">Unclip</button>
-        <button id="btnClipAxis1">ClipAxis1</button>
-        <button id="btnClipAxis2">ClipAxis2</button>
+        <button id="btnSubmission">Submissions</button>
+        <button id="btnHideAll">Hide All</button>
     </div>
 
     <div style="position: absolute; right: 5px; top: 5px;" id="toolbar" class="ui-widget-header ui-corner-all">
@@ -283,7 +283,7 @@
     }
 
 
-   
+
 
    // Camera position
     var viewPointsarr = [];
@@ -326,7 +326,8 @@
         var id;
         viewer.on("pick", function (args) { 
         SelectedClass = "";
-            viewer.resetStates();
+        //viewer.resetStates();
+        viewer.setState(xState.UNDEFINED, [id]);
             browser.activateEntity(args.id);
             viewer.renderingMode = "normal";
             id = args.id;
@@ -345,18 +346,61 @@
             GetProperties(id);
         });
         viewer.on("dblclick", function (args) {
-            viewer.resetStates();
+          //  viewer.resetStates();
             viewer.renderingMode = "x-ray";
             var id = args.id;
             viewer.setState(xState.HIGHLIGHTED, [id]);
             viewer.zoomTo(id);
             keepTarget = true;
     });
+        var productIds=[];
+        $('#btnSubmission').click(function () {
+            $.ajax({
+                url: '@Url.Action("GetElemetsToRender", "Viewer")',
+                type: 'POST',
+                success: function (dat) {
+                    console.log(dat);
+                    var Data = JSON.parse(dat);
+                    console.log(Data);
 
+                    if (productIds != null && Data !=null) {
+                        debugger;
+                        if (!Data.ProductIdList[Data.ProductIdList.length-1].isReinforcement) {
+                            for (var i = 0; i < productIds.length; i++) {
+                                if ((productIds[i].isFormWork)) {
+                                    viewer.setState(xState.HIDDEN, [productIds[i].Id]);
+                                }
+                            }
+                        }
+                      
+                    } 
+                    //var myArray = Data.ProductIdList.filter((el) => !productIds.includes(el));
 
+                    productIds = productIds.concat(Data.ProductIdList);
+                    viewer.setState(xState.UNDEFINED, Data.ProductIdList.map(e=>e.Id));
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        });
+        $('#btnHideAll').click(function () {
+            HideAllElements();
+
+             $.ajax({
+                url: '@Url.Action("ResetCounter", "Viewer")',
+                type: 'POST',
+                success: function (dat) {
+                    console.log(dat);
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        }); 
         viewer.start();
 
-        var Recolour = function () { 
+        var Recolour = function () {
             if (!viewer) return;
             var index = 0;
             for (var i in xProductType) {
@@ -366,13 +410,35 @@
                 viewer.setStyle(index, type);
                 index++;
             }
-        }; 
-        viewer.on('loaded', function (args) {
-            debugger;
-            console.log(args);
-            Recolour();
-        }); 
+        };
+        function ColorByTypeFixed() {
+            var typeList = ['IFCCOLUMN', 'IFCFOOTING', 'IFCWALLSTANDARDCASE', 'IFCSLAB', 'IFCREINFORCINGBAR', 'IFCBUILDINGELEMENTPART'];
+            var colorList = [[85, 85, 85, 255], [103, 103, 103, 255], [178, 190, 181, 255], [153, 153, 153, 255], [224, 223, 219, 255], [222, 184, 135, 255]];
+
+            for (var i = 0; i < typeList.length; i++) {
+                viewer.defineStyle(i, colorList[i]);
+                viewer.setStyle(i, xProductType[typeList[i]]);
+            }
+        }
+
+        viewer.on('loaded', function () {
+           //Recolour();
+            ColorByTypeFixed();
+            HideAllElements();
+            $.ajax({
+                url: '@Url.Action("ResetCounter", "Viewer")',
+                type: 'POST',
+                success: function (dat) {
+                    console.log(dat);
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        });
+
         var HideElement = function () {
+        
             if (id == null) return;
             hiddenIds.push(id);
             viewer.setState(xState.HIDDEN, [id]);

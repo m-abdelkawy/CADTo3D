@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <!--
 This file is used by the publish/package process of your Web project. You can customize the behavior of this process
 by editing this MSBuild file. In order to learn more about this please visit https://go.microsoft.com/fwlink/?LinkID=208121. 
@@ -6,7 +6,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
-    <_PublishTargetUrl>C:\Users\Omar\Desktop\New folder (3)</_PublishTargetUrl>
+    <_PublishTargetUrl>D:\Publish</_PublishTargetUrl>
   </PropertyGroup>
   <ItemGroup>
     <File Include="ApplicationInsights.config">
@@ -14,6 +14,15 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="App_Code/Treeview.cshtml">
       <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="bin/ACCAMERA_20.5_11.TX">
+      <publishTime>08/13/2019 15:09:01</publishTime>
+    </File>
+    <File Include="bin/ACIDVIEWOBJ_20.5_11.TX">
+      <publishTime>08/13/2019 15:09:01</publishTime>
+    </File>
+    <File Include="bin/ACMPOLYGONOBJ15_20.5_11.TX">
+      <publishTime>08/13/2019 15:09:01</publishTime>
     </File>
     <File Include="bin/Antlr3.Runtime.dll">
       <publishTime>09/10/2013 16:29:20</publishTime>
@@ -25,22 +34,55 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/07/2019 15:33:05</publishTime>
     </File>
     <File Include="bin/App_Code.compiled">
-      <publishTime>06/10/2019 14:39:16</publishTime>
+      <publishTime>09/30/2019 17:04:19</publishTime>
     </File>
     <File Include="bin/App_Code.dll">
-      <publishTime>06/10/2019 14:39:15</publishTime>
+      <publishTime>09/30/2019 17:04:19</publishTime>
     </File>
     <File Include="bin/App_global.asax.compiled">
-      <publishTime>06/10/2019 14:39:16</publishTime>
+      <publishTime>09/30/2019 17:04:19</publishTime>
     </File>
     <File Include="bin/App_global.asax.dll">
-      <publishTime>06/10/2019 14:39:16</publishTime>
+      <publishTime>09/30/2019 17:04:19</publishTime>
+    </File>
+    <File Include="bin/ATEXT_20.5_11.TX">
+      <publishTime>08/13/2019 15:09:01</publishTime>
     </File>
     <File Include="bin/BIMWebViewer.dll">
-      <publishTime>06/10/2019 14:38:41</publishTime>
+      <publishTime>09/30/2019 17:03:59</publishTime>
     </File>
     <File Include="bin/BIMWebViewer.pdb">
       <publishTime>06/10/2019 14:38:41</publishTime>
+    </File>
+    <File Include="bin/CADReader.dll">
+      <publishTime>09/30/2019 16:47:32</publishTime>
+    </File>
+    <File Include="bin/CADReader.dll.config">
+      <publishTime>09/05/2019 15:55:03</publishTime>
+    </File>
+    <File Include="bin/CopyModules.dll">
+      <publishTime>08/13/2019 15:09:01</publishTime>
+    </File>
+    <File Include="bin/devDept.Eyeshot.Control.Wpf.v12.dll">
+      <publishTime>09/05/2019 10:49:14</publishTime>
+    </File>
+    <File Include="bin/devDept.Eyeshot.Control.x86.Wpf.v12.dll">
+      <publishTime>08/13/2019 15:09:51</publishTime>
+    </File>
+    <File Include="bin/devDept.Geometry.v12.dll">
+      <publishTime>09/05/2019 10:49:14</publishTime>
+    </File>
+    <File Include="bin/devDept.Graphics.Shaders.v12.dll">
+      <publishTime>09/05/2019 10:49:14</publishTime>
+    </File>
+    <File Include="bin/devDept.Graphics.Wpf.v12.dll">
+      <publishTime>09/05/2019 10:49:14</publishTime>
+    </File>
+    <File Include="bin/DWFCORE.DLL">
+      <publishTime>08/13/2019 15:09:01</publishTime>
+    </File>
+    <File Include="bin/DWFTOOLKIT.DLL">
+      <publishTime>08/13/2019 15:09:01</publishTime>
     </File>
     <File Include="bin/EntityFramework.dll">
       <publishTime>10/23/2017 13:15:18</publishTime>
@@ -56,6 +98,12 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="bin/ICSharpCode.SharpZipLib.dll">
       <publishTime>01/03/2011 14:16:38</publishTime>
+    </File>
+    <File Include="bin/IfcFileCreator.dll">
+      <publishTime>09/30/2019 16:47:34</publishTime>
+    </File>
+    <File Include="bin/ISM_20.5_11.TX">
+      <publishTime>08/13/2019 15:09:01</publishTime>
     </File>
     <File Include="bin/log4net.dll">
       <publishTime>12/10/2015 16:55:06</publishTime>
@@ -126,11 +174,44 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="bin/Microsoft.Web.Infrastructure.dll">
       <publishTime>07/25/2012 11:48:56</publishTime>
     </File>
+    <File Include="bin/MODELERGEOMETRY_20.5_11.TX">
+      <publishTime>08/13/2019 15:09:01</publishTime>
+    </File>
     <File Include="bin/Newtonsoft.Json.dll">
       <publishTime>02/18/2018 09:44:54</publishTime>
     </File>
+    <File Include="bin/ODBREPMODELER_20.5_11.DLL">
+      <publishTime>08/13/2019 15:09:01</publishTime>
+    </File>
+    <File Include="bin/ODPRCEXPORT_20.5_11.TX">
+      <publishTime>08/13/2019 15:09:01</publishTime>
+    </File>
+    <File Include="bin/ODPRCMODULE_20.5_11.TX">
+      <publishTime>08/13/2019 15:09:01</publishTime>
+    </File>
     <File Include="bin/Owin.dll">
-      <publishTime>11/27/2012 13:00:52</publishTime>
+      <publishTime>11/13/2012 12:19:34</publishTime>
+    </File>
+    <File Include="bin/PCRE.DLL">
+      <publishTime>08/13/2019 15:09:01</publishTime>
+    </File>
+    <File Include="bin/PDFPUBLISH_20.5_11.TX">
+      <publishTime>08/13/2019 15:09:01</publishTime>
+    </File>
+    <File Include="bin/PLOTSETTINGSVALIDATOR_20.5_11.TX">
+      <publishTime>08/13/2019 15:09:01</publishTime>
+    </File>
+    <File Include="bin/PRC_SwigDbMgd.dll">
+      <publishTime>08/13/2019 15:09:01</publishTime>
+    </File>
+    <File Include="bin/PRC_SWIGDB_20.5_11.DLL">
+      <publishTime>08/13/2019 15:09:01</publishTime>
+    </File>
+    <File Include="bin/RASTERPROCESSOR_20.5_11.TX">
+      <publishTime>08/13/2019 15:09:01</publishTime>
+    </File>
+    <File Include="bin/RECOMPUTEDIMBLOCK_20.5_11.TX">
+      <publishTime>08/13/2019 15:09:01</publishTime>
     </File>
     <File Include="bin/roslyn/csc.exe">
       <publishTime>05/24/2018 13:38:22</publishTime>
@@ -270,6 +351,15 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="bin/roslyn/VBCSCompiler.exe.config">
       <publishTime>05/24/2018 13:38:24</publishTime>
     </File>
+    <File Include="bin/RTEXT_20.5_11.TX">
+      <publishTime>08/13/2019 15:09:01</publishTime>
+    </File>
+    <File Include="bin/RXRASTERSERVICES_20.5_11.TX">
+      <publishTime>08/13/2019 15:09:01</publishTime>
+    </File>
+    <File Include="bin/SCENEOE_20.5_11.TX">
+      <publishTime>08/13/2019 15:09:01</publishTime>
+    </File>
     <File Include="bin/System.Diagnostics.DiagnosticSource.dll">
       <publishTime>07/19/2017 10:01:30</publishTime>
     </File>
@@ -306,8 +396,116 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="bin/System.Web.WebPages.Razor.dll">
       <publishTime>02/01/2018 12:20:56</publishTime>
     </File>
+    <File Include="bin/TD_3DSOLIDHISTORY_20.5_11.TX">
+      <publishTime>08/13/2019 15:09:01</publishTime>
+    </File>
+    <File Include="bin/TD_ACISBUILDER_20.5_11.DLL">
+      <publishTime>08/13/2019 15:09:01</publishTime>
+    </File>
+    <File Include="bin/TD_ALLOC_20.5_11.DLL">
+      <publishTime>08/13/2019 15:09:01</publishTime>
+    </File>
+    <File Include="bin/TD_AVE_20.5_11.TX">
+      <publishTime>08/13/2019 15:09:01</publishTime>
+    </File>
+    <File Include="bin/TD_BREPBUILDERFILLER_20.5_11.TX">
+      <publishTime>08/13/2019 15:09:01</publishTime>
+    </File>
+    <File Include="bin/TD_BREPBUILDER_20.5_11.DLL">
+      <publishTime>08/13/2019 15:09:01</publishTime>
+    </File>
+    <File Include="bin/TD_BREPRENDERER_20.5_11.DLL">
+      <publishTime>08/13/2019 15:09:01</publishTime>
+    </File>
+    <File Include="bin/TD_BR_20.5_11.DLL">
+      <publishTime>08/13/2019 15:09:01</publishTime>
+    </File>
+    <File Include="bin/TD_DBCORE_20.5_11.DLL">
+      <publishTime>08/13/2019 15:09:01</publishTime>
+    </File>
+    <File Include="bin/TD_DBENTITIES_20.5_11.TX">
+      <publishTime>08/13/2019 15:09:02</publishTime>
+    </File>
+    <File Include="bin/TD_DBIO_20.5_11.TX">
+      <publishTime>08/13/2019 15:09:02</publishTime>
+    </File>
+    <File Include="bin/TD_DBROOT_20.5_11.DLL">
+      <publishTime>08/13/2019 15:09:01</publishTime>
+    </File>
+    <File Include="bin/TD_DB_20.5_11.DLL">
+      <publishTime>08/13/2019 15:09:01</publishTime>
+    </File>
+    <File Include="bin/TD_DWF7IMPORT_20.5_11.TX">
+      <publishTime>08/13/2019 15:09:01</publishTime>
+    </File>
+    <File Include="bin/TD_DYNBLOCKS_20.5_11.TX">
+      <publishTime>08/13/2019 15:09:01</publishTime>
+    </File>
+    <File Include="bin/TD_GE_20.5_11.DLL">
+      <publishTime>08/13/2019 15:09:02</publishTime>
+    </File>
+    <File Include="bin/TD_GI_20.5_11.DLL">
+      <publishTime>08/13/2019 15:09:02</publishTime>
+    </File>
+    <File Include="bin/TD_GS_20.5_11.DLL">
+      <publishTime>08/13/2019 15:09:02</publishTime>
+    </File>
+    <File Include="bin/TD_PDFEXPORT_20.5_11.TX">
+      <publishTime>08/13/2019 15:09:02</publishTime>
+    </File>
+    <File Include="bin/TD_PDFTOOLKIT_20.5_11.DLL">
+      <publishTime>08/13/2019 15:09:02</publishTime>
+    </File>
+    <File Include="bin/TD_ROOT_20.5_11.DLL">
+      <publishTime>08/13/2019 15:09:02</publishTime>
+    </File>
+    <File Include="bin/TD_SPATIALINDEX_20.5_11.DLL">
+      <publishTime>08/13/2019 15:09:02</publishTime>
+    </File>
+    <File Include="bin/TD_SwigCoreMgd.dll">
+      <publishTime>08/13/2019 15:09:02</publishTime>
+    </File>
+    <File Include="bin/TD_SWIGCORE_20.5_11.DLL">
+      <publishTime>08/13/2019 15:09:02</publishTime>
+    </File>
+    <File Include="bin/TD_SwigDbMgd.dll">
+      <publishTime>08/13/2019 15:09:02</publishTime>
+    </File>
+    <File Include="bin/TD_SWIGDB_20.5_11.DLL">
+      <publishTime>08/13/2019 15:09:02</publishTime>
+    </File>
+    <File Include="bin/TD_SwigPublishMgd.dll">
+      <publishTime>08/13/2019 15:09:02</publishTime>
+    </File>
+    <File Include="bin/TD_SWIGPUBLISH_20.5_11.DLL">
+      <publishTime>08/13/2019 15:09:02</publishTime>
+    </File>
+    <File Include="bin/TD_TFCORE_20.5_11.TX">
+      <publishTime>08/13/2019 15:09:02</publishTime>
+    </File>
+    <File Include="bin/TD_TF_20.5_11.TX">
+      <publishTime>08/13/2019 15:09:02</publishTime>
+    </File>
+    <File Include="bin/TD_ZLIB.DLL">
+      <publishTime>08/13/2019 15:09:02</publishTime>
+    </File>
+    <File Include="bin/THREADPOOL_20.5_11.TX">
+      <publishTime>08/13/2019 15:09:02</publishTime>
+    </File>
+    <File Include="bin/W3DTK.DLL">
+      <publishTime>08/13/2019 15:09:02</publishTime>
+    </File>
     <File Include="bin/WebGrease.dll">
       <publishTime>01/23/2014 13:57:34</publishTime>
+    </File>
+    <File Include="bin/WHIPTK.DLL">
+      <publishTime>08/13/2019 15:09:02</publishTime>
+    </File>
+    <File Include="bin/WINOPENGL_20.5_11.TXV">
+      <publishTime>08/13/2019 15:09:02</publishTime>
+    </File>
+    <File Include="bin/WIPEOUT_20.5_11.TX">
+      <publishTime>08/13/2019 15:09:02</publishTime>
     </File>
     <File Include="bin/Xbim.CobieExpress.dll">
       <publishTime>01/13/2017 09:33:12</publishTime>
@@ -539,6 +737,15 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="Build/xbim-viewer.min.js">
       <publishTime>07/05/2019 15:36:30</publishTime>
+    </File>
+    <File Include="CAD Files/01.Foundation.dwg">
+      <publishTime>09/30/2019 16:55:53</publishTime>
+    </File>
+    <File Include="CAD Files/02.Basement Roof SLab.dwg">
+      <publishTime>09/30/2019 16:55:53</publishTime>
+    </File>
+    <File Include="CAD Files/03.Ground Roof Slab.dwg">
+      <publishTime>09/30/2019 16:55:53</publishTime>
     </File>
     <File Include="Content/bootstrap-theme.css">
       <publishTime>05/07/2019 15:32:59</publishTime>
@@ -1897,7 +2104,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/09/2019 12:20:35</publishTime>
     </File>
     <File Include="img/nlogo.png">
-      <publishTime>06/09/2019 12:20:35</publishTime>
+      <publishTime>09/30/2019 16:34:35</publishTime>
     </File>
     <File Include="img/passion_bg.png">
       <publishTime>06/09/2019 12:20:35</publishTime>
@@ -2128,7 +2335,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/07/2019 15:36:30</publishTime>
     </File>
     <File Include="PrecompiledApp.config">
-      <publishTime>06/10/2019 14:38:51</publishTime>
+      <publishTime>09/30/2019 17:04:03</publishTime>
     </File>
     <File Include="Resources/doctemplate/publish.js">
       <publishTime>05/07/2019 15:36:30</publishTime>
@@ -3028,13 +3235,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/07/2019 15:32:57</publishTime>
     </File>
     <File Include="Views/Home/Home.cshtml">
-      <publishTime>06/09/2019 23:22:29</publishTime>
+      <publishTime>09/30/2019 16:44:08</publishTime>
     </File>
     <File Include="Views/Home/Index.cshtml">
-      <publishTime>06/09/2019 22:21:45</publishTime>
+      <publishTime>09/30/2019 16:44:02</publishTime>
     </File>
     <File Include="Views/Home/LoadProject.cshtml">
-      <publishTime>06/09/2019 18:21:14</publishTime>
+      <publishTime>09/30/2019 16:44:08</publishTime>
     </File>
     <File Include="Views/Home/Versions.cshtml">
       <publishTime>06/09/2019 22:43:30</publishTime>
@@ -3085,7 +3292,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/07/2019 15:40:43</publishTime>
     </File>
     <File Include="Views/Viewer/Viewer.cshtml">
-      <publishTime>06/09/2019 20:57:27</publishTime>
+      <publishTime>09/30/2019 16:45:43</publishTime>
     </File>
     <File Include="Views/Viewer/_GanttChartPartial.cshtml">
       <publishTime>05/16/2019 14:25:44</publishTime>
@@ -3097,7 +3304,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/07/2019 15:32:57</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>06/10/2019 14:38:42</publishTime>
+      <publishTime>09/30/2019 16:47:37</publishTime>
     </File>
   </ItemGroup>
 </Project>

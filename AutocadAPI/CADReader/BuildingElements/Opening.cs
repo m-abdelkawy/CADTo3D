@@ -1,4 +1,5 @@
 ﻿using CADReader.Base;
+using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 using System;
 using System.Collections.Generic;
@@ -14,15 +15,18 @@ namespace CADReader.BuildingElements
         public double Width { get; set; }
         public double Length { get; set; }
         public Point3D CenterPt { get; set; }
-        public Point3D PtLengthDir { get; set; } 
+        public Point3D PtLengthDir { get; set; }
+
+        public LinearPath LinPathOpening { get; set; }
         #endregion
 
-        public Opening(double _width, double _length, Point3D _cntrPt, Point3D _ptLngthDir)
-        {
+        public Opening(LinearPath _linPath,double _width, double _length, Point3D _cntrPt, Point3D _ptLngthDir)
+        {//Todo: Draw openings using linearPath vertices
             Width = _width;
             Length = _length;
             CenterPt = _cntrPt;
             PtLengthDir = _ptLngthDir;
+            LinPathOpening = _linPath;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using CADReader.Helpers;
+﻿using CADReader.ElectricalElements;
+using CADReader.Helpers;
 using CADReader.Reinforced_Elements;
 using devDept.Eyeshot.Entities;
 using devDept.Eyeshot.Translators;
@@ -14,15 +15,21 @@ namespace CADReader.BuildingElements
     public class Floor : FloorBase
     {
         #region Properties
-        public List<Wall> Walls { get; set; }
+        public List<Wall> RetainingWalls { get; set; }
         public List<RectColumn> Columns { get; set; }
         public List<ReinforcedCadColumn> RcColumns { get; set; }
+        public List<ReinforcedCadSlab> RcSlab { get; set; }
         public List<Slab> Slabs { get; set; }
         public List<Stair> Stairs { get; set; }
         public List<LinearPath> Landings { get; set; }
 
         public List<ShearWall> ShearWalls { get; set; }
         public List<SlopedSlab> Ramps { get; set; }
+
+        public List<ReinforcedCadWall> ReinforcedCadWalls { get; set; }
+        public List<ElectricalConduit> ElecConduits { get; set; }
+
+
 
 
 
@@ -35,13 +42,57 @@ namespace CADReader.BuildingElements
 
             GetSlabs(cadReader);
             Columns = base.GetColumns(cadReader);
-            this.Walls = base.GetWalls(cadReader);
+            this.RetainingWalls = base.GetWalls(cadReader);
             GetStairs(cadReader);
             RcColumns = base.GetRCColumns(this.Columns);
             ShearWalls = GetShearWalls(cadReader);
-
             Ramps = GetRamps(cadReader);
+            GetRcSLabs();
+            this.ReinforcedCadWalls = base.GetRCWalls(this.RetainingWalls);
 
+            GetElectricalConduit(cadReader);
+        }
+
+        private void GetElectricalConduit(ReadAutodesk cadReader)
+        {
+            ElecConduits = new List<ElectricalConduit>();
+            List<Entity> lstElecConduit = CadHelper.EntitiesGetByLayerName(cadReader, CadLayerName.ElecConduit);
+            for (int i = 0; i < lstElecConduit.Count; i++)
+            {
+
+                if(lstElecConduit[i] is LinearPath)
+                {
+                    for (int j = 0; j < lstElecConduit[i].Vertices.Length; j++)
+                    {
+                        lstElecConduit[i].Vertices[j].Z = Level;
+                    }
+                }
+                else if(lstElecConduit[i] is CompositeCurve)
+                {
+                    CompositeCurve compCurve = lstElecConduit[i] as CompositeCurve;
+                    for (int j = 0; j < compCurve.CurveList.Count; j++)
+                    {
+                       Line line = compCurve.CurveList[j] as Line;
+                        if (line!=null)
+                        {
+                            for (int k = 0; k < line.Vertices.Count(); k++)
+                            {
+                                line.Vertices[k].Z = Level;
+                            } 
+                        }
+                        else
+                        {
+                            Arc arc = compCurve.CurveList[j] as Arc;
+                            arc.StartPoint.Z = Level;
+                            arc.EndPoint.Z = Level;
+                            arc.Center.Z = Level;
+                        }
+                    }
+                }
+                
+
+                ElecConduits.Add(new ElectricalConduit(lstElecConduit[i]));
+            }
         }
         #endregion
 
@@ -63,6 +114,14 @@ namespace CADReader.BuildingElements
 
         }
 
+        private void GetRcSLabs()
+        {
+            this.RcSlab = new List<ReinforcedCadSlab>();
+            for (int i = 0; i < Slabs.Count; i++)
+            {
+                RcSlab.Add(new ReinforcedCadSlab(Slabs[i]));
+            }
+        }
 
         private void GetStairs(ReadAutodesk cadFileReader)
         {

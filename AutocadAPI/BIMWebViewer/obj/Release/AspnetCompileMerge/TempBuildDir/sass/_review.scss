@@ -1,0 +1,180 @@
+/*****************Review part start******************/
+.review_part{
+    padding: 90px 0px 130px;
+    position: relative;
+    z-index: 1;
+    @media #{$small_mobile}{
+        margin-top: 145px;
+        padding: 70px 0px;
+    }
+    @media #{$large_mobile}{
+        margin-top: 0px;
+        padding: 70px 0px;
+    }
+    @media #{$tab_device}{
+        margin-top: 0px;
+        padding: 70px 0px;
+    }
+    @media #{$medium_device}{
+    
+    }
+    &:after{
+        position: absolute;
+        content: "";
+        left: 67px;
+        top: -125px;
+        width: 200px;
+        height: 200px;
+        background-image: url(../img/client_cercel_overlay.png);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        z-index: -1;
+        @media #{$small_mobile}{
+            display: none;
+        }
+        @media #{$large_mobile}{
+        
+        }
+        @media #{$tab_device}{
+        
+        }
+        @media #{$medium_device}{
+        
+        }
+    }
+    &:before{
+        position: absolute;
+        content: "";
+        right: 0;
+        width: 180px;
+        height: 450px;
+        background-image: url(../img/review_overley.png);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        @media #{$small_mobile}{
+            display: none;
+        }
+        @media #{$large_mobile}{
+            display: none;
+        }
+        @media #{$tab_device}{
+        
+        }
+        @media #{$medium_device}{
+            width: 180px;
+            height: 250px;
+        }
+    }
+    .section_tittle{
+        margin-bottom: 105px;
+        @media #{$small_mobile}{
+            margin-bottom: 45px;
+        }
+        @media #{$large_mobile}{
+            margin-bottom: 45px;
+        }
+        @media #{$tab_device}{
+        
+        }
+        @media #{$medium_device}{
+        
+        }
+        h1{
+            color: $heading_color;
+        }
+    }
+    .review_part_text{
+        .client_info{
+            padding-bottom: 35px;
+            display: flow-root;
+            @media #{$small_mobile}{
+                padding-bottom: 20px;
+            }
+            @media #{$large_mobile}{
+                padding-bottom: 20px;
+            }
+            @media #{$tab_device}{
+            
+            }
+            @media #{$medium_device}{
+            
+            }
+            img{
+                height: 90px;
+                width: 90px;
+                float: left;
+                margin-right: 30px;
+                @media #{$small_mobile}{
+                    margin-right: 23px;
+                }
+                @media #{$large_mobile}{
+                    margin-right: 23px;
+                }
+                @media #{$tab_device}{
+                
+                }
+                @media #{$medium_device}{
+                
+                }
+            }
+            h4{
+                margin-top: 19px;
+                font-weight: 600;
+            }
+            p{
+                margin-top: 0px;
+            }
+        }
+        p{
+           font-weight: 400i;
+           line-height: 1.929;
+        }
+    }
+    .owl-dots {
+        text-align: center;
+        padding-top: 65px;
+        @media #{$small_mobile}{
+            padding-top: 30px;
+        }
+        @media #{$large_mobile}{
+            padding-top: 30px;
+        }
+        @media #{$tab_device}{
+            padding-top: 30px;
+        }
+        @media #{$medium_device}{
+        
+        }
+        button.owl-dot {
+            width: 20px;
+            height: 6px;
+            border-radius: 20px;
+            display: inline-block;
+            background: #e9eef2;
+            margin: 0 10px;
+    
+            &.active {
+                background-color: #cfb579;
+            }
+            &:focus {
+                outline: #cfb579;
+            }
+        }
+    }
+}
+@media #{$small_mobile}{
+    .about_review{
+        margin-top: 0px;
+    }
+}
+@media #{$large_mobile}{
+
+}
+@media #{$tab_device}{
+
+}
+@media #{$medium_device}{
+
+}

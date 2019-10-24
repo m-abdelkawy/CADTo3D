@@ -67,7 +67,7 @@ namespace CADReader.Helpers
                 if (other == null)
                     continue;
 
-                if (MathHelper.IntersectionOfTwoLineSegments(perpLine, other))
+                if (MathHelper.IsLineSegmentsIntersected(perpLine, other))
                 {
                     try
                     {
@@ -133,7 +133,7 @@ namespace CADReader.Helpers
 
                 for (int j = 0; j < arrLines.Length; j++)
                 {
-                    if (MathHelper.IntersectionOfTwoLines(lPos, arrLines[j]))
+                    if (MathHelper.IsLinesIntersected(lPos, arrLines[j]))
                     {
                         try
                         {
@@ -159,7 +159,7 @@ namespace CADReader.Helpers
                         }
                     }
 
-                    if (MathHelper.IntersectionOfTwoLines(lNeg, arrLines[j]))
+                    if (MathHelper.IsLinesIntersected(lNeg, arrLines[j]))
                     {
                         try
                         {

@@ -8,6 +8,6 @@ namespace CADReader.Base
 {
     public abstract class ReinforcedElements
     {
-        public abstract void ReinforcementPopulate(double lvl);
+        public abstract void ReinforcementPopulate();
     }
 }

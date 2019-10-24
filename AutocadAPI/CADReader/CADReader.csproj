@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>CADReader</RootNamespace>
     <AssemblyName>CADReader</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <TargetFrameworkProfile />
@@ -53,6 +53,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -69,11 +70,14 @@
     <Compile Include="BuildingElements\RCFooting.cs" />
     <Compile Include="BuildingElements\ShearWall.cs" />
     <Compile Include="BuildingElements\Slab.cs" />
+    <Compile Include="BuildingElements\Semelle.cs" />
     <Compile Include="BuildingElements\Stair.cs" />
+    <Compile Include="ElectricalElements\ElectricalConduit.cs" />
     <Compile Include="ElementComponents\Rebar.cs" />
     <Compile Include="ElementComponents\Stirrup.cs" />
     <Compile Include="Helpers\CADConfig.cs" />
     <Compile Include="Helpers\CadHelper.cs" />
+    <Compile Include="Helpers\PointEqualityComparer.cs" />
     <Compile Include="Helpers\DefaultValues.cs" />
     <Compile Include="Helpers\Extensions.cs" />
     <Compile Include="BuildingElements\Building.cs" />
@@ -88,10 +92,14 @@
     <Compile Include="BuildingElements\Wall.cs" />
     <Compile Include="Constants\BlockName.cs" />
     <Compile Include="Helpers\CadLayerName.cs" />
-    <Compile Include="MathHelper.cs" />
+    <Compile Include="Helpers\MathHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reinforced Elements\ReinforcedCadColumn.cs" />
+    <Compile Include="Reinforced Elements\ReinforcedCadFooting.cs" />
+    <Compile Include="Reinforced Elements\ReinforcedCadSemelle.cs" />
+    <Compile Include="Reinforced Elements\ReinforcedCadSlab.cs" />
+    <Compile Include="Reinforced Elements\ReinforcedCadWall.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

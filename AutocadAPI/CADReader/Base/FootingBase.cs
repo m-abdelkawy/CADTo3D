@@ -15,5 +15,7 @@ namespace CADReader.Base
         public double Thickness { get; set; }
 
         public LinearPath ProfilePath { get; set; }
+
+        
     }
 }

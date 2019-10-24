@@ -1,0 +1,626 @@
+﻿@using BIMWebViewer.Classes;
+@model List<ProductCategory>
+@{
+    ViewBag.Title = "Viewer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<head>
+    <link rel="stylesheet" href="~/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/css/animate.css">
+    <!-- owl carousel CSS -->
+    <link rel="stylesheet" href="~/css/owl.carousel.min.css">
+    <!-- themify CSS -->
+    <link rel="stylesheet" href="~/css/themify-icons.css">
+    <!-- flaticon CSS -->
+    <link rel="stylesheet" href="~/css/flaticon.css">
+    <!-- magnific-popup CSS -->
+    <link rel="stylesheet" href="~/css/magnific-popup.css">
+    <!-- font awesome CSS -->
+    <link rel="stylesheet" href="~/fontawesome/css/all.min.css">
+    <!-- style CSS -->
+    <link rel="stylesheet" href="~/css/style.css">
+</head>
+<link href="~/Libs/jquery-ui-styles/jquery-ui.min.css" rel="stylesheet" />
+<link href="~/Resources/doctemplate/static/styles/xbrowser-styles.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script src="~/Scripts/bootstrap.js"></script>
+<script src="~/Libs/jquery.js"></script>
+<script src="~/Libs/jquery-ui.js"></script>
+<script src="~/Libs/webgl-utils.js"></script>
+<script src="~/Libs/gl-matrix.js"></script>
+<script src="~/Viewer/ACY-binary-reader.debug.js"></script>
+<script src="~/Viewer/ACY-model-geometry.debug.js"></script>
+<script src="~/Viewer/ACY-model-handle.debug.js"></script>
+<script src="~/Viewer/ACY-product-type.debug.js"></script>
+<script src="~/Viewer/ACY-shaders.debug.js"></script>
+<script src="~/Viewer/ACY-state.debug.js"></script>
+<script src="~/Viewer/ACY-triangulated-shape.debug.js"></script>
+<script src="~/Viewer/ACY-viewer.debug.js"></script>
+<script src="~/Browser/ACY-attribute-dictionary.debug.js"></script>
+<script src="~/Browser/ACY-browser.debug.js"></script>
+<script src="~/Browser/ACY-cobie-utils.debug.js"></script>
+<script src="~/Browser/ACY-cobieuk-utils.debug.js"></script>
+<script src="~/Browser/ACY-visual-attribute.debug.js"></script>
+<script src="~/Browser/ACY-visual-entity.debug.js"></script>
+<script src="~/Browser/ACY-visual-model.debug.js"></script>
+<script src="~/Browser/ACY-visual-property.debug.js"></script>
+<script src="~/Browser/ACY-visual-templates.debug.js"></script>
+<script src="~/Browser/ACY-visual-assignment-set.debug.js"></script>
+<script src="~/Scripts/browser.js"></script>
+<script src="~/Scripts/jsrender.min.js"></script>
+<script src="~/Scripts/ej.gantt.min.js"></script>
+<script src="~/Scripts/jquery.ui.resizable.js"></script>
+
+<style>
+    .ui-widget-header {
+        background: #1b212e;
+    }
+
+    .collapsetree {
+        width: 15px;
+        background-image: url('../../Images/ui-icons_454545_256x240.png');
+        background-repeat: no-repeat;
+        background-position: -36px -17px;
+        display: inline-block;
+        cursor: pointer;
+    }
+
+    .expandtree {
+        width: 15px;
+        background-image: url('../../Images/ui-icons_454545_256x240.png');
+        background-repeat: no-repeat;
+        background-position: -50px -17px;
+        display: inline-block;
+        cursor: pointer;
+    }
+
+    .treeview ul {
+        font: 14px Arial, Sans-Serif;
+        margin: 0px;
+        padding-left: 20px;
+        list-style: none;
+    }
+
+    .treeview > li > a {
+        font-weight: bold;
+    }
+
+
+    .treeview li a {
+        padding: 4px;
+        font-size: 12px;
+        display: inline-block;
+        text-decoration: none;
+        width: auto;
+    }
+
+    .selected-ui-viewpoint {
+        background-color: darkgray;
+    }
+
+    body {
+        background-color: white;
+    }
+
+    .selected-ui-comment {
+        background-color: dodgerblue;
+    }
+</style>
+
+<!--::menu part start::-->
+<header class="main_menu home_menu">
+    <div class="container" style="max-width:1345px">
+        <div class="row">
+            <div class="col-lg-12">
+                <nav class="navbar navbar-expand-lg navbar-light">
+                    <a class="navbar-brand" href="/Home/Home"> <img src="~/img/nlogo.png" width="130" alt="logo"></a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse main-menu-item" id="navbarNav">
+                        <ul class="navbar-nav">
+                            <li class="nav-item active">
+                                <a class="nav-link" href="/Home/Home">Home<span class="sr-only">(current)</span></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="about.html">about</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="contact.html">Contact us</a>
+                            </li>
+                            <li class="nav-item"> <a class="nav-link" href="/Home/Index">Projects</a></li>
+                        </ul>
+                        <div style="margin-left:100px">
+
+                            @Html.Partial("_LoginPartial")
+                        </div>
+                    </div>
+                    <div class="navbar-collapse collapse">
+
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+<!--::menu part end::-->
+
+<div id="semantic-model-container" class="noselect" style="top:150px; width:300px;">
+    <div id="semantic-model">
+        <h3>Elements</h3>
+        <div class="no-overflow ui-accordion-content ui-helper-reset .ui-widget-header ui-corner-bottom ui-accordion-content-active"
+             id="ui-id-11" aria-labelledby="ui-id-10" role="tabpanel" aria-hidden="false"
+             style="display: block; height: 483px; overflow: auto; background:#1b212e;color:white;">
+            <div id="assetTypes" class="semantic-model-tree ACY-tree">
+                <div class="treeview">
+                    @if (Model != null && Model.Count() > 0)
+                    {
+                        <ul style="padding-left: 0px;">
+                            @Treeview.GetCategories(Model)
+                        </ul>
+                    }
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="semantic-descriptive-info-container" style="top:150px; width:300px;">
+    <div id="semantic-descriptive-info">
+        <h3 id="attrprop-header">Properties</h3>
+        <div class="no-overflow-y ui-accordion-content ui-helper-reset .ui-widget-header ui-corner-bottom ui-accordion-content-active"
+             id="ui-id-1" aria-labelledby="attrprop-header" role="tabpanel" aria-hidden="false"
+             style="display: block; height: 86px; overflow: auto; background:#1b212e;color:white;">
+            <div id="attrprop">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="viewer-container" style="top:150px; background:#f9f9f9; left:310px;right:310px;">
+    <canvas id="viewer-canvas"></canvas>
+    <div style="position: absolute; left: 5px; top: 5px; padding: 5px;" id="toolbar" class="ui-widget-header ui-corner-all">
+        <button id="btnClip">Clip</button>
+        <button id="btnUnclip">Unclip</button>
+        <button id="btnSubmission">Submissions</button>
+        <button id="btnHideAll">Hide All</button>
+    </div>
+
+    <div style="position: absolute; right: 5px; top: 5px;" id="toolbar" class="ui-widget-header ui-corner-all">
+
+        <button class="btn btn-dark" style="margin:5px; width:70px" onclick="viewer.show('front')">Front</button><br />
+        <button class="btn btn-dark" style="margin:5px; width:70px" onclick="viewer.show('back')">Back</button><br />
+        <button class="btn btn-dark" style="margin:5px; width:70px" onclick="viewer.show('top')">Top</button><br />
+        <button class="btn btn-dark" style="margin:5px; width:70px" onclick="viewer.show('bottom')">Bottom</button><br />
+        <button class="btn btn-dark" style="margin:5px; width:70px" onclick="viewer.show('left')">Left</button><br />
+        <button class="btn btn-dark" style="margin:5px; width:70px" onclick="viewer.show('right')">Right</button><br />
+
+    </div>
+    <div style="position: absolute; left: 5px; bottom: 35px; padding: 5px;" id="toolbar" class="ui-widget-header ui-corner-all">
+
+        <button class="btn btn-primary" style="width:70px" onclick="HideElement()">Hide</button>
+        <button onclick="IsolateElement()" style="width:70px" class="btn btn-dark">Isolate</button>
+        <button onclick="Reset()" class="btn btn-dark">Reset</button>
+        <button onclick="ColorElement()" class="btn btn-dark">Override Color</button>
+        <button onclick="ResetColor()" class="btn btn-dark">Reset Colors</button>
+        <button onclick="Recolour()" class="btn btn-dark">Recolour by type</button>
+    </div>
+    <div style="position: absolute; right: 5px; bottom: 30px; padding: 5px;" id="toolbar" class="ui-widget-header ui-corner-all">
+        <span style="color:white">Pick Color</span>
+        <input id="color-picker" type="color" value="Red" class="ui-widget-header ui-corner-all">
+    </div>
+</div>
+
+
+
+
+
+
+<script type="text/javascript">
+
+
+    var SelectedElementId;
+    var SelectedClass;
+  // Comment function
+
+    var GetElement = function (event) {
+        if (Document._lastSelectioncomment)
+            Document._lastSelectioncomment.removeClass("selected-ui-comment");
+        $(event.target).addClass("selected-ui-comment");
+        Document._lastSelectioncomment = $(event.target);
+        if ($(event.target).hasClass('ACY-Type')) {
+            viewer.resetStates();
+            viewer.renderingMode = "x-ray";
+            var id = event.target.id;
+            SelectedElementId = id;
+                   $.ajax({
+                url: '@Url.Action("GetProductIds", "Viewer")',
+                data: { TypeId: id},
+                type: 'POST',
+                 success: function (dat) {
+                     console.log(dat);
+                     var Data = JSON.parse(dat);
+                     var productIds = Data.ProductIdList;
+                     viewer.setState(xState.HIGHLIGHTED, productIds);
+                     viewer.zoomTo(id);
+                     keepTarget = true;
+            },
+                error: function (err) {
+                console.log(err);
+            }
+        });
+        }
+        else {
+            viewer.resetStates();
+            viewer.renderingMode = "x-ray";
+            var id = event.target.id;
+            SelectedElementId = id;
+            viewer.setState(xState.HIGHLIGHTED, [id]);
+            viewer.zoomTo(id);
+            keepTarget = true;
+        }
+
+    };
+
+  //Viewer inialize
+
+        var viewer = new xViewer("viewer-canvas");
+    viewer.load('@Url.Action("ViewerLoad", "Viewer", new { FileName = ViewBag.FilePath })');
+    //Inialize Timeliner
+    var ShowTimeLine = function () {
+        if ($('#TimeLine').css("display") == "none")
+        {
+            $('#TimeLine').css("display","block");
+        }
+        else
+        {
+            $('#TimeLine').css("display","none");
+        }
+    }
+
+
+
+
+   // Camera position
+    var viewPointsarr = [];
+    var GetCamPos = function () {
+
+        viewPointsarr.push(viewer.getCameraPosition());
+
+        var span = `<p id=${viewPointsarr.length - 1} onclick="SetCamPos(event)" class="ACY-Viewpoint" style="cursor:pointer;"> View ${viewPointsarr.length} </p>`;
+        $('#pViews').append(span);
+    }
+
+    var SetCamPos = function (event) {
+        if (Document._lastSelectionviewpoint)
+            Document._lastSelectionviewpoint.removeClass("selected-ui-viewpoint");
+        $(event.target).addClass("selected-ui-viewpoint");
+        Document._lastSelectionviewpoint = $(event.target);
+        var id = event.target.id;
+        var arr = viewPointsarr[id];
+        viewer.setCameraPosition(arr);
+    }
+    var SaveViewList = function () {
+
+        var viewPointsJson = [];
+        for (var i = 0; i < viewPointsarr.length; i++) {
+            viewPointsJson.push(JSON.stringify(viewPointsarr[i]));
+        }
+        var json = JSON.stringify(viewPointsarr)
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("SaveViewList", "Viewer")',
+            dataType: 'json',
+            contentType: 'application/json',
+            data: JSON.stringify({ viewList: json})
+        });
+    }
+
+    //Viewer Events
+        var hiddenIds = [];
+
+        var id;
+    viewer.on("pick", function (args) {
+        SelectedClass = "";
+        //viewer.resetStates();
+        viewer.setState(xState.UNDEFINED, [id]);
+            browser.activateEntity(args.id);
+            viewer.renderingMode = "normal";
+            id = args.id;
+            console.log(id);
+            SelectedElementId = id;
+            if (SelectedElementId == null) {
+                $('#Commentbtn').css("display", "none");
+                return;
+            }
+            else {
+                $('#Commentbtn').css("display", "inline-block");
+            }
+            viewer.setState(xState.HIGHLIGHTED, [id]);
+            HideStoredElements(hiddenIds)
+            keepTarget = false;
+            GetProperties(id);
+        });
+        viewer.on("dblclick", function (args) {
+          //  viewer.resetStates();
+            viewer.renderingMode = "x-ray";
+            var id = args.id;
+            viewer.setState(xState.HIGHLIGHTED, [id]);
+            viewer.zoomTo(id);
+            keepTarget = true;
+    });
+
+        $('#btnSubmission').click(function () {
+            $.ajax({
+                url: '@Url.Action("GetElemetsToRender", "Viewer")',
+                type: 'POST',
+                success: function (dat) {
+                    console.log(dat);
+                    var Data = JSON.parse(dat);
+                    var productIds = Data.ProductIdList;
+                    viewer.setState(xState.UNDEFINED, productIds);
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        });
+        $('#btnHideAll').click(function () {
+            HideAllElements();
+
+             $.ajax({
+                url: '@Url.Action("ResetCounter", "Viewer")',
+                type: 'POST',
+                success: function (dat) {
+                    console.log(dat);
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        });
+        debugger;
+        viewer.start();
+
+        var Recolour = function () {
+            if (!viewer) return;
+            var index = 0;
+            for (var i in xProductType) {
+                var type = xProductType[i];
+                var colour = [Math.random() * 255, Math.random() * 255, Math.random() * 255, 255];
+                viewer.defineStyle(index, colour);
+                viewer.setStyle(index, type);
+                index++;
+            }
+        };
+
+        viewer.on('loaded', function () {
+          //  Recolour();
+            HideAllElements();
+            $.ajax({
+                url: '@Url.Action("ResetCounter", "Viewer")',
+                type: 'POST',
+                success: function (dat) {
+                    console.log(dat);
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        });
+
+        var HideElement = function () {
+            if (id == null) return;
+            hiddenIds.push(id);
+            viewer.setState(xState.HIDDEN, [id]);
+        }
+        function HideStoredElements(arr) {
+            for (var i = 0; i < arr.length; i++) {
+                viewer.setState(xState.HIDDEN, [arr[i]]);
+            }
+        }
+        var IsolateElement = function () {
+            if (id === undefined) return;
+            HideAllElements();
+            viewer.setState(xState.UNDEFINED, [id]);
+            viewer.zoomTo(id);
+        };
+        var Reset = function () {
+            for (var type in xProductType) {
+                viewer.setState(xState.UNDEFINED, xProductType[type]);
+            }
+            viewer.renderingMode = "normal";
+            FullExtent();
+            hiddenIds = [];
+        };
+        var HideAllElements = function () {
+            for (var key in xProductType) {
+                viewer.setState(xState.HIDDEN, xProductType[key]);
+            }
+        }
+        var FullExtent = function () {
+            viewer.zoomTo();
+        };
+        var ColorElement = function () {
+            if (id === undefined) return;
+            viewer.setState(xState.UNDEFINED, [id]);
+            viewer.setStyle(colorarr[colorarr.length-1], [id]);
+        };
+        var ResetColor = function () {
+            for (var type in xProductType) {
+                viewer.setStyle(xState.UNSTYLED, xProductType[type]);
+            }
+        };
+        var colorWell;
+        var defaultColor = "#ff0000";
+        var newColor;
+        var colorIndex = 0;
+        var colorarr = [];
+        window.addEventListener("load", startup, false);
+        function startup() {
+            colorWell = document.querySelector("#color-picker");
+            colorWell.value = defaultColor;
+            colorWell.addEventListener("change", changeStyle, false);
+            colorWell.select();
+
+        }
+        function hexToRgb(hex) {
+            var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? {
+                r: parseInt(result[1], 16),
+                g: parseInt(result[2], 16),
+                b: parseInt(result[3], 16)
+            } : null;
+        }
+        var red = hexToRgb(defaultColor).r;
+        var green = hexToRgb(defaultColor).g;
+        var blue = hexToRgb(defaultColor).b;
+    viewer.defineStyle(colorIndex, [red, green, blue, 255]);
+    colorarr.push(colorIndex);
+    var changeStyle = function (event) {
+            newColor = event.target.value;
+            red = hexToRgb(newColor).r;
+            green = hexToRgb(newColor).g;
+            blue = hexToRgb(newColor).b;
+            colorIndex++;
+            viewer.defineStyle(colorIndex, [red, green, blue, 255]);
+            colorarr.push(colorIndex);
+        }
+
+        $(document).ready(function () {
+            if (SelectedElementId == null) {
+                $('#Commentbtn').css("display", "none");
+            }
+            //Get View Points
+            $.ajax({
+                url: '@Url.Action("GetViewPoints", "Viewer")',
+                type: 'GET',
+                success: function (dat) {
+                    var Data = JSON.parse(dat);
+                    var ViewPoints = JSON.parse(Data.ViewPointsList);
+                    viewPointsarr = ViewPoints;
+                    for (var i = 0; i < ViewPoints.length; i++) {
+                        var span = `<p id=${i} onclick="SetCamPos(event)"  class="ACY-Viewpoint" style="cursor:pointer;"> View ${i + 1} </p>`;
+                        $('#pViews').append(span);
+                    }
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+
+            $(".treeview li>ul").css('display', 'none');
+            $(".collapsible").click(function (e) {
+                e.preventDefault();
+                $(this).toggleClass("collapsetree expandtree");
+                $(this).closest('li').children('ul').slideToggle();
+            });
+            $(".ACY-entity").dblclick(function (e) {
+                viewer.resetStates();
+                viewer.renderingMode = "x-ray";
+                var id = e.target.id;
+                console.log(id);
+                SelectedElementId = id;
+                if (SelectedElementId == "") {
+                    $('#Commentbtn').css("display", "none");
+                    viewer.resetStates();
+                    return;
+                }
+                else {
+                    $('#Commentbtn').css("display", "inline-block");
+                }
+                viewer.setState(xState.HIGHLIGHTED, [id]);
+                viewer.zoomTo(id);
+                keepTarget = true;
+            });
+            $(".ACY-entity").click(function (e) {
+                SelectedClass = "";
+                if (Document._lastSelection)
+                    Document._lastSelection.removeClass("ui-selected");
+                $(this).addClass("ui-selected");
+                Document._lastSelection = $(this);
+                var id = e.target.id;
+
+                if (id == "") {
+                    $("#attrprop").html("");
+                    return;
+                }
+                GetProperties(id);
+
+            })
+
+            GetProperties = function (id) {
+                $.ajax({
+                    url: '@Url.Action("GetProperties", "Viewer")',
+                    data: { productId: id },
+                    type: 'POST',
+                    success: function (dat) {
+                        $("#attrprop").html(dat);
+                        console.log(dat);
+                    },
+                    error: function (err) {
+                        console.log(err);
+                    }
+                });
+            };
+        $('.ACY-Type').dblclick(function (e) {
+            SelectedClass = 'ACY-Type';
+            viewer.resetStates();
+            viewer.renderingMode = "x-ray";
+            var id = e.target.id;
+             $.ajax({
+                url: '@Url.Action("GetProductIds", "Viewer")',
+                data: { TypeId: id},
+                type: 'POST',
+                 success: function (dat) {
+                     console.log(dat);
+                     var Data = JSON.parse(dat);
+                     var productIds = Data.ProductIdList;
+                     viewer.setState(xState.HIGHLIGHTED, productIds);
+                     viewer.zoomTo(id);
+                     keepTarget = true;
+            },
+                error: function (err) {
+                console.log(err);
+            }
+        });
+
+        });
+
+
+
+        // Comment Panel
+
+        $('#addCommentbtn').click(function (e) {
+            var comment = $('#commenttxt').val();
+            var ProductId;
+                    $.ajax({
+                url: '@Url.Action("GetProductID", "Viewer")',
+                        data: { selectedLabel: SelectedElementId},
+                        type: 'POST',
+                        async: false,
+                        success: function (dat) {
+                            ProductId = dat;
+            },
+                error: function (err) {
+                console.log(err);
+            }
+        });
+            var span;
+            if (SelectedClass == 'ACY-Type') {
+
+                span = `<p id=${SelectedElementId} onclick="GetElement(event)" class="${SelectedClass} ACY-Comment" style="cursor:pointer;"> Type [${ProductId}]: ${comment} </p><hr/>`;
+            }
+            else {
+                span = `<p id=${SelectedElementId} onclick="GetElement(event)" class="ACY-Comment" style="cursor:pointer;">Element [${ProductId}]: ${comment} </p><hr/>`;
+
+            }
+            $('#pComments').append(span);
+
+        });
+
+    });
+</script>

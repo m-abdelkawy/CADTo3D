@@ -1,0 +1,198 @@
+/************Team css start***************/
+.team_part{
+    padding-top: 130px;
+    position: relative;
+    z-index: 99;
+    @media #{$small_mobile}{
+        padding-top: 70px;
+    }
+    @media #{$large_mobile}{
+        padding-top: 70px;
+    }
+    @media #{$tab_device}{
+        padding-top: 70px;
+    }
+    @media #{$medium_device}{
+    
+    }
+    img {
+        position: absolute;
+        right: 0;
+        z-index: -1;
+        top: 130px;
+        @media #{$small_mobile}{
+            display: none;
+        }
+        @media #{$large_mobile}{
+            display: none;
+        }
+        @media #{$tab_device}{
+            display: none;
+        }
+        @media #{$medium_device}{
+        
+        }
+    }
+    &:after{
+        position: absolute;
+        content: "";
+        top: 260px;
+        right: 0;
+        width: 60%;
+        height: 100%;
+        background-color: $section_bg;
+        z-index: -1;
+        @media #{$small_mobile}{
+            display: none;
+        }
+        @media #{$large_mobile}{
+            top: 0;
+        }
+        @media #{$tab_device}{
+            top: 0;
+        }
+        @media #{$medium_device}{
+        
+        }
+    }
+    &:before{
+        position: absolute;
+        content: "";
+        left: 0;
+        width: 50%;
+        top: 130px;
+        height: 74%;
+        background-image: url(../img/team_member.png);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        z-index: 2;
+        @media #{$small_mobile}{
+            display: none;
+        }
+        @media #{$large_mobile}{
+            display: none;
+        }
+        @media #{$tab_device}{
+            display: none;
+        }
+        @media #{$medium_device}{
+        
+        }
+    }
+    .team_member_text{
+        padding: 244px 0px 120px;
+        @media #{$small_mobile}{
+            padding: 0px 0px 0px;
+        }
+        @media #{$large_mobile}{
+            padding: 0px 0px 0px;
+        }
+        @media #{$tab_device}{
+            padding: 0px 0px 0px;
+        }
+        @media #{$medium_device}{
+            padding: 169px 0px 65px;
+        }
+        h2{
+            font-size: 40px;
+            font-weight: 700;
+            line-height: 1.25;
+            margin-bottom: 50px;
+            position: relative;
+            &:after{
+                position: absolute;
+                left: 0;
+                height: 2px;
+                width: 90px;
+                content: "";
+                background-color: $btn_bg;
+                bottom: -15px;
+            }
+            @media #{$small_mobile}{
+                font-size: 25px;
+                margin-bottom: 35px;
+                line-height: 35px;
+            }
+            @media #{$large_mobile}{
+                font-size: 25px;
+                margin-bottom: 35px;
+                line-height: 35px;
+            }
+            @media #{$tab_device}{
+                font-size: 30px;
+                margin-bottom: 35px;
+                line-height: 40px;
+            }
+            @media #{$medium_device}{
+                font-size: 30px;
+                margin-bottom: 35px;
+                line-height: 40px;
+            }
+        }
+        p{
+            line-height: 1.929;
+            margin-bottom: 30px;
+        }
+        ul{
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            margin-bottom: 35px;
+            li{
+                display: inline-block;
+                margin-bottom: 15px;
+                font-size: 14px;
+                font-family: "Open Sans",sans-serif;
+                color: #7f7f7f;
+                padding-left: 33px;
+                @media #{$small_mobile}{
+                    padding-left: 41px;
+                }
+                @media #{$large_mobile}{
+                    padding-left: 41px;
+                }
+                @media #{$tab_device}{
+                    padding-left: 41px;
+                }
+                @media #{$medium_device}{
+                    padding-left: 41px;
+                }
+                span{
+                    margin-right: 17px;
+                    color: $btn_bg;
+                    font-size: 20px;
+                    position: absolute;
+                    left: 14px;
+                    @media #{$small_mobile}{
+                        padding-bottom: 15px;
+                        position: absolute;
+                        left: 15px;
+                        padding-top: 2px;
+                    }
+                    @media #{$large_mobile}{
+                        padding-bottom: 15px;
+                        position: absolute;
+                        left: 15px;
+                        padding-top: 2px;
+                    }
+                    @media #{$tab_device}{
+                        padding-bottom: 15px;
+                        position: absolute;
+                        left: 15px;
+                        padding-top: 2px;
+                    }
+                    @media #{$medium_device}{
+                        padding-bottom: 15px;
+                        position: absolute;
+                        left: 15px;
+                        padding-top: 6px;
+                    }
+                }
+            }
+        }
+        .btn_1{
+            padding: 10px 42px;
+        }
+    }
+}
