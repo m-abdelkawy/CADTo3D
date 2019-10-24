@@ -24,8 +24,8 @@ namespace CADReader
         }
         public static double LineGetSlope(Line line)
         {//needs reconsideration
-            double yDiff = Math.Abs(line.EndPoint.Y - line.StartPoint.Y);
-            double xDiff = Math.Abs(line.EndPoint.X - line.StartPoint.X);
+            double yDiff = line.EndPoint.Y - line.StartPoint.Y;
+            double xDiff = line.EndPoint.X - line.StartPoint.X;
             if (Math.Abs(xDiff) < 0.001)
             {
                 return double.NaN;

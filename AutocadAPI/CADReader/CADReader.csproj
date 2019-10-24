@@ -98,6 +98,7 @@
     <Compile Include="Reinforced Elements\ReinforcedCadColumn.cs" />
     <Compile Include="Reinforced Elements\ReinforcedCadFooting.cs" />
     <Compile Include="Reinforced Elements\ReinforcedCadSemelle.cs" />
+    <Compile Include="Reinforced Elements\ReinforcedCadShearWall.cs" />
     <Compile Include="Reinforced Elements\ReinforcedCadSlab.cs" />
     <Compile Include="Reinforced Elements\ReinforcedCadWall.cs" />
   </ItemGroup>
