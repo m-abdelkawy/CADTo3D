@@ -60,7 +60,6 @@ namespace CADReader.BuildingElements
             this.ReinforcedSemelles = new List<ReinforcedCadSemelle>();
             for (int i = 0; i < this.Semelles.Count(); i++)
             {
-                var x = Semelles.Except(Semelles.Where(s => s.HzLinPath.Color.Name == "Black"));
                 this.ReinforcedSemelles.Add(new ReinforcedCadSemelle(cadReader, Semelles[i]));
             }
         }
@@ -83,9 +82,9 @@ namespace CADReader.BuildingElements
                 
 
                 List<LinearPath> lstCol = CadHelper.PLinesGetByLayerName(cadReader, CadLayerName.Column);
-                double thickness = CadHelper.IsIntersectingWithElmCategory(shortestLine, lstCol) ? DefaultValues.SmellesWithColumnThickness : DefaultValues.SmellesWithFootingThickness;
+                //double thickness = CadHelper.IsIntersectingWithElmCategory(shortestLine, lstCol) ? DefaultValues.SmellesWithColumnThickness : DefaultValues.SmellesWithFootingThickness;
 
-                Semelle semelle = new Semelle(lstPLine[i], thickness);
+                Semelle semelle = new Semelle(lstPLine[i], DefaultValues.SmellesWithFootingThickness);
 
                 Semelles.Add(semelle);
             }

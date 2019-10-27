@@ -109,14 +109,14 @@ namespace CADReader.Reinforced_Elements
                 {
                     LinearPath centerRebarBot = new LinearPath(pt1 + (Vector3D.AxisZ * DefaultValues.SemelleCover), pt2 + (Vector3D.AxisZ * DefaultValues.SemelleCover));
                     double width = MathHelper.DistanceBetweenTwoParallels(lstSemelleLongLine[0], lstSemelleLongLine[1]);
-                    LinearPath l1RebarBot = (LinearPath)centerRebarBot.Offset(width / 2 - DefaultValues.SemelleCover);
-                    LinearPath l2RebarBot = (LinearPath)centerRebarBot.Offset((width / 2 - DefaultValues.SemelleCover) * -1);
+                    LinearPath l1RebarBot = (LinearPath)centerRebarBot.Offset((width / 2 - DefaultValues.SemelleCover), Vector3D.AxisZ, 0.0001, true);
+                    LinearPath l2RebarBot = (LinearPath)centerRebarBot.Offset((width / 2 - DefaultValues.SemelleCover) * -1, Vector3D.AxisZ, 0.0001, true);
 
                     //offset to get the top rebar
                     LinearPath centerRebarTop = new LinearPath(pt1 + (Vector3D.AxisZ * (Semelle.Thickness - DefaultValues.SemelleCover)),
                         pt2 + (Vector3D.AxisZ * (Semelle.Thickness - DefaultValues.SemelleCover)));
-                    LinearPath l1RebarTop = (LinearPath)centerRebarTop.Offset(width / 2 - DefaultValues.SemelleCover);
-                    LinearPath l2RebarTop = (LinearPath)centerRebarTop.Offset((width / 2 - DefaultValues.SemelleCover) * -1);
+                    LinearPath l1RebarTop = (LinearPath)centerRebarTop.Offset((width / 2 - DefaultValues.SemelleCover), Vector3D.AxisZ, 0.0001, true);
+                    LinearPath l2RebarTop = (LinearPath)centerRebarTop.Offset((width / 2 - DefaultValues.SemelleCover) * -1, Vector3D.AxisZ, 0.0001, true);
 
                     //create rebars
                     Rebars.Add(new Rebar(centerRebarBot));
