@@ -28,6 +28,7 @@ namespace CADReader.BuildingElements
 
         public List<ReinforcedCadWall> ReinforcedCadWalls { get; set; }
         public List<ElectricalConduit> ElecConduits { get; set; }
+        public List<ReinforcedCadShearWall> ReinforcedShearWalls { get; private set; }
 
 
 
@@ -49,6 +50,7 @@ namespace CADReader.BuildingElements
             Ramps = GetRamps(cadReader);
             GetRcSLabs();
             this.ReinforcedCadWalls = base.GetRCWalls(this.RetainingWalls);
+            ReinforcedShearWalls = GetRCShearWalls(ShearWalls);
 
             GetElectricalConduit(cadReader);
         }
@@ -56,6 +58,7 @@ namespace CADReader.BuildingElements
         private void GetElectricalConduit(ReadAutodesk cadReader)
         {
             ElecConduits = new List<ElectricalConduit>();
+            double elecLevel = Level - DefaultValues.SlabThinkess + DefaultValues.FootingCover + DefaultValues.BarDiameter;
             List<Entity> lstElecConduit = CadHelper.EntitiesGetByLayerName(cadReader, CadLayerName.ElecConduit);
             for (int i = 0; i < lstElecConduit.Count; i++)
             {
@@ -64,7 +67,7 @@ namespace CADReader.BuildingElements
                 {
                     for (int j = 0; j < lstElecConduit[i].Vertices.Length; j++)
                     {
-                        lstElecConduit[i].Vertices[j].Z = Level;
+                        lstElecConduit[i].Vertices[j].Z = elecLevel;
                     }
                 }
                 else if(lstElecConduit[i] is CompositeCurve)
@@ -77,15 +80,15 @@ namespace CADReader.BuildingElements
                         {
                             for (int k = 0; k < line.Vertices.Count(); k++)
                             {
-                                line.Vertices[k].Z = Level;
+                                line.Vertices[k].Z = elecLevel;
                             } 
                         }
                         else
                         {
                             Arc arc = compCurve.CurveList[j] as Arc;
-                            arc.StartPoint.Z = Level;
-                            arc.EndPoint.Z = Level;
-                            arc.Center.Z = Level;
+                            arc.StartPoint.Z = elecLevel;
+                            arc.EndPoint.Z = elecLevel;
+                            arc.Center.Z = elecLevel;
                         }
                     }
                 }
