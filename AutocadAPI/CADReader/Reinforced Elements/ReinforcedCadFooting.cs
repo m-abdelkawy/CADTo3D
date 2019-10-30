@@ -1,4 +1,5 @@
-﻿using CADReader.BuildingElements;
+﻿using CADReader.Base;
+using CADReader.BuildingElements;
 using CADReader.ElementComponents;
 using CADReader.Helpers;
 using devDept.Eyeshot.Entities;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace CADReader.Reinforced_Elements
 {
-    public class ReinforcedCadFooting
+    public class ReinforcedCadFooting: ReinforcedElements
     {
         #region Properties
         public RCFooting RcFooting { get; set; }
@@ -25,11 +26,11 @@ namespace CADReader.Reinforced_Elements
         {
             this.RcFooting = _RcFooting;
 
-            PopulateRft();
+            ReinforcementPopulate();
         }
 
 
-        public void PopulateRft()
+        public void ReinforcementPopulate()
         {
             if (RcFooting == null)
                 return;
@@ -86,6 +87,6 @@ namespace CADReader.Reinforced_Elements
             }
         }
 
-
+        
     }
 }
