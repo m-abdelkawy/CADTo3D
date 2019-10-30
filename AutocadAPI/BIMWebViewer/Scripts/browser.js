@@ -57,6 +57,8 @@ $(document).ready(function () {
     });
 
     browser.on("entityClick", function (args) {
+        console.log("browser", args);
+
         var span = $(args.element).children("span.ACY-entity");
         if (document._lastSelection)
             document._lastSelection.removeClass("ui-selected");
@@ -64,6 +66,8 @@ $(document).ready(function () {
         document._lastSelection = span;
     });
     browser.on("entityActive", function (args) {
+        console.log("browser", args);
+
         var isRightPanelClick = false;
         if (args.element)
             if ($(args.element).parents("#semantic-descriptive-info").length != 0)
