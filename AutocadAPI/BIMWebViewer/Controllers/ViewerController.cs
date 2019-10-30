@@ -200,12 +200,24 @@ namespace BIMWebViewer.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult GetProductIds(int TypeId)
+        public ActionResult GetProductIdsByType(int TypeId)
         {
             IIfcRelDefinesByType relType = IFCConverter.ModelTypes.Where(t => t.RelatingType.EntityLabel == TypeId).FirstOrDefault();
             List<int> productIds = new List<int>();
             if (relType != null)
                 productIds = relType.RelatedObjects.Select(a => a.EntityLabel).ToList();
+            JsonResult result = new JsonResult();
+            var jsonData = new { ProductIdList = productIds };
+            var serializerSettings = new JsonSerializerSettings { PreserveReferencesHandling = PreserveReferencesHandling.Objects };
+            return new JsonResult { Data = JsonConvert.SerializeObject(jsonData, Formatting.Indented, serializerSettings), MaxJsonLength = Int32.MaxValue, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+
+        }
+        [HttpGet]
+        public ActionResult GetAllProductIds()
+        {
+
+            List<int> productIds = IFCConverter.Products.Select(p => p.EntityLabel).ToList();
+            
             JsonResult result = new JsonResult();
             var jsonData = new { ProductIdList = productIds };
             var serializerSettings = new JsonSerializerSettings { PreserveReferencesHandling = PreserveReferencesHandling.Objects };
