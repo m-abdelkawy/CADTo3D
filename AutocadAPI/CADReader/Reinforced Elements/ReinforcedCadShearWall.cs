@@ -21,26 +21,40 @@ namespace CADReader.Reinforced_Elements
         public ReinforcedCadShearWall(ShearWall _shearWall)
         {
             this.ShearWall = _shearWall;
+            ReinforcementPopulate();
         }
 
         #region Methods
         public void LstRebarPopulate()
         {
-
+            VlRebar = new List<Rebar>();
+            LinearPath linPathRFT = (LinearPath)ShearWall.ProfilePath.Offset(-DefaultValues.ShearWallCover);
+            Line[] RFTlines = linPathRFT.ConvertToLines();
+            for (int i = 0; i < RFTlines.Length; i++)
+            {
+                Vector3D uv = MathHelper.UnitVector3DFromPt1ToPt2(RFTlines[i].StartPoint, RFTlines[i].EndPoint);
+                int rebarCount = Convert.ToInt32(RFTlines[i].Length() / DefaultValues.LongBarSpacing);
+                for (int j = 0; j < rebarCount; j++)
+                {
+                    Point3D location = RFTlines[i].StartPoint + uv * j * DefaultValues.LongBarSpacing;
+                    Rebar rebar = new Rebar(location);
+                    VlRebar.Add(rebar);
+                }
+            }
         }
 
-        //public void StirrupPopulate()
-        //{
-        //    LinearPath stirrupLp = (LinearPath)CadWall.LinPathWall.Offset(-DefaultValues.WallCover * 1.2);
+        public void StirrupPopulate()
+        {
+            LinearPath stirrupLp = (LinearPath)ShearWall.ProfilePath.Offset(-DefaultValues.ShearWallCover * 1.2);
 
-        //    Stirrup = new Stirrup(stirrupLp);
-        //}
+            Stirrup = new Stirrup(stirrupLp);
+        }
 
-        //public override void ReinforcementPopulate()
-        //{
-        //    LstRebarPopulate();
-        //    StirrupPopulate();
-        //}
+        public override void ReinforcementPopulate()
+        {
+            LstRebarPopulate();
+            StirrupPopulate();
+        }
 
         #endregion
     }
