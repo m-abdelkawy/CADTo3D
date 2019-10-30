@@ -224,7 +224,7 @@
     var SelectedClass;
   // Comment function
 
-    var GetElement = function (event) {
+        var GetElement = function (event) {
         if (Document._lastSelectioncomment)
             Document._lastSelectioncomment.removeClass("selected-ui-comment");
         $(event.target).addClass("selected-ui-comment");
@@ -266,7 +266,8 @@
   //Viewer inialize
 
         var viewer = new xViewer("viewer-canvas");
-    viewer.load('@Url.Action("ViewerLoad", "Viewer", new { FileName = ViewBag.FilePath })');
+        viewer.load('@Url.Action("ViewerLoad", "Viewer", new { FileName = ViewBag.FilePath })');
+        console.log("viewer", viewer);
     //Inialize Timeliner
     var ShowTimeLine = function () {
         if ($('#TimeLine').css("display") == "none")
