@@ -2758,6 +2758,7 @@ xViewer.prototype.getClip = function () {
 * @fires xViewer#clipped
 */
 xViewer.prototype.clip = function (point, normal) {
+    
 
     //non interactive clipping, all information is there
     if (typeof (point) != 'undefined' && typeof (normal) != 'undefined') {
