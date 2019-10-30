@@ -453,6 +453,8 @@ D:\03_PROJECT PREPERATION\01_AutocadAPI\03_AutocadAPI-master_190904\CADTo3D\Auto
 D:\03_PROJECT PREPERATION\01_AutocadAPI\03_AutocadAPI-master_190904\CADTo3D\AutocadAPI\IfcFileCreator\bin\Debug\WHIPTK.DLL
 D:\03_PROJECT PREPERATION\01_AutocadAPI\03_AutocadAPI-master_190904\CADTo3D\AutocadAPI\IfcFileCreator\bin\Debug\WINOPENGL_20.5_11.TXV
 D:\03_PROJECT PREPERATION\01_AutocadAPI\03_AutocadAPI-master_190904\CADTo3D\AutocadAPI\IfcFileCreator\bin\Debug\WIPEOUT_20.5_11.TX
-D:\03_PROJECT PREPERATION\01_AutocadAPI\03_AutocadAPI-master_190904\CADTo3D\AutocadAPI\IfcFileCreator\obj\Debug\IfcFileCreator.csprojResolveAssemblyReference.cache
 D:\03_PROJECT PREPERATION\01_AutocadAPI\03_AutocadAPI-master_190904\CADTo3D\AutocadAPI\IfcFileCreator\obj\Debug\IfcFileCreator.dll
 D:\03_PROJECT PREPERATION\01_AutocadAPI\03_AutocadAPI-master_190904\CADTo3D\AutocadAPI\IfcFileCreator\obj\Debug\IfcFileCreator.pdb
+D:\03_PROJECT PREPERATION\01_AutocadAPI\03_AutocadAPI-master_190904\CADTo3D\AutocadAPI\IfcFileCreator\obj\Debug\IfcFileCreator.csprojAssemblyReference.cache
+D:\03_PROJECT PREPERATION\01_AutocadAPI\03_AutocadAPI-master_190904\CADTo3D\AutocadAPI\IfcFileCreator\obj\Debug\IfcFileCreator.csproj.CoreCompileInputs.cache
+D:\03_PROJECT PREPERATION\01_AutocadAPI\03_AutocadAPI-master_190904\CADTo3D\AutocadAPI\IfcFileCreator\obj\Debug\IfcFileCreator.csproj.CopyComplete

@@ -23,6 +23,7 @@ $(document).ready(function () {
         $("#toolbar button").button();
 
         $("#btnClip").click(function () {
+            debugger;
             viewer.clip();
         });
 

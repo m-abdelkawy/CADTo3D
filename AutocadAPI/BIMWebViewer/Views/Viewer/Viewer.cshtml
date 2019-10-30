@@ -187,6 +187,7 @@
         <button id="btnUnclip">Unclip</button>
         <button id="btnSubmission">Submissions</button>
         <button id="btnHideAll">Hide All</button>
+        <button id="btnElementDetails">Element Details</button>
     </div>
 
     <div style="position: absolute; right: 5px; top: 5px;" id="toolbar" class="ui-widget-header ui-corner-all">
@@ -216,9 +217,6 @@
 
 
 
-
-
-
 <script type="text/javascript">
 
 
@@ -237,7 +235,7 @@
             var id = event.target.id;
             SelectedElementId = id;
                    $.ajax({
-                url: '@Url.Action("GetProductIds", "Viewer")',
+                url: '@Url.Action("GetProductIdsByType", "Viewer")',
                 data: { TypeId: id},
                 type: 'POST',
                  success: function (dat) {
@@ -324,14 +322,13 @@
         var hiddenIds = [];
 
         var id;
-        viewer.on("pick", function (args) { 
+        viewer.on("pick", function (args) {
         SelectedClass = "";
         //viewer.resetStates();
         viewer.setState(xState.UNDEFINED, [id]);
-            browser.activateEntity(args.id);
+            
             viewer.renderingMode = "normal";
-            id = args.id;
-            console.log(id);
+            id = args.id; 
             SelectedElementId = id;
             if (SelectedElementId == null) {
                 $('#Commentbtn').css("display", "none");
@@ -372,8 +369,8 @@
                                 }
                             }
                         }
-                      
-                    } 
+
+                    }
                     //var myArray = Data.ProductIdList.filter((el) => !productIds.includes(el));
 
                     productIds = productIds.concat(Data.ProductIdList);
@@ -397,7 +394,7 @@
                     console.log(err);
                 }
             });
-        }); 
+        });
         viewer.start();
 
         var Recolour = function () {
@@ -438,7 +435,7 @@
         });
 
         var HideElement = function () {
-        
+
             if (id == null) return;
             hiddenIds.push(id);
             viewer.setState(xState.HIDDEN, [id]);
@@ -598,7 +595,7 @@
             viewer.renderingMode = "x-ray";
             var id = e.target.id;
              $.ajax({
-                url: '@Url.Action("GetProductIds", "Viewer")',
+                url: '@Url.Action("GetProductIdsByType", "Viewer")',
                 data: { TypeId: id},
                 type: 'POST',
                  success: function (dat) {
@@ -646,7 +643,30 @@
             }
             $('#pComments').append(span);
 
+            });
+
+            $('#btnElementDetails').click(function () {
+                            $.ajax({
+                url: '@Url.Action("GetAllProductIds", "Viewer")',
+                type: 'GET',
+                 success: function (dat) { 
+                     var Data = JSON.parse(dat);
+                     var productIds = [];
+                     debugger;
+                     productIds = Data.ProductIdList; 
+                     productIds.splice(productIds.indexOf(SelectedElementId), 1);
+                     viewer.setState(xState.XRAYVISIBLE, productIds);
+                     viewer.zoomTo(id);
+                     keepTarget = false;
+                     viewer.setState(xState.UNDEFINED, [SelectedElementId]);
+
+                viewer.renderingMode = "x-ray";
+            },
+                error: function (err) {
+                console.log(err);
+            }
         });
+            })
 
     });
 </script>
