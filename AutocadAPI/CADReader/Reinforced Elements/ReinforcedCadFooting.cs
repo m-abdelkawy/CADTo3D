@@ -30,15 +30,17 @@ namespace CADReader.Reinforced_Elements
         }
 
 
-        public void ReinforcementPopulate()
+        public override void ReinforcementPopulate()
         {
             if (RcFooting == null)
                 return;
 
             if (!MathHelper.IsRectangle(RcFooting.ProfilePath,0.02))
-                return;
+                PopulateRftStripFooting();
+            else
+            {
 
-            LinearPath linPathFooting = (LinearPath)RcFooting.ProfilePath.Offset(-1*DefaultValues.FootingCover);
+            LinearPath linPathFooting = (LinearPath)RcFooting.ProfilePath.Offset(-1 * DefaultValues.FootingCover);
             //Mesh mesg = linPathFooting.mesh;
 
             for (int i = 0; i < linPathFooting.Vertices.Count(); i++)
@@ -46,6 +48,8 @@ namespace CADReader.Reinforced_Elements
                 linPathFooting.Vertices[i].Z += DefaultValues.FootingCover/* + DefaultValues.PCFootingThinkess*/;
             }
 
+
+        
             Line[] pathLines = linPathFooting.ConvertToLines();
 
             int numRebarLong = Convert.ToInt32(pathLines[0].Length() / DefaultValues.LongBarSpacing);
@@ -85,8 +89,59 @@ namespace CADReader.Reinforced_Elements
 
                 LongRft.Add(new Rebar(linePathLong));
             }
+            }
         }
 
-        
+        private void PopulateRftStripFooting()
+        {
+            LinearPath boundaryPath =(LinearPath)RcFooting.ProfilePath.Offset(-1 * DefaultValues.FootingCover);
+            //Mesh mesg = linPathFooting.mesh;
+
+            for (int i = 0; i < boundaryPath.Vertices.Count(); i++)
+            {
+                boundaryPath.Vertices[i].Z += DefaultValues.FootingCover;
+            }
+            List<Line> lstBoundaryLines = CadHelper.BoundaryLinesGet(boundaryPath);
+
+            int nLong = Convert.ToInt32(lstBoundaryLines[0].Length() / DefaultValues.LongBarSpacing);
+            int nTransverse = Convert.ToInt32(lstBoundaryLines[1].Length() / DefaultValues.LongBarSpacing);
+             
+
+            for (int i = 0; i < nTransverse; i++)
+            {
+                Line rftTransverse = lstBoundaryLines[0].Offset(DefaultValues.LongBarSpacing * -i, Vector3D.AxisZ) as Line;
+
+                List<Line> lstRftLines = CadHelper.LinesTrimWithPolygon(boundaryPath, rftTransverse);
+
+                for (int j = 0; j < lstRftLines.Count; j++)
+                {
+                    Point3D stPZtLong = lstRftLines[j].Vertices[0] + Vector3D.AxisZ * (DefaultValues.RCFootingThinkess - DefaultValues.FootingCover);
+                    Point3D endPtZLong = lstRftLines[j].Vertices[1] + Vector3D.AxisZ * (DefaultValues.RCFootingThinkess - DefaultValues.FootingCover);
+                    Rebar rebar = new Rebar(new LinearPath(stPZtLong, lstRftLines[j].Vertices[0], lstRftLines[j].Vertices[1], endPtZLong));
+                    TransverseRft.Add(rebar);
+                }
+
+
+            }
+
+
+            for (int i = 0; i < nLong; i++)
+            {
+                Line rftLong = lstBoundaryLines[1].Offset(DefaultValues.LongBarSpacing * -i, Vector3D.AxisZ) as Line;
+
+                List<Line> lstRftLines = CadHelper.LinesTrimWithPolygon(boundaryPath, rftLong);
+
+
+                for (int j = 0; j < lstRftLines.Count; j++)
+                {
+                    Point3D stPZtLong = lstRftLines[j].Vertices[0] + Vector3D.AxisZ * (DefaultValues.RCFootingThinkess - DefaultValues.FootingCover);
+                    Point3D endPtZLong = lstRftLines[j].Vertices[1] + Vector3D.AxisZ * (DefaultValues.RCFootingThinkess - DefaultValues.FootingCover);
+                    Rebar rebar = new Rebar(new LinearPath(stPZtLong, lstRftLines[j].Vertices[0], lstRftLines[j].Vertices[1], endPtZLong));
+                    LongRft.Add(rebar);
+
+                }
+            }
+        }
+
     }
 }

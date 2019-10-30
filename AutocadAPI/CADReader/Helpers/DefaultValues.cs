@@ -13,6 +13,8 @@ namespace CADReader.Helpers
         public static double RCFootingThinkess { get; set; } = CADConfig.Units == linearUnitsType.Meters ? 0.5: 500;
         public static double PCFootingThinkess { get; set; } = CADConfig.Units == linearUnitsType.Meters ? 0.20 : 200;
         public static double ColumnCover { get; set; } = CADConfig.Units == linearUnitsType.Meters ? 0.03 : 30;
+        public static double ShearWallCover { get; set; } = CADConfig.Units == linearUnitsType.Meters ? 0.03 : 30;
+        
         public static double WallCover { get; set; } = CADConfig.Units == linearUnitsType.Meters ? 0.03 : 30;
         public static double FootingCover { get; set; } = CADConfig.Units == linearUnitsType.Meters ? 0.03 : 30;
         public static double SemelleCover { get; set; } = CADConfig.Units == linearUnitsType.Meters ? 0.03 : 30;
