@@ -30,6 +30,7 @@ namespace CADReader.BuildingElements
         public List<ReinforcedCadFooting> ReinforcedCadFootings{ get; set; }
 
         public List<ReinforcedCadWall> ReinforcedCadWalls { get; set; }
+        public List<ReinforcedCadShearWall> ReinforcedShearWalls { get; set; }
 
         #endregion
 
@@ -47,12 +48,11 @@ namespace CADReader.BuildingElements
             GetRCFooting(cadReader);
             GetSmelles(cadReader);
             ShearWalls = GetShearWalls(cadReader);
-
             GetReinforcedSemelles(cadReader);
-
             ReinforcedCadFootings = GetReinforcedFootings(RCFooting);
-
             ReinforcedCadWalls = base.GetRCWalls(this.RetainingWalls);
+            ReinforcedShearWalls = GetRCShearWalls(ShearWalls);
+
         }
 
         private void GetReinforcedSemelles(ReadAutodesk cadReader)

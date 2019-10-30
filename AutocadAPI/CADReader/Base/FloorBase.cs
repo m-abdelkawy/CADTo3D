@@ -105,7 +105,7 @@ namespace CADReader.BuildingElements
 
             return Walls;
         }
-
+      
         public List<RectColumn> GetColumns(ReadAutodesk cadFileReader)
         {
 
@@ -181,6 +181,19 @@ namespace CADReader.BuildingElements
             ShearWalls.AddRange(lstShearWall);
             return ShearWalls;
 
+        }
+
+        public List<ReinforcedCadShearWall> GetRCShearWalls(List<ShearWall> shearWalls)
+        {
+            List<ReinforcedCadShearWall> RcShearWalls = new List<ReinforcedCadShearWall>();
+            ReinforcedCadShearWall RcShearWall = null;
+            foreach (var shearWall in shearWalls)
+            {
+                RcShearWall = new ReinforcedCadShearWall(shearWall);
+                RcShearWalls.Add(RcShearWall);
+            }
+
+            return RcShearWalls;
         }
 
         public List<SlopedSlab> GetRamps(ReadAutodesk cadReader)
