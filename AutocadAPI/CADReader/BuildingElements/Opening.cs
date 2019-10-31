@@ -20,6 +20,7 @@ namespace CADReader.BuildingElements
         {
              
             LinPathOpening = _linPath;
-        }
+        } 
+        #endregion
     }
 }

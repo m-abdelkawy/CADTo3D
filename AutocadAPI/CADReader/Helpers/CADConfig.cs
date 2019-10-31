@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CADReader.Helpers
 {
-   public  class CADConfig
+    public class CADConfig
     {
         private ReadAutodesk cadReader;
 
@@ -17,7 +17,7 @@ namespace CADReader.Helpers
             get { return cadReader; }
             set { cadReader = value; cadReader.DoWork(); }
         }
-         
+
 
         static public linearUnitsType Units { get; set; }
 

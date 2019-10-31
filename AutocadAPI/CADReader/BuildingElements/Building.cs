@@ -16,7 +16,6 @@ namespace CADReader.BuildingElements
         public string Name { get; set; }
         public CADConfig CadConfig { get; set; }
         public Point3D Location { get; set; }
-
         #endregion
 
         #region Constructor
@@ -35,13 +34,10 @@ namespace CADReader.BuildingElements
             CadConfig.CadReader = new ReadAutodesk(filePath);
             CADConfig.Units = CadConfig.CadReader.Units;
           
-
             Floor floor = new Floor(CadConfig.CadReader, level);
-
             Floors.Add(floor);
-
-
         }
+
         public void AddBuildingFoundation(string filePath, double level)
         {
             CadConfig.CadReader = new ReadAutodesk(filePath);

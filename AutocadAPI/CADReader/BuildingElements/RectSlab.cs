@@ -26,10 +26,7 @@ namespace CADReader.BuildingElements
             Width = _width;
             Length = _length;
             CenterPt = _cntrPt;
-            PtLengthDir = _ptLngthDir;
-        } 
-        #endregion
-
-
+            PtLengthDir = _ptLngthDir; 
+        }
     }
 }

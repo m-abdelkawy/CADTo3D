@@ -99,7 +99,7 @@ namespace IfcFileCreator
 
 
                             double wallHeight = lvlDifference - DefaultValues.SlabThinkess;
-                            foreach (ReinforcedCadWall rcWall in floor.ReinforcedCadWalls)
+                            foreach (ReinforcedCadWall rcWall in floor.LstRcCadRetainingWall)
                             {
                                 IfcWallStandardCase wall = CreateIfcWall(model, rcWall.CadWall, wallHeight, building);
 
@@ -135,7 +135,7 @@ namespace IfcFileCreator
                                 }
                             }
 
-                            foreach (ReinforcedCadColumn rcCol in floor.RcColumns)
+                            foreach (ReinforcedCadColumn rcCol in floor.LstRcColumn)
                             {
                                 IfcColumn column = CreateIfcColumn(model, rcCol, lvlDifference);
                                 using (var txn = model.BeginTransaction("Add RcColumn"))
@@ -176,7 +176,7 @@ namespace IfcFileCreator
                                 }
                             }
 
-                            foreach (ReinforcedCadSlab cadRCSlab in floor.RcSlab)
+                            foreach (ReinforcedCadSlab cadRCSlab in floor.LstRcSlab)
                             {
                                 slab = CreateIfcSlab(model, cadRCSlab.Slab);
                                 using (var trans = model.BeginTransaction("Add Slab"))
@@ -237,7 +237,7 @@ namespace IfcFileCreator
                             }
 
                             //Create stairs
-                            foreach (Stair cadStair in floor.Stairs)
+                            foreach (Stair cadStair in floor.LstStair)
                             {
                                 IfcStairFlight flight;
                                 IfcStair stair = CreateIfcStair(model, cadStair, out flight);
@@ -252,7 +252,7 @@ namespace IfcFileCreator
                                     txn.Commit();
                                 }
                             }
-                            foreach (LinearPath cadLanding in floor.Landings)
+                            foreach (LinearPath cadLanding in floor.LstLandingLinPath)
                             {
 
                                 IfcSlab landing = CreateIfcLanding(model, cadLanding, DefaultValues.SlabThinkess);
@@ -266,7 +266,7 @@ namespace IfcFileCreator
                                     txn.Commit();
                                 }
                             }
-                            foreach (ReinforcedCadShearWall cadShearWall in floor.ReinforcedShearWalls)
+                            foreach (ReinforcedCadShearWall cadShearWall in floor.LstRcShearWall)
                             {
 
                                 IfcColumn shearWall = CreateIfcShearWall(model, cadShearWall.ShearWall, lvlDifference);
@@ -303,7 +303,7 @@ namespace IfcFileCreator
                                 }
                             }
 
-                            foreach (SlopedSlab cadRamp in floor.Ramps)
+                            foreach (SlopedSlab cadRamp in floor.LstRamp)
                             {
 
                                 IfcSlab ramp = CreateIfcSlopedSlab(model, cadRamp);
@@ -329,7 +329,7 @@ namespace IfcFileCreator
                                 }
                             }
 
-                            foreach (ElectricalConduit cadConduit in floor.ElecConduits)
+                            foreach (ElectricalConduit cadConduit in floor.LstElectConduit)
                             {
 
                                 using (var txn = model.BeginTransaction("Add conduit"))
@@ -374,7 +374,7 @@ namespace IfcFileCreator
 
 
                             Foundation foundation = lstSortedFloors[i] as Foundation;
-                            foreach (PCFooting cadFooting in foundation.PCFooting)
+                            foreach (PCFooting cadFooting in foundation.LstPCFooting)
                             {
 
                                 IfcFooting footing = CreateIfcFooting(model, cadFooting);
@@ -400,7 +400,7 @@ namespace IfcFileCreator
                                 }
                             }
 
-                            foreach (ReinforcedCadSemelle cadSemelle in foundation.ReinforcedSemelles)
+                            foreach (ReinforcedCadSemelle cadSemelle in foundation.LstRCSemelle)
                             {
                                 IfcBeam semelle = CreateIfcBeam(model, cadSemelle.Semelle);
 
@@ -431,7 +431,7 @@ namespace IfcFileCreator
                                 }
                             }
 
-                            foreach (ReinforcedCadFooting cadFooting in foundation.ReinforcedCadFootings)
+                            foreach (ReinforcedCadFooting cadFooting in foundation.LstRCCadFooting)
                             {
 
                                 IfcFooting footing = CreateIfcFooting(model, cadFooting.RcFooting);
@@ -473,7 +473,7 @@ namespace IfcFileCreator
                                 }
                             }
 
-                            foreach (SlopedSlab cadRamp in foundation.Ramps)
+                            foreach (SlopedSlab cadRamp in foundation.LstRamp)
                             {
 
                                 IfcSlab ramp = CreateIfcSlopedSlab(model, cadRamp);
@@ -499,7 +499,7 @@ namespace IfcFileCreator
 
                             double wallHeight = lvlDifference - DefaultValues.SlabThinkess;
 
-                            foreach (ReinforcedCadWall rcWall in foundation.ReinforcedCadWalls)
+                            foreach (ReinforcedCadWall rcWall in foundation.LstRCCadWall)
                             {
 
                                 IfcWall wall = CreateIfcWall(model, rcWall.CadWall, wallHeight, building);
@@ -538,7 +538,7 @@ namespace IfcFileCreator
                                 }
                             }
 
-                            foreach (ReinforcedCadColumn rcCol in foundation.RcColumns)
+                            foreach (ReinforcedCadColumn rcCol in foundation.LstRcColumn)
                             {
                                 IfcColumn column = CreateIfcColumn(model, rcCol, lvlDifference);
                                 using (var txn = model.BeginTransaction("Add column"))
@@ -576,7 +576,7 @@ namespace IfcFileCreator
                                     txn.Commit();
                                 }
                             }
-                            foreach (ShearWall cadShearWall in foundation.ShearWalls)
+                            foreach (ShearWall cadShearWall in foundation.LstShearWall)
                             {
 
                                 IfcColumn shearWall = CreateIfcShearWall(model, cadShearWall, lvlDifference);
