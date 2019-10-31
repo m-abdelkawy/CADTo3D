@@ -19,8 +19,7 @@ namespace CADReader.BuildingElements
         public Point3D PtLengthDir { get; set; }
         #endregion
 
-
-        #region Constructor
+         
         public RectSlab(double _width, double _length, Point3D _cntrPt, Point3D _ptLngthDir)
         {
             Width = _width;

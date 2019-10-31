@@ -42,30 +42,7 @@ namespace CADReader.Reinforced_Elements
             {
                 Line branch = stirrupBranches[i];
                 Rebar rebarCorner1, rebarCorner2, rebarMid;
-                //if (i > 0)
-                //{
-                //    if (!stirrupBranches[i - 1].Vertices.Contains(branch.StartPoint))
-                //    {
-                //        rebarCorner1 = new Rebar(branch.StartPoint);
-                //        LstRebar.Add(rebarCorner1);
-                //    }
-                //    else if(!stirrupBranches[i - 1].Vertices.Contains(branch.EndPoint))
-                //    {
-                //        rebarCorner1 = new Rebar(branch.EndPoint);
-                //        LstRebar.Add(rebarCorner1);
-                //    }
-                //    rebarMid = new Rebar(branch.MidPoint);
-                //    LstRebar.Add(rebarMid);
-                //}
-                //else
-                //{
-                //    rebarCorner1 = new Rebar(branch.StartPoint);
-                //    LstRebar.Add(rebarCorner1);
-                //    rebarCorner2 = new Rebar(branch.EndPoint);
-                //    LstRebar.Add(rebarCorner2);
-                //    rebarMid = new Rebar(branch.MidPoint);
-                //    LstRebar.Add(rebarMid);
-                //}
+            
                 if(!points.Contains(branch.StartPoint))
                 {
                     rebarCorner1 = new Rebar(branch.StartPoint);

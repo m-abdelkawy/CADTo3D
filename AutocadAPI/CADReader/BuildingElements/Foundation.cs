@@ -52,7 +52,7 @@ namespace CADReader.BuildingElements
             LstRCShearWall = GetRCShearWalls(cadReader);
 
             //RC Semelles
-            GetReinforcedSemelles(cadReader);
+            LstRCSemelle= GetReinforcedSemelles(cadReader);
 
             //RC Footing
             LstRCCadFooting = GetReinforcedFootings(cadReader);

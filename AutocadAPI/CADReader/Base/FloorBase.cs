@@ -82,7 +82,7 @@ namespace CADReader.BuildingElements
         }
         public List<ReinforcedCadColumn> GetRCColumns(ReadAutodesk cadReader)
         {
-            List<RectColumn> Columns = GetColumns(cadReader);
+            List<Column> Columns = GetColumns(cadReader);
             List<ReinforcedCadColumn> RcColumns = new List<ReinforcedCadColumn>();
             ReinforcedCadColumn RcCol = null;
             foreach (var col in Columns)
