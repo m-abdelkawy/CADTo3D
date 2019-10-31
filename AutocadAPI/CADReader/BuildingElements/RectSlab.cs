@@ -16,7 +16,7 @@ namespace CADReader.BuildingElements
         public double Width { get; set; }
         public double Length { get; set; }
         public Point3D CenterPt { get; set; }
-        public Point3D PtLengthDir { get; set; } 
+        public Point3D PtLengthDir { get; set; }
         #endregion
 
 
@@ -27,7 +27,5 @@ namespace CADReader.BuildingElements
             CenterPt = _cntrPt;
             PtLengthDir = _ptLngthDir; 
         }
-
-        
     }
 }

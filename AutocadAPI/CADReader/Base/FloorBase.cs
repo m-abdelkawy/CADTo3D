@@ -11,81 +11,12 @@ namespace CADReader.BuildingElements
 {
     public class FloorBase
     {
+        #region Properties
         public double Level { get; set; }
-
-
-        //public List<Wall> GetWalls(ReadAutodesk CadReader)
-        //{
-
-        //    List<Wall> Walls = new List<Wall>();
-        //    List<List<Point3D>> lstMidPoints = new List<List<Point3D>>();
-        //    List<double> lstThickness = new List<double>();
-
-        //    List<Line> lstWallLines = CadHelper.LinesGetByLayerName(CadReader, CadLayerName.Wall);
-
-
-        //    List<List<Line>> lstWalls = new List<List<Line>>();
-
-        //    for (int i = 0; i < lstWallLines.Count; i++)
-        //    {
-        //        if (lstWallLines[i] == null)
-        //            continue;
-        //        Line parallel = lstWallLines[i].LineGetNearestParallelByNormalVector(lstWallLines.ToArray());
-
-
-        //        if (parallel != null)
-        //        {//Exclude Lines from list
-        //            lstWalls.Add(new List<Line> { lstWallLines[i], parallel });
-
-        //            //exclude line and parallel from lstWallLines
-        //            lstThickness.Add(MathHelper.DistanceBetweenTwoParallels(lstWallLines[i], parallel));
-        //            lstWallLines[lstWallLines.IndexOf(parallel)] = null;
-        //            lstWallLines[i] = null;
-        //        }
-
-        //    }
-
-        //    foreach (List<Line> lstParallels in lstWalls)
-        //    {
-        //        Point3D stPt1 = lstParallels[0].StartPoint;
-        //        Point3D stPt2 = lstParallels[1].StartPoint;
-
-        //        Point3D endPt1 = lstParallels[0].EndPoint;
-        //        Point3D endPt2 = lstParallels[1].EndPoint;
-
-
-        //        Point3D midStart = MathHelper.MidPoint3D(stPt1, stPt2);
-        //        midStart.Z = Level /*- DefaultValues.SlabThinkess*/;
-
-        //        Point3D midEnd = MathHelper.MidPoint3D(endPt1, endPt2);
-        //        midEnd.Z = Level /*- DefaultValues.SlabThinkess*/;
-
-        //        if (stPt1.DistanceTo(stPt2) < stPt1.DistanceTo(endPt2))
-        //        {
-        //            lstMidPoints.Add(new List<Point3D> { midStart, midEnd });
-        //        }
-        //        else
-        //        {
-        //            midStart = MathHelper.MidPoint3D(stPt1, endPt2);
-        //            midStart.Z = Level /*- DefaultValues.SlabThinkess*/;
-
-        //            midEnd = MathHelper.MidPoint3D(endPt1, stPt2);
-        //            midEnd.Z = Level /*- DefaultValues.SlabThinkess*/;
-
-        //            lstMidPoints.Add(new List<Point3D> { midEnd, midStart });
-        //        }
-        //    }
-
-
-        //    for (int i = 0; i < lstMidPoints.Count; i++)
-        //    {
-        //        Walls.Add(new Wall(lstThickness[i], lstMidPoints[i][0], lstMidPoints[i][1], ));
-        //    }
-
-        //    return Walls;
-        //}
-
-        public List<Wall> GetWalls(ReadAutodesk CadReader)
+        #endregion
+        
+        #region Class Methods
+        private List<Wall> GetWalls(ReadAutodesk CadReader)
         {
             List<Wall> Walls = new List<Wall>();
 
@@ -101,12 +32,12 @@ namespace CADReader.BuildingElements
                 Walls.Add(wall);
             }
 
-            
+
 
             return Walls;
         }
-      
-        public List<RectColumn> GetColumns(ReadAutodesk cadFileReader)
+
+        private List<RectColumn> GetColumns(ReadAutodesk cadFileReader)
         {
 
             List<RectColumn> Columns = new List<RectColumn>();
@@ -147,8 +78,9 @@ namespace CADReader.BuildingElements
             }
             return Columns;
         }
-        public List<ReinforcedCadColumn> GetRCColumns(List<RectColumn> Columns)
+        public List<ReinforcedCadColumn> GetRCColumns(ReadAutodesk cadReader)
         {
+            List<RectColumn> Columns = GetColumns(cadReader);
             List<ReinforcedCadColumn> RcColumns = new List<ReinforcedCadColumn>();
             ReinforcedCadColumn RcCol = null;
             foreach (var col in Columns)
@@ -160,9 +92,35 @@ namespace CADReader.BuildingElements
             return RcColumns;
         }
 
+        private List<Slab> GetSlabs(ReadAutodesk cadFileReader)
+        {
+            List<Slab> lstSlab = new List<Slab>();
 
+            List<LinearPath> lstPLine = CadHelper.PLinesGetByLayerName(cadFileReader, CadLayerName.Slab);
 
-        public List<ShearWall> GetShearWalls(ReadAutodesk cadFileReader)
+            for (int i = 0; i < lstPLine.Count; i++)
+            {
+                Slab slab = new Slab(cadFileReader, lstPLine[i], Level);
+                lstSlab.Add(slab);
+            }
+
+            return lstSlab;
+        }
+
+        internal List<ReinforcedCadSlab> GetRcSLabs(ReadAutodesk cadReader)
+        {
+            List<Slab> LstSlab = GetSlabs(cadReader);
+
+            List<ReinforcedCadSlab> lstRcSlab = new List<ReinforcedCadSlab>();
+            for (int i = 0; i < LstSlab.Count; i++)
+            {
+                lstRcSlab.Add(new ReinforcedCadSlab(LstSlab[i]));
+            }
+
+            return lstRcSlab;
+        }
+
+        private List<ShearWall> GetShearWalls(ReadAutodesk cadFileReader)
         {
             List<ShearWall> ShearWalls = new List<ShearWall>();
 
@@ -183,8 +141,10 @@ namespace CADReader.BuildingElements
 
         }
 
-        public List<ReinforcedCadShearWall> GetRCShearWalls(List<ShearWall> shearWalls)
+        internal List<ReinforcedCadShearWall> GetRCShearWalls(ReadAutodesk cadReader)
         {
+            List<ShearWall> shearWalls = GetShearWalls(cadReader);
+
             List<ReinforcedCadShearWall> RcShearWalls = new List<ReinforcedCadShearWall>();
             ReinforcedCadShearWall RcShearWall = null;
             foreach (var shearWall in shearWalls)
@@ -209,8 +169,9 @@ namespace CADReader.BuildingElements
             return Ramps;
         }
 
-        public List<ReinforcedCadWall> GetRCWalls(List<Wall> lstWall)
+        public List<ReinforcedCadWall> GetRCWalls(ReadAutodesk cadReader)
         {
+            List<Wall> lstWall = GetWalls(cadReader);
             List<ReinforcedCadWall> lstRcWall = new List<ReinforcedCadWall>();
             ReinforcedCadWall rcWall = null;
             foreach (var wall in lstWall)
@@ -220,7 +181,7 @@ namespace CADReader.BuildingElements
             }
 
             return lstRcWall;
-        }
-
+        } 
+        #endregion
     }
 }
