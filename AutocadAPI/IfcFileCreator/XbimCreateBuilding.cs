@@ -576,29 +576,45 @@ namespace IfcFileCreator
                                     txn.Commit();
                                 }
                             }
-                            foreach (ShearWall cadShearWall in foundation.LstShearWall)
+                            
+
+                            foreach (ReinforcedCadShearWall cadShearWall in foundation.LstRCShearWall)
                             {
 
-                                IfcColumn shearWall = CreateIfcShearWall(model, cadShearWall, lvlDifference);
+                                IfcColumn shearWall = CreateIfcShearWall(model, cadShearWall.ShearWall, lvlDifference);
 
-                                using (var txn = model.BeginTransaction("Add Landing"))
+                                using (var txn = model.BeginTransaction("Add Shear Wall"))
                                 {
                                     storey.AddElement(shearWall);
 
                                     IfcOpeningElement opening;
-                                    IfcBuildingElementPart formWork = CreateFormWork(model, cadShearWall.ProfilePath, DefaultValues.FormWorkThickness, lvlDifference, out opening);
+                                    IfcBuildingElementPart formWork = CreateFormWork(model, cadShearWall.ShearWall.ProfilePath, DefaultValues.FormWorkThickness, lvlDifference, out opening);
                                     storey.AddElement(opening);
                                     storey.AddElement(formWork);
 
-                                    //add rcfooting to Submission
+                                    //add shear wall to Submission
                                     lstShearWall.Add(shearWall);
 
                                     lstShearWallFormWork.Add(opening);
                                     lstShearWallFormWork.Add(formWork);
 
+                                    foreach (var rebar in cadShearWall.VlRebar)
+                                    {
+                                        IfcReinforcingBar bar = CreateIfcRebar(model, rebar, lvlDifference);
+                                        storey.AddElement(bar);
+                                    }
+                                    int nstirrups = Convert.ToInt32((lvlDifference + (CADConfig.Units == linearUnitsType.Meters ? 1 : 1000)) / (DefaultValues.StirrupsSpacing));
+                                    for (int j = 0; j < nstirrups - 1; j++)
+                                    {
+                                        IfcReinforcingBar stirrup = CreateIfcStirrup(model, cadShearWall.Stirrup, DefaultValues.StirrupsSpacing);
+                                        storey.AddElement(stirrup);
+
+                                    }
+
                                     txn.Commit();
                                 }
                             }
+
 
                             BuildingSubmissions.SubmittedElems.Add(lstPCFormWork);
                             BuildingSubmissions.SubmittedElems.Add(lstPCFooting);
