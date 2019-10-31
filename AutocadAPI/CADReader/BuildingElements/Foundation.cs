@@ -19,9 +19,7 @@ namespace CADReader.BuildingElements
         private double RcThickness { get; set; } = DefaultValues.RCFootingThinkess;
 
         public List<SlopedSlab> LstRamp { get; set; }
-        public List<Wall> LstRetainingWall { get; set; }
         public List<ReinforcedCadColumn> LstRcColumn { get; set; }
-        public List<ShearWall> LstShearWall { get; set; }
 
         public List<PCFooting> LstPCFooting { get; set; }
         public List<ReinforcedCadSemelle> LstRCSemelle { get; set; }
