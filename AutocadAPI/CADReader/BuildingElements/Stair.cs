@@ -23,14 +23,15 @@ namespace CADReader.BuildingElements
         {
             Width = _width;
             LstStepPopulate(lstStairLines);
-        } 
+        }
         #endregion
 
-        public void LstStepPopulate(List<Line> lstLine)
+        #region Private Methods
+        private void LstStepPopulate(List<Line> lstLine)
         {
             if (lstLine[0].StartPoint.Z < lstLine[0].EndPoint.Z)
                 IsUp = true;
-            
+
             LstStep = new List<LinearPathEx>();
 
             double projectedLength = MathHelper.CalcDistanceBetweenTwoPoint2D(lstLine[0].StartPoint, lstLine[0].EndPoint);
@@ -58,7 +59,7 @@ namespace CADReader.BuildingElements
                 double dist1 = MathHelper.CalcDistanceBetweenTwoPoint3D(lstLine[0].StartPoint, lstLine[1].StartPoint);
                 double dist2 = MathHelper.CalcDistanceBetweenTwoPoint3D(lstLine[0].StartPoint, lstLine[1].EndPoint);
 
-                if(dist1 > dist2)
+                if (dist1 > dist2)
                 {
                     uvWidthDir = MathHelper.UnitVector3DFromPt1ToPt2(lstLine[0].StartPoint, lstLine[1].EndPoint);
                 }
@@ -71,13 +72,13 @@ namespace CADReader.BuildingElements
 
                 lstPt.Add(ptOnProjectedLine10);
                 lstPt.Add(ptOnProjectedLine20);
-                if(lstPt.Count >= 4)
+                if (lstPt.Count >= 4)
                 {
-                // need to do sorting instead
+                    // need to do sorting instead
                     List<Point3D> lstStepPts = new List<Point3D>()
                     {
                         lstPt[lstPt.Count-1],
-                        lstPt[lstPt.Count-2], 
+                        lstPt[lstPt.Count-2],
                         lstPt[lstPt.Count-4],
                         lstPt[lstPt.Count-3],
                         lstPt[lstPt.Count-1]
@@ -86,7 +87,8 @@ namespace CADReader.BuildingElements
                 }
             }
 
-        }
+        } 
+        #endregion
     }
 }
  

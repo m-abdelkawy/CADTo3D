@@ -10,11 +10,15 @@ namespace CADReader.BuildingElements
 {
     public class ShearWall
     {
+        #region Properties
         public LinearPath ProfilePath { get; set; }
+        #endregion
 
+        #region Constructor
         public ShearWall(LinearPath _profilePath)
         {
             this.ProfilePath = _profilePath;
-        }
+        } 
+        #endregion
     }
 }

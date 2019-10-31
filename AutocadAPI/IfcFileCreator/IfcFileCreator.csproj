@@ -105,18 +105,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Constants\BlockName.cs" />
-    <Compile Include="Constants\LayerName.cs" />
     <Compile Include="Helpers\IFCExtensions.cs" />
-    <Compile Include="IFCHelper.cs" />
+    <Compile Include="Helpers\IFCHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Submissions.cs" />
     <Compile Include="XbimCreateBuilding.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Files\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>

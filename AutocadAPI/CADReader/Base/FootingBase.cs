@@ -10,7 +10,7 @@ namespace CADReader.Base
 {
    public abstract class FootingBase
     {
-        public abstract string Type { get; set; }
+        public string Type { get; protected set; }
         
         public double Thickness { get; set; }
 

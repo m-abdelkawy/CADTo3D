@@ -14,15 +14,19 @@ namespace CADReader.Reinforced_Elements
 {
     public class ReinforcedCadWall : ReinforcedElements
     {
+        #region Properties
         public Wall CadWall { get; set; }
         public List<Rebar> LstRebar { get; set; } = new List<Rebar>();
-        public Stirrup Stirrup { get; set; }
+        public Stirrup Stirrup { get; set; } 
+        #endregion
 
+        #region Constructor
         public ReinforcedCadWall(Wall _cadWall)
         {
             this.CadWall = _cadWall;
             ReinforcementPopulate();
-        }
+        } 
+        #endregion
 
         #region Methods
         public void LstRebarPopulate()

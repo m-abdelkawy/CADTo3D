@@ -14,9 +14,11 @@ namespace CADReader.Reinforced_Elements
 {
     public class ReinforcedCadShearWall: ReinforcedElements
     {
+        #region Properties
         public ShearWall ShearWall { get; set; }
         public List<Rebar> VlRebar { get; set; }
-        public Stirrup Stirrup { get; set; }
+        public Stirrup Stirrup { get; set; } 
+        #endregion
 
         public ReinforcedCadShearWall(ShearWall _shearWall)
         {

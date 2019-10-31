@@ -105,49 +105,51 @@ namespace CADReader.BuildingElements
 
             return Walls;
         }
-
-        public List<RectColumn> GetColumns(ReadAutodesk cadFileReader)
+      
+        public List<Column> GetColumns(ReadAutodesk cadFileReader)
         {
 
-            List<RectColumn> Columns = new List<RectColumn>();
+            List<Column> Columns = new List<Column>();
 
 
             List<LinearPath> lstPolyLine = CadHelper.PLinesGetByLayerName(cadFileReader, CadLayerName.Column, true);
             for (int i = 0; i < lstPolyLine.Count; i++)
             {
-                double width = double.MaxValue;
-                double length = 0;
-                Point3D widthMidPt = Point3D.Origin;
+                #region Old Code with Rectangule
+                //double width = double.MaxValue;
+                //double length = 0;
+                //Point3D widthMidPt = Point3D.Origin;
 
-                int verticesCount = lstPolyLine[i].Vertices.Length;
-                for (int j = 0; j < verticesCount - 1; j++)
-                {
-                    double dist = MathHelper.CalcDistanceBetweenTwoPoint3D(lstPolyLine[i].Vertices[j], lstPolyLine[i].Vertices[j + 1]);
-                    width = Math.Min(width, dist);
-                    if (width == dist)
-                    {
-                        widthMidPt = MathHelper.MidPoint3D(lstPolyLine[i].Vertices[j], lstPolyLine[i].Vertices[j + 1]);
-                    }
-                    length = Math.Max(length, dist);
-                }
+                //int verticesCount = lstPolyLine[i].Vertices.Length;
+                //for (int j = 0; j < verticesCount - 1; j++)
+                //{
+                //    double dist = MathHelper.CalcDistanceBetweenTwoPoint3D(lstPolyLine[i].Vertices[j], lstPolyLine[i].Vertices[j + 1]);
+                //    width = Math.Min(width, dist);
+                //    if (width == dist)
+                //    {
+                //        widthMidPt = MathHelper.MidPoint3D(lstPolyLine[i].Vertices[j], lstPolyLine[i].Vertices[j + 1]);
+                //    }
+                //    length = Math.Max(length, dist);
+                //}
 
 
-                Point3D center = MathHelper.MidPoint3D(lstPolyLine[i].Vertices[0], lstPolyLine[i].Vertices[2]);
+                //Point3D center = MathHelper.MidPoint3D(lstPolyLine[i].Vertices[0], lstPolyLine[i].Vertices[2]);
 
-                center.Z = Level;
-                widthMidPt.Z = Level;
+                //center.Z = Level;
+                //widthMidPt.Z = Level; 
+                #endregion
 
                 for (int j = 0; j < lstPolyLine[i].Vertices.Length; j++)
                 {
                     lstPolyLine[i].Vertices[j].Z = Level;
                 }
 
-                RectColumn col = new RectColumn(width, length, center, widthMidPt, lstPolyLine[i]);
+                Column col = new Column(lstPolyLine[i]);
                 Columns.Add(col);
             }
             return Columns;
         }
-        public List<ReinforcedCadColumn> GetRCColumns(List<RectColumn> Columns)
+        public List<ReinforcedCadColumn> GetRCColumns(List<Column> Columns)
         {
             List<ReinforcedCadColumn> RcColumns = new List<ReinforcedCadColumn>();
             ReinforcedCadColumn RcCol = null;
@@ -181,6 +183,19 @@ namespace CADReader.BuildingElements
             ShearWalls.AddRange(lstShearWall);
             return ShearWalls;
 
+        }
+
+        public List<ReinforcedCadShearWall> GetRCShearWalls(List<ShearWall> shearWalls)
+        {
+            List<ReinforcedCadShearWall> RcShearWalls = new List<ReinforcedCadShearWall>();
+            ReinforcedCadShearWall RcShearWall = null;
+            foreach (var shearWall in shearWalls)
+            {
+                RcShearWall = new ReinforcedCadShearWall(shearWall);
+                RcShearWalls.Add(RcShearWall);
+            }
+
+            return RcShearWalls;
         }
 
         public List<SlopedSlab> GetRamps(ReadAutodesk cadReader)

@@ -15,16 +15,15 @@ namespace CADReader.Reinforced_Elements
     public class ReinforcedCadColumn:ReinforcedElements
     {
         #region Properties
-        public RectColumn RectColumn { get; set; }
+        public Column CadColumn { get; set; }
         public List<Rebar> LstRebar { get; set; }
-        public Stirrup Stirrup { get; set; }
-        public double Spacing { get; set; } = DefaultValues.StirrupsSpacing;
+        public Stirrup Stirrup { get; set; } 
         #endregion
 
         #region Constructors
-        public ReinforcedCadColumn(RectColumn column, double lvl)
+        public ReinforcedCadColumn(Column column, double lvl)
         {
-            RectColumn = column;
+            CadColumn = column;
             ReinforcementPopulate();
         } 
         #endregion
@@ -33,47 +32,63 @@ namespace CADReader.Reinforced_Elements
         #region Methods
         public void LstRebarPopulate()
         {
-            Vector3D uvLength = MathHelper.UnitVector3DFromPt1ToPt2(this.RectColumn.CenterPt, this.RectColumn.PtLengthDir);
-            Line l = new Line(this.RectColumn.CenterPt, this.RectColumn.PtLengthDir);
+
+            List<Point3D> points = new List<Point3D>();
             
-
-            double dia = DefaultValues.BarDiameter;
-            Vector3D uvWidth = MathHelper.UVPerpendicularToLine2DFromPt(l, this.RectColumn.CenterPt);
-
-
-            //middle rebars
-            
-            Point3D p1Mid = this.RectColumn.CenterPt + uvWidth * (RectColumn.Width/2 - RectColumn.Cover - dia / 2);
-            Point3D p2Mid = this.RectColumn.CenterPt - uvWidth * (RectColumn.Width/2 - RectColumn.Cover - dia / 2);
-            Rebar rebarMid1 = new Rebar(p1Mid);
-            Rebar rebarMid2 = new Rebar(p2Mid);
-
-            //Corner Rebar
-            Point3D p3Mid = p1Mid + uvLength * (RectColumn.Length/2 - RectColumn.Cover - dia / 2);
-            Point3D p4Mid = p1Mid - uvLength * (RectColumn.Length/2 - RectColumn.Cover - dia / 2);
-            Rebar rebarCorner1 = new Rebar(p3Mid);
-            Rebar rebarCorner2 = new Rebar(p4Mid);
-
-            Point3D p5Mid = p2Mid + uvLength * (RectColumn.Length / 2 - RectColumn.Cover - dia / 2);
-            Point3D p6Mid = p2Mid - uvLength * (RectColumn.Length / 2 - RectColumn.Cover - dia / 2);
-            Rebar rebarCorner3 = new Rebar(p5Mid);
-            Rebar rebarCorner4 = new Rebar(p6Mid);
-
-            this.LstRebar = new List<Rebar>
+            LstRebar = new List<Rebar>();
+            LinearPath stirrupLinPath = (LinearPath)CadColumn.ColPath.Offset(-CadColumn.Cover * 1.2);
+            Line[] stirrupBranches = stirrupLinPath.ConvertToLines();
+            for (int i = 0; i < stirrupBranches.Length; i++)
             {
-                rebarMid1,rebarMid2,rebarCorner1,rebarCorner2,rebarCorner3,rebarCorner4
-            };
+                Line branch = stirrupBranches[i];
+                Rebar rebarCorner1, rebarCorner2, rebarMid;
+                //if (i > 0)
+                //{
+                //    if (!stirrupBranches[i - 1].Vertices.Contains(branch.StartPoint))
+                //    {
+                //        rebarCorner1 = new Rebar(branch.StartPoint);
+                //        LstRebar.Add(rebarCorner1);
+                //    }
+                //    else if(!stirrupBranches[i - 1].Vertices.Contains(branch.EndPoint))
+                //    {
+                //        rebarCorner1 = new Rebar(branch.EndPoint);
+                //        LstRebar.Add(rebarCorner1);
+                //    }
+                //    rebarMid = new Rebar(branch.MidPoint);
+                //    LstRebar.Add(rebarMid);
+                //}
+                //else
+                //{
+                //    rebarCorner1 = new Rebar(branch.StartPoint);
+                //    LstRebar.Add(rebarCorner1);
+                //    rebarCorner2 = new Rebar(branch.EndPoint);
+                //    LstRebar.Add(rebarCorner2);
+                //    rebarMid = new Rebar(branch.MidPoint);
+                //    LstRebar.Add(rebarMid);
+                //}
+                if(!points.Contains(branch.StartPoint))
+                {
+                    rebarCorner1 = new Rebar(branch.StartPoint);
+                    LstRebar.Add(rebarCorner1);
+                }
+                if (!points.Contains(branch.EndPoint))
+                {
+                    rebarCorner2 = new Rebar(branch.EndPoint);
+                    LstRebar.Add(rebarCorner2);
+                }
+                rebarMid = new Rebar(branch.MidPoint);
+                LstRebar.Add(rebarMid);
+                points.AddRange(branch.Vertices);
+                
+
+            } 
+             
         }
 
         public void StirrupPopulate()
         {
-            LinearPath stirrupLp = (LinearPath)RectColumn.ColPath.Offset(-RectColumn.Cover * 1.2);
-            //for (int i = 0; i < stirrupLp.Vertices.Length; i++)
-            //{
-            //    //stirrupLp.Vertices[i].Z += CADConfig.Units == linearUnitsType.Meters?lvl+1:lvl+1000;
-            //    //stirrupLp.Vertices[i].Z += lvl;
-            //}
-
+            LinearPath stirrupLp = (LinearPath)CadColumn.ColPath.Offset(-CadColumn.Cover);
+             
             Stirrup = new Stirrup(stirrupLp);
         }
 
@@ -82,6 +97,7 @@ namespace CADReader.Reinforced_Elements
             LstRebarPopulate();
             StirrupPopulate();
         }
+         
 
         #endregion
     }

@@ -10,12 +10,13 @@ namespace CADReader.BuildingElements
 {
     public class PCFooting: FootingBase
     {
-        public override string Type { get; set; } = "PC";
+         
 
         public PCFooting(LinearPath _profilePath, double thickness)
         {
             this.ProfilePath = _profilePath;
             this.Thickness = thickness;
+            Type = "PC";
         }
     }
 }

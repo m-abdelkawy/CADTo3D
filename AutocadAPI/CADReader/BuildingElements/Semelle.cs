@@ -11,15 +11,18 @@ namespace CADReader.BuildingElements
 {
     public class Semelle
     {
+        #region Properties
         public LinearPath HzLinPath { get; set; }
-        public double Length { get; set; }
-        public double Thickness { get; set; }
+        public double Thickness { get; set; } 
+        #endregion
 
-        public Semelle(LinearPath linPath,double thickness)
+        #region Constructor
+        public Semelle(LinearPath linPath, double thickness)
         {
             HzLinPath = linPath;
             Thickness = thickness;
-        }
+        } 
+        #endregion
 
     }
 }

@@ -95,8 +95,7 @@ namespace CADReader.Helpers
             }
             return nearestParallelLine;
         }
-
-
+         
         internal static List<Line> LineGetNearestParallels(this Line line, Line[] arrLines)
         {
             double lineSlope = MathHelper.LineGetSlope(line);
@@ -194,8 +193,6 @@ namespace CADReader.Helpers
             }
 
             return lstParallelsForLine;
-        }
-
-        
+        } 
     }
 }

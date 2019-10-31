@@ -15,30 +15,19 @@ namespace CADReader.Reinforced_Elements
 {
     public class ReinforcedCadSemelle : ReinforcedElements
     {
+        #region Properties
         public Semelle Semelle { get; set; }
         public List<Rebar> Rebars { get; set; }
-        public Stirrup Stirrup { get; set; }
-        public Point3D StartPt { get; set; }
-        public Point3D EndPt { get; set; }
+        public Stirrup Stirrup { get; set; }  
+        #endregion
 
         public ReinforcedCadSemelle(ReadAutodesk cadreader, Semelle semelle)
         {
-            Semelle = semelle;
-
-
+            Semelle = semelle; 
             LstRebarPopulate(cadreader);
         }
 
-
-
-        //private override void ReinforcementPopulate()
-        //{
-        //    LstRebarPopulate(cadreader);
-        //    StirrupPopulate();
-        //}
-
-
-
+        #region Methods
         private void LstRebarPopulate(ReadAutodesk cadreader)
         {
             //instantiate rebar property
@@ -74,7 +63,7 @@ namespace CADReader.Reinforced_Elements
 
                 //intersection point of Semelle Center Line with the nearest entity inside the footing polygon
                 Point3D pt1 = CadHelper.PointIntersectSemelleWithNearEntity(centerLine, lstEntityInsideFooting1);
-                if(pt1 == null)
+                if (pt1 == null)
                 {
                     Line lineModified = CadHelper.LineModify(centerLine, CADConfig.Units == linearUnitsType.Meters ? 15 : 15000
                         , CADConfig.Units == linearUnitsType.Meters ? 15 : 15000);
@@ -131,8 +120,6 @@ namespace CADReader.Reinforced_Elements
 
         }
 
-       
-
         //private void StirrupPopulate()
         //{
         //    LinearPath stirrupLp = (LinearPath)RectColumn.ColPath.Offset(-RectColumn.Cover * 1.2);
@@ -147,7 +134,8 @@ namespace CADReader.Reinforced_Elements
 
         public override void ReinforcementPopulate()
         {
-            throw new NotImplementedException();
-        }
+
+        } 
+        #endregion
     }
 }

@@ -63,10 +63,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base\FootingBase.cs" />
-    <Compile Include="Base\IRectangleBase.cs" />
     <Compile Include="Base\ReinforcedElements.cs" />
     <Compile Include="BuildingElements\PCFooting.cs" />
-    <Compile Include="BuildingElements\PCRectFooting.cs" />
     <Compile Include="BuildingElements\RCFooting.cs" />
     <Compile Include="BuildingElements\ShearWall.cs" />
     <Compile Include="BuildingElements\Slab.cs" />
@@ -85,12 +83,9 @@
     <Compile Include="BuildingElements\Foundation.cs" />
     <Compile Include="Base\FloorBase.cs" />
     <Compile Include="BuildingElements\Opening.cs" />
-    <Compile Include="BuildingElements\RectColumn.cs" />
-    <Compile Include="BuildingElements\RCRectFooting.cs" />
-    <Compile Include="BuildingElements\RectSlab.cs" />
+    <Compile Include="BuildingElements\Column.cs" />
     <Compile Include="BuildingElements\SlopedSlab.cs" />
     <Compile Include="BuildingElements\Wall.cs" />
-    <Compile Include="Constants\BlockName.cs" />
     <Compile Include="Helpers\CadLayerName.cs" />
     <Compile Include="Helpers\MathHelper.cs" />
     <Compile Include="Program.cs" />

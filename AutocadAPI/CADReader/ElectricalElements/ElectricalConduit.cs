@@ -10,11 +10,15 @@ namespace CADReader.ElectricalElements
 {
     public class ElectricalConduit
     {
+        #region Properties
         public Entity CurvePath { get; set; }
-        public double Diameter { get; set; } = DefaultValues.ConduitDiameter;
+        public double Diameter { get; set; } = DefaultValues.ConduitDiameter; 
+        #endregion
+        #region Constructor
         public ElectricalConduit(Entity _curvePath)
         {
             this.CurvePath = _curvePath;
-        }
+        } 
+        #endregion
     }
 }

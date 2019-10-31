@@ -11,12 +11,17 @@ namespace CADReader.ElementComponents
 {
     public class Rebar
     {
+        #region Properties
         public string Type { get; set; }
         public LinearPath LinearPath { get; set; }
-        public Line LinePath { get; set; }
+        public Point3D LocationPt { get; set; }
+
+        public double Diameter { get; set; } = DefaultValues.BarDiameter;
+        #endregion
+        #region Constructors
         public Rebar(Point3D location)
         {
-           LocationPt = location;
+            LocationPt = location;
             Type = "vertical";
         }
 
@@ -24,11 +29,10 @@ namespace CADReader.ElementComponents
         {
             this.LinearPath = path;
             Type = "horizontal";
-        }
-        
-        public Point3D LocationPt { get; set; }
+        } 
+        #endregion
 
-        public double Diameter { get; set; } = DefaultValues.BarDiameter;
+       
 
     }
 }

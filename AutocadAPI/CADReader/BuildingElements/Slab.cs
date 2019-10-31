@@ -14,7 +14,7 @@ namespace CADReader.BuildingElements
     {
         #region Properties
 
-        public LinearPath linPathSlab { get; set; }
+        public LinearPath LinPathSlab { get; set; }
         public List<Opening> Openings { get; set; }
 
         public double Thickness { get; set; } = DefaultValues.SlabThinkess;
@@ -23,7 +23,7 @@ namespace CADReader.BuildingElements
         #region Constructors
         public Slab(ReadAutodesk cadFileReader, LinearPath path, double level)
         {
-            linPathSlab = new LinearPath( path.Vertices.Select(v => new Point3D(v.X, v.Y, v.Z + level)).ToArray());
+            LinPathSlab = new LinearPath( path.Vertices.Select(v => new Point3D(v.X, v.Y, v.Z + level)).ToArray());
             GetOpenings(cadFileReader, path, level);
         }
         #endregion
@@ -45,37 +45,39 @@ namespace CADReader.BuildingElements
 
             for (int i = 0; i < PolyLines.Count; i++)
             {
-                double width = double.MaxValue;
-                double length = 0;
-                List<Point2D> lstVertices = new List<Point2D>();
+                #region Old code using rectangule shape method
+                //double width = double.MaxValue;
+                //double length = 0;
+                //List<Point2D> lstVertices = new List<Point2D>();
 
-                Point3D widthMidPt = Point3D.Origin;
-                int nVertices = PolyLines[i].Vertices.Length;
+                //Point3D widthMidPt = Point3D.Origin;
+                //int nVertices = PolyLines[i].Vertices.Length;
 
-                for (int j = 0; j < nVertices - 1; j++)
-                {
-                    double dist = MathHelper.CalcDistanceBetweenTwoPoint3D(PolyLines[i].Vertices[j], PolyLines[i].Vertices[j + 1]);
-                    width = Math.Min(width, dist);
-                    if (width == dist)
-                    {
-                        widthMidPt = MathHelper.MidPoint3D(PolyLines[i].Vertices[j], PolyLines[i].Vertices[j + 1]);
-                    }
-                    length = Math.Max(length, dist);
-                }
+                //for (int j = 0; j < nVertices - 1; j++)
+                //{
+                //    double dist = MathHelper.CalcDistanceBetweenTwoPoint3D(PolyLines[i].Vertices[j], PolyLines[i].Vertices[j + 1]);
+                //    width = Math.Min(width, dist);
+                //    if (width == dist)
+                //    {
+                //        widthMidPt = MathHelper.MidPoint3D(PolyLines[i].Vertices[j], PolyLines[i].Vertices[j + 1]);
+                //    }
+                //    length = Math.Max(length, dist);
+                //}
 
 
-                Point3D center = MathHelper.MidPoint3D(PolyLines[i].Vertices[0], PolyLines[i].Vertices[2]);
+                //Point3D center = MathHelper.MidPoint3D(PolyLines[i].Vertices[0], PolyLines[i].Vertices[2]);
 
-                center.Z = level;
-                widthMidPt.Z = level;
+                //center.Z = level;
+                //widthMidPt.Z = level; 
+                #endregion
 
                 for (int j = 0; j < PolyLines[i].Vertices.Length; j++)
                 {
                     PolyLines[i].Vertices[j].Z = level;
                 }
 
-                Openings.Add(new Opening(PolyLines[i],width, length, center, widthMidPt));
-                // 
+                Openings.Add(new Opening(PolyLines[i]));
+              
             }
         }
 
