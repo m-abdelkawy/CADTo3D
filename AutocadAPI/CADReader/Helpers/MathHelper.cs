@@ -157,17 +157,7 @@ namespace CADReader
 
             return true;
         }
-
-
-        //public static Vector3D UnitVector3DFromPt1ToPt2(Point3D pt1, Point3D pt2)
-        //{//check
-        //    Vector3D vector = (new Vector3D(pt2.X, pt2.Y, pt2.Z) - new Vector3D(pt1.X, pt1.Y, pt1.Z));
-
-        //    vector.Normalize();
-        //    //return new vector normalized
-        //    return vector;
-        //}
-
+ 
         public static double CalcDistanceBetweenTwoPoint3D(Point3D pt1, Point3D pt2)
         {
             return Math.Sqrt(Math.Pow(pt1.X - pt2.X, 2) + Math.Pow(pt1.Y - pt2.Y, 2) + Math.Pow(pt1.Z - pt2.Z, 2));
@@ -176,7 +166,6 @@ namespace CADReader
         {
             return Math.Sqrt(Math.Pow(pt1.X - pt2.X, 2) + Math.Pow(pt1.Y - pt2.Y, 2));
         }
-
 
         public static bool IsRectangle(LinearPath linPath, double tolerance)
         {

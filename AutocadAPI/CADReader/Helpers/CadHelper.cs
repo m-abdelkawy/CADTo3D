@@ -103,8 +103,7 @@ namespace CADReader.Helpers
 
             return lstLineSegment;
         }
-
-
+        
         public static Line ShortestLineGet(LinearPath linPath)
         {
             Line[] lineArr = linPath.ConvertToLines();
@@ -117,8 +116,7 @@ namespace CADReader.Helpers
 
             return shortestLine;
         }
-
-        #region Filters
+         
         public static bool IsIntersectingWithElmCategory(Line line, List<LinearPath> lstPolygonByLayer)
         {
             for (int i = 0; i < lstPolygonByLayer.Count; i++)
@@ -130,8 +128,7 @@ namespace CADReader.Helpers
             }
             return false;
         }
-        #endregion
-
+     
         public static List<LinearPath> EntitiesIntersectingSemelleGet(LinearPath semelleLinPath, List<LinearPath> lstCadFooting, out List<Line> lstSemelleLongLine)
         {
             //intersected footings
@@ -200,17 +197,6 @@ namespace CADReader.Helpers
             return lstEntityInsideFooting;
         }
 
-        //public static Point3D PointIntersectionSemelleWithEntity(Line line, List<LinearPath> lstLinPathCol)
-        //{
-        //    List<Point3D> lstIntersectionPts = new List<Point3D>();
-        //    for (int i = 0; i < lstLinPathCol.Count; i++)
-        //    {
-        //        lstIntersectionPts =MathHelper.PointsIntersectOfLineWithPolygon(lstLinPathCol[i], line);
-        //        if (lstIntersectionPts.Count == 2) break;
-        //    }
-        //    if (lstIntersectionPts.Count == 0) return null;
-        //    return MathHelper.MidPoint3D(lstIntersectionPts[0], lstIntersectionPts[1]);
-        //}
         public static Point3D PointIntersectSemelleWithNearEntity(Line line, List<LinearPath> lstLinPathEntityInsideFooting)
         {
             //intersection points with the nearest polygon ionside footing

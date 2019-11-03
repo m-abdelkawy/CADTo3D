@@ -293,4 +293,3 @@ D:\03_PROJECT PREPERATION\01_AutocadAPI\03_AutocadAPI-master_190904\CADTo3D\Auto
 D:\03_PROJECT PREPERATION\01_AutocadAPI\03_AutocadAPI-master_190904\CADTo3D\AutocadAPI\CADReader\obj\Debug\CADReader.csproj.CopyComplete
 D:\03_PROJECT PREPERATION\01_AutocadAPI\03_AutocadAPI-master_190904\CADTo3D\AutocadAPI\CADReader\obj\Debug\CADReader.dll
 D:\03_PROJECT PREPERATION\01_AutocadAPI\03_AutocadAPI-master_190904\CADTo3D\AutocadAPI\CADReader\obj\Debug\CADReader.pdb
-D:\03_PROJECT PREPERATION\01_AutocadAPI\03_AutocadAPI-master_190904\CADTo3D\AutocadAPI\CADReader\obj\Debug\CADReader.csprojAssemblyReference.cache

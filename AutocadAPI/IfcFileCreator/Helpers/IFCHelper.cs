@@ -55,21 +55,7 @@ namespace IfcFileCreator.Helpers
 
             return profile;
         }
-        
-        internal static void ProfileInsertionPointSet(this IfcRectangleProfileDef rectProf, IfcStore model, double x, double y)
-        {
-            IfcCartesianPoint insertionPoint = model.Instances.New<IfcCartesianPoint>();
-            insertionPoint.SetXY(x, y);
-            rectProf.Position = model.Instances.New<IfcAxis2Placement2D>();
-            rectProf.Position.Location = insertionPoint;
-        }
-        internal static void ProfileInsertionPointSet(this IfcCircleProfileDef cirProf, IfcStore model, double x, double y)
-        {
-            IfcCartesianPoint insertionPoint = model.Instances.New<IfcCartesianPoint>();
-            insertionPoint.SetXY(x, y);
-            cirProf.Position = model.Instances.New<IfcAxis2Placement2D>();
-            cirProf.Position.Location = insertionPoint;
-        }
+         
         public static void ProfileInsertionPointSet(this IfcParameterizedProfileDef prof, IfcStore model, IfcCartesianPoint insertionPt)
         {
             IfcCartesianPoint insertionPoint = model.Instances.New<IfcCartesianPoint>();
@@ -87,25 +73,7 @@ namespace IfcFileCreator.Helpers
 
             return body;
         }
-
-        internal static IfcFixedReferenceSweptAreaSolid ProfileFixedSweptSolidCreate(IfcStore model,IfcProfileDef prof, List<Point3D> lstPoints)
-        {
-            IfcFixedReferenceSweptAreaSolid body = model.Instances.New<IfcFixedReferenceSweptAreaSolid>();
-            IfcPolyline pLine = model.Instances.New<IfcPolyline>();
-            for (int i = 0; i < lstPoints.Count; i++)
-            {
-                IfcCartesianPoint point = model.Instances.New<IfcCartesianPoint>();
-                point.SetXYZ(lstPoints[i].X, lstPoints[i].Y, lstPoints[i].Z);
-                pLine.Points.Add(point);
-
-            }
-
-            body.Directrix = pLine;
-            body.SweptArea = prof;
-            body.FixedReference = model.Instances.New<IfcDirection>();
-            //body.FixedReference.SetXYZ(1, 0, 0);
-            return body;
-        }
+         
         internal static IfcSurfaceCurveSweptAreaSolid ProfileSurfaceSweptSolidCreate(IfcStore model, IfcProfileDef prof, List<Point3D> lstPoints, IfcDirection planeZaxis = null, IfcDirection refDir=null)
         {
             IfcSurfaceCurveSweptAreaSolid body = model.Instances.New<IfcSurfaceCurveSweptAreaSolid>();
@@ -319,15 +287,7 @@ namespace IfcFileCreator.Helpers
 
              
         }
-        internal static void BodyPlacementSet(this IfcFixedReferenceSweptAreaSolid areaSolidBody, IfcStore model, double x, double y, double z = 0, Vector3D uv = null)
-        {
-            areaSolidBody.Position = model.Instances.New<IfcAxis2Placement3D>();
-            IfcCartesianPoint location = model.Instances.New<IfcCartesianPoint>();
-            location.SetXYZ(x, y, z);
-            areaSolidBody.Position.Location = location;
-
-        }
-
+        
         internal static void BodyPlacementSet(this IfcExtrudedAreaSolid areaSolidBody, IfcStore model, IfcCartesianPoint insertionPt)
         {
             areaSolidBody.Position = model.Instances.New<IfcAxis2Placement3D>();
@@ -372,7 +332,7 @@ namespace IfcFileCreator.Helpers
             relVoids.RelatingBuildingElement = element;
         }
 
-        #region For Rebar
+        #region For Rebar By SweptDiskSolid
         internal static IfcCompositeCurveSegment CreateCurveSegment(IfcStore model, Point3D p1, Point3D p2)
         {
             // Create PolyLine for rebar

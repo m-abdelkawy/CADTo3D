@@ -498,16 +498,7 @@
     <Content Include="img\appertment_2.png" />
     <Content Include="img\appertment_3.png" />
     <Content Include="img\banner_overlay.png" />
-    <Content Include="img\blog_1.png" />
-    <Content Include="img\blog_2.png" />
-    <Content Include="img\blog_3.png" />
-    <Content Include="img\blog_4.png" />
-    <Content Include="img\blog_bg.png" />
-    <Content Include="img\client_1.png" />
-    <Content Include="img\client_2.png" />
     <Content Include="img\client_cercel_overlay.png" />
-    <Content Include="img\cta_bg.png" />
-    <Content Include="img\e-solution logo.png" />
     <Content Include="img\favicon.png" />
     <Content Include="img\footer_logo.png" />
     <Content Include="img\hover_patten_bg.png" />
@@ -522,10 +513,7 @@
     <Content Include="img\passion_bg.png" />
     <Content Include="img\patten_bg.png" />
     <Content Include="img\review_overley.png" />
-    <Content Include="img\room_1.png" />
-    <Content Include="img\room_2.png" />
     <Content Include="img\section_overlay.png" />
-    <Content Include="img\team_member.png" />
     <Content Include="js\aos.js" />
     <Content Include="js\bootstrap.min.js" />
     <Content Include="js\contact.js" />
@@ -775,9 +763,6 @@
     <Content Include="fonts\poppins\Poppins-SemiBoldItalic.ttf" />
     <Content Include="fonts\poppins\Poppins-Thin.ttf" />
     <Content Include="fonts\poppins\Poppins-ThinItalic.ttf" />
-    <Content Include="CAD Files\01.Foundation.dwg" />
-    <Content Include="CAD Files\02.Basement Roof SLab.dwg" />
-    <Content Include="CAD Files\03.Ground Roof Slab.dwg" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Properties\PublishProfiles\CustomProfile1.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
@@ -917,6 +902,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="CAD Files\" />
     <Folder Include="Content\bootstrap-theme\icons\" />
     <Folder Include="UploadedFiles\Projects\Building B\Update 1\" />
   </ItemGroup>
@@ -976,16 +962,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
-          <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>65175</DevelopmentServerPort>
-          <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:65175/</IISUrl>
-          <NTLMAuthentication>False</NTLMAuthentication>
-          <UseCustomServer>False</UseCustomServer>
-          <CustomServerUrl>
-          </CustomServerUrl>
-          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+          <SaveServerSettingsInUserFile>True</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
     </VisualStudio>

@@ -187,6 +187,7 @@
         <button id="btnUnclip">Unclip</button>
         <button id="btnSubmission">Submissions</button>
         <button id="btnHideAll">Hide All</button>
+        <button id="btnElementDetails">Element Details</button>
     </div>
 
     <div style="position: absolute; right: 5px; top: 5px;" id="toolbar" class="ui-widget-header ui-corner-all">
@@ -216,9 +217,6 @@
 
 
 
-
-
-
 <script type="text/javascript">
 
 
@@ -226,7 +224,7 @@
     var SelectedClass;
   // Comment function
 
-    var GetElement = function (event) {
+        var GetElement = function (event) {
         if (Document._lastSelectioncomment)
             Document._lastSelectioncomment.removeClass("selected-ui-comment");
         $(event.target).addClass("selected-ui-comment");
@@ -237,7 +235,7 @@
             var id = event.target.id;
             SelectedElementId = id;
                    $.ajax({
-                url: '@Url.Action("GetProductIds", "Viewer")',
+                url: '@Url.Action("GetProductIdsByType", "Viewer")',
                 data: { TypeId: id},
                 type: 'POST',
                  success: function (dat) {
@@ -268,7 +266,8 @@
   //Viewer inialize
 
         var viewer = new xViewer("viewer-canvas");
-    viewer.load('@Url.Action("ViewerLoad", "Viewer", new { FileName = ViewBag.FilePath })');
+        viewer.load('@Url.Action("ViewerLoad", "Viewer", new { FileName = ViewBag.FilePath })');
+        console.log("viewer", viewer);
     //Inialize Timeliner
     var ShowTimeLine = function () {
         if ($('#TimeLine').css("display") == "none")
@@ -323,14 +322,13 @@
         var hiddenIds = [];
 
         var id;
-    viewer.on("pick", function (args) {
+        viewer.on("pick", function (args) {
         SelectedClass = "";
         //viewer.resetStates();
         viewer.setState(xState.UNDEFINED, [id]);
-            browser.activateEntity(args.id);
+            
             viewer.renderingMode = "normal";
-            id = args.id;
-            console.log(id);
+            id = args.id; 
             SelectedElementId = id;
             if (SelectedElementId == null) {
                 $('#Commentbtn').css("display", "none");
@@ -352,7 +350,7 @@
             viewer.zoomTo(id);
             keepTarget = true;
     });
-
+        var productIds=[];
         $('#btnSubmission').click(function () {
             $.ajax({
                 url: '@Url.Action("GetElemetsToRender", "Viewer")',
@@ -360,8 +358,23 @@
                 success: function (dat) {
                     console.log(dat);
                     var Data = JSON.parse(dat);
-                    var productIds = Data.ProductIdList;
-                    viewer.setState(xState.UNDEFINED, productIds);
+                    console.log(Data);
+
+                    if (productIds != null && Data !=null) {
+                        debugger;
+                        if (!Data.ProductIdList[Data.ProductIdList.length-1].isReinforcement) {
+                            for (var i = 0; i < productIds.length; i++) {
+                                if ((productIds[i].isFormWork)) {
+                                    viewer.setState(xState.HIDDEN, [productIds[i].Id]);
+                                }
+                            }
+                        }
+
+                    }
+                    //var myArray = Data.ProductIdList.filter((el) => !productIds.includes(el));
+
+                    productIds = productIds.concat(Data.ProductIdList);
+                    viewer.setState(xState.UNDEFINED, Data.ProductIdList.map(e=>e.Id));
                 },
                 error: function (err) {
                     console.log(err);
@@ -382,7 +395,6 @@
                 }
             });
         });
-        debugger;
         viewer.start();
 
         var Recolour = function () {
@@ -396,9 +408,19 @@
                 index++;
             }
         };
+        function ColorByTypeFixed() {
+            var typeList = ['IFCCOLUMN', 'IFCFOOTING', 'IFCWALLSTANDARDCASE', 'IFCSLAB', 'IFCREINFORCINGBAR', 'IFCBUILDINGELEMENTPART', 'IFCCABLECARRIERSEGMENT'];
+            var colorList = [[85, 85, 85, 255], [103, 103, 103, 255], [178, 190, 181, 255], [153, 153, 153, 255], [224, 223, 219, 255], [222, 184, 135, 255], [255, 53, 3, 255]];
+
+            for (var i = 0; i < typeList.length; i++) {
+                viewer.defineStyle(i, colorList[i]);
+                viewer.setStyle(i, xProductType[typeList[i]]);
+            }
+        }
 
         viewer.on('loaded', function () {
-          //  Recolour();
+           //Recolour();
+            ColorByTypeFixed();
             HideAllElements();
             $.ajax({
                 url: '@Url.Action("ResetCounter", "Viewer")',
@@ -413,6 +435,7 @@
         });
 
         var HideElement = function () {
+
             if (id == null) return;
             hiddenIds.push(id);
             viewer.setState(xState.HIDDEN, [id]);
@@ -572,7 +595,7 @@
             viewer.renderingMode = "x-ray";
             var id = e.target.id;
              $.ajax({
-                url: '@Url.Action("GetProductIds", "Viewer")',
+                url: '@Url.Action("GetProductIdsByType", "Viewer")',
                 data: { TypeId: id},
                 type: 'POST',
                  success: function (dat) {
@@ -620,7 +643,30 @@
             }
             $('#pComments').append(span);
 
+            });
+
+            $('#btnElementDetails').click(function () {
+                            $.ajax({
+                url: '@Url.Action("GetAllProductIds", "Viewer")',
+                type: 'GET',
+                 success: function (dat) { 
+                     var Data = JSON.parse(dat);
+                     var productIds = [];
+                     debugger;
+                     productIds = Data.ProductIdList; 
+                     productIds.splice(productIds.indexOf(SelectedElementId), 1);
+                     viewer.setState(xState.XRAYVISIBLE, productIds);
+                     viewer.zoomTo(id);
+                     keepTarget = false;
+                     viewer.setState(xState.UNDEFINED, [SelectedElementId]);
+
+                viewer.renderingMode = "x-ray";
+            },
+                error: function (err) {
+                console.log(err);
+            }
         });
+            })
 
     });
 </script>
