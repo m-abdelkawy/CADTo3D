@@ -1,0 +1,22 @@
+﻿@using System.IO;
+@model List<string>
+@{
+    for (int i = 0; i < Model.Count; i++)
+    {
+        <div class="col-md-6 col-lg-3">
+            <div class="single_passion">
+                <div class="single_passion_item">
+                    <a href="#" class="passion_icon"> <i class="flaticon-frame"></i> </a>
+                    <h4>@Path.GetFileName(Model[i])</h4>
+                    <p>
+                       Modified Model (@DateTime.Now.ToShortDateString()) <br/>
+                        Issued By: Consultant<br />
+                        Contractor: AEC<br />
+                        Published Reason: Submission
+                    </p>
+                     <button id=@i class="preview btn_2" style="color:black;">Preview</button>
+                </div>
+            </div>
+        </div> 
+    }
+}
