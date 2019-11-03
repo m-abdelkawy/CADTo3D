@@ -180,7 +180,7 @@
     </div>
 </div>
 
-<div id="viewer-container" style="top:150px; background:#f9f9f9; left:310px;right:310px;">
+<div id="viewer-container" style="top:150px; background:#f9f9f9; left:0px;right:310px;">
     <canvas id="viewer-canvas"></canvas>
     <div style="position: absolute; left: 5px; top: 5px; padding: 5px;" id="toolbar" class="ui-widget-header ui-corner-all">
         <button id="btnClip">Clip</button>
@@ -455,8 +455,9 @@
             for (var type in xProductType) {
                 viewer.setState(xState.UNDEFINED, xProductType[type]);
             }
+            viewer.setState(xState.HIDDEN, xProductType['IFCBUILDINGELEMENTPART']);
             viewer.renderingMode = "normal";
-            FullExtent();
+            //FullExtent();
             hiddenIds = [];
         };
         var HideAllElements = function () {
