@@ -1,0 +1,19 @@
+﻿@{
+    ViewBag.Title = "Upload IFC File";
+}
+
+<h2>UploadFile</h2>
+
+@using (Html.BeginForm("UploadFile", "Viewer", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+    <div>
+        @Html.TextBox("file", "", new { type = "file",accept=".ifc" }) <br />
+        <input type="submit" value="Upload" class="btn btn-primary"  />
+        @ViewBag.Message
+        
+
+    </div>
+
+
+}  

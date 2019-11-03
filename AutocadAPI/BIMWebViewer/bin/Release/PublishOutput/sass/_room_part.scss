@@ -1,0 +1,204 @@
+
+/****************Room part css**************/
+.room_part{
+    padding: 130px 0px 40px;
+    overflow: hidden;
+    position: relative;
+    z-index: 9;
+    @media #{$small_mobile}{
+        padding: 70px 0px 40px;
+        overflow: visible;
+    }
+    @media #{$large_mobile}{
+        padding: 50px 0px 0px;
+    }
+    @media #{$tab_device}{
+        padding: 70px 0px 0px;
+    }
+    @media #{$medium_device}{
+    
+    }
+    img{
+        width: 100%;
+    }
+    .container-fluid{
+        padding-left: 0px;
+        padding-right: 0px;
+        @media #{$small_mobile}{
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+        @media #{$large_mobile}{
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+        @media #{$tab_device}{
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+        @media #{$medium_device}{
+        
+        }
+        .room_1{
+            margin-top: 175px;
+            position: relative;
+            @media #{$small_mobile}{
+                margin-top: 0px;
+                margin-bottom: 225px;
+            }
+            @media #{$large_mobile}{
+                margin-top: 0px;
+                margin-bottom: 225px;
+            }
+            @media #{$tab_device}{
+                margin-top: 100px;
+            }
+            @media #{$medium_device}{
+            
+            }
+            .room_text_1{
+                padding: 40px;
+                background-color: $white_color;
+                box-shadow: 1px 15px 30px #14303a15;
+                width: 510px;
+                position: absolute;
+                z-index: 9;
+                top: -175px;
+                right: 30px;
+                @media #{$small_mobile}{
+                    width: 100%;
+                    top: auto;
+                    right: 0px;
+                    padding: 20px;
+                }
+                @media #{$large_mobile}{
+                    width: 100%;
+                    top: auto;
+                    right: 0px;
+                    padding: 20px;
+                }
+                @media #{$tab_device}{
+                    width: 300px;
+                    z-index: 9;
+                    top: -100px;
+                    right: 30px;
+                }
+                @media #{$medium_device}{
+                    width: 350px;
+                    z-index: 9;
+                    top: -175px;
+                    right: 30px;
+                }
+                h1{
+                    font-size: 40px;
+                    font-weight: 700;
+                    @media #{$small_mobile}{
+                        font-size: 25px;
+                        line-height: 35px;
+                    }
+                    @media #{$large_mobile}{
+                        font-size: 25px;
+                        line-height: 35px;
+                    }
+                    @media #{$tab_device}{
+                        font-size: 25px;
+                    }
+                    @media #{$medium_device}{
+                        font-size: 30px;
+                    }
+                }
+                .btn_2{
+                    color: $font_3;
+                    margin-left: 10px;
+                    margin-top: 23px;
+                    span{
+                        font-size: 12px;
+                    }
+                    &:after{
+                        background-color: rgb(233, 238, 242);
+                    }
+                    &:hover{
+                        color: $btn_bg;
+                        span{
+                            color: $btn_bg;
+                        }
+                    }
+                }
+            }
+        }
+        .room_2{
+            position: relative;
+            .room_text_2{
+                padding: 40px;
+                background-color: $white_color;
+                box-shadow: 1px 15px 30px #14303a15;
+                width: 510px;
+                position: absolute;
+                z-index: 9;
+                bottom: -175px;
+                left: 30px;
+                @media #{$small_mobile}{
+                    width: 100%;
+                    bottom: auto;
+                    left: 0px;
+                    padding: 20px;
+                }
+                @media #{$large_mobile}{
+                    width: 100%;
+                    bottom: auto;
+                    left: 0px;
+                    padding: 20px;
+                    z-index: 99;
+                    position: relative;
+                }
+                @media #{$tab_device}{
+                    width: 300px;
+                    z-index: 9;
+                    bottom: -100px;
+                    right: 30px;
+                }
+                @media #{$medium_device}{
+                    width: 350px;
+                    z-index: 9;
+                    bottom: -175px;
+                    right: 30px;
+                }
+                h1{
+                    font-size: 40px;
+                    font-weight: 700;
+                    @media #{$small_mobile}{
+                        font-size: 25px;
+                        line-height: 35px;
+                    }
+                    @media #{$large_mobile}{
+                        font-size: 25px;
+                        line-height: 35px;
+                    }
+                    @media #{$tab_device}{
+                        font-size: 25px;
+                    }
+                    @media #{$medium_device}{
+                        font-size: 30px;
+                    }
+                }
+                .btn_2{
+                    color: $font_3;
+                    margin-left: 10px;
+                    margin-top: 23px;
+                    span{
+                        font-size: 12px;
+                    }
+                    &:after{
+                        background-color: rgb(233, 238, 242);
+                    }
+                    &:hover{
+                        color: $btn_bg;
+                        span{
+                            color: $btn_bg;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

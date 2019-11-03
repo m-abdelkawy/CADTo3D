@@ -788,6 +788,7 @@
     <Content Include="sass\_single_blog.scss" />
     <Content Include="sass\_team.scss" />
     <Content Include="sass\_variables.scss" />
+    <None Include="Properties\PublishProfiles\FolderProfile2.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\browser.js" />
     <Content Include="Scripts\ej.gantt.min.js" />
