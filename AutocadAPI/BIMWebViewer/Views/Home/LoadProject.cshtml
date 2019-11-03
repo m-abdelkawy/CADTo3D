@@ -9,6 +9,41 @@
     .ui-selected {
         background-color: gray;
     }
+
+    div#load_screen {
+        background: #000;
+        opacity: 0.5;
+        position: fixed;
+        z-index: 10000;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+    }
+
+    .loader {
+        border: 16px solid #f3f3f3; /* Light grey */
+        border-top: 16px solid #3498db; /* Blue */
+        border-radius: 50%;
+        width: 120px;
+        height: 120px;
+        animation: spin 2s linear infinite;
+        background: #000;
+        opacity: 1;
+        margin: auto;
+        top: 50%;
+        left: 50%;
+        position: absolute;
+    }
+
+    @@keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
 </style>
 
 <head>
@@ -108,11 +143,20 @@
     $(document).ready(function () {
                     var selectedVersion;
 
-        $(".preview").click(function (e) {
+                    $(".preview").click(function (e) {
+                        //debugger;
+                        var loading = '<div id="load_screen"><div class="loader"></div></div>';
+                        $("body").append(loading);
+
             var id = $(this).attr('id');
                         var url = '@Url.Action("Preview", "Home", new { VersionIndex = "__param__" })';
-            var newurl = url.replace('__param__', encodeURIComponent(id));
+                        var newurl = url.replace('__param__', encodeURIComponent(id));
+
+                        
+
                         window.location.href = newurl;
+
+                        
         });
                     });
 
