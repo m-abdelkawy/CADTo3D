@@ -18,7 +18,13 @@ namespace CADReader.Reinforced_Elements
         #region Properties
         public Semelle Semelle { get; set; }
         public List<Rebar> Rebars { get; set; }
-        public Stirrup Stirrup { get; set; }  
+        public Stirrup Stirrup { get; set; }
+        public LinearPath VlLinPath { get; set; }
+
+        public Point3D StartPt { get; set; }
+        public Point3D EndPt { get; set; }
+
+
         #endregion
 
         public ReinforcedCadSemelle(ReadAutodesk cadreader, Semelle semelle)
@@ -101,6 +107,15 @@ namespace CADReader.Reinforced_Elements
                     LinearPath l1RebarBot = (LinearPath)centerRebarBot.Offset((width / 2 - DefaultValues.SemelleCover), Vector3D.AxisZ, 0.0001, true);
                     LinearPath l2RebarBot = (LinearPath)centerRebarBot.Offset((width / 2 - DefaultValues.SemelleCover) * -1, Vector3D.AxisZ, 0.0001, true);
 
+                    //Vertical Linear Path
+                    Point3D pt11 = pt1 + MathHelper.UVPerpendicularToLine2DFromPt(new Line(pt1, pt2), pt1) * (width / 2 - DefaultValues.SemelleCover) + Vector3D.AxisZ * DefaultValues.SemelleCover;
+                    Point3D pt12 = pt1 - MathHelper.UVPerpendicularToLine2DFromPt(new Line(pt1, pt2), pt1) * (width / 2 - DefaultValues.SemelleCover) + Vector3D.AxisZ * DefaultValues.SemelleCover;
+
+                    Point3D pt13 = pt11 + Vector3D.AxisZ * (DefaultValues.SmellesWithFootingThickness - DefaultValues.SemelleCover);
+                    Point3D pt14 = pt12 + Vector3D.AxisZ * (DefaultValues.SmellesWithFootingThickness - DefaultValues.SemelleCover);
+
+                    VlLinPath = new LinearPath(pt11, pt12, pt13, pt14);
+
                     //offset to get the top rebar
                     LinearPath centerRebarTop = new LinearPath(pt1 + (Vector3D.AxisZ * (Semelle.Thickness - DefaultValues.SemelleCover)),
                         pt2 + (Vector3D.AxisZ * (Semelle.Thickness - DefaultValues.SemelleCover)));
@@ -120,21 +135,15 @@ namespace CADReader.Reinforced_Elements
 
         }
 
-        //private void StirrupPopulate()
-        //{
-        //    LinearPath stirrupLp = (LinearPath)RectColumn.ColPath.Offset(-RectColumn.Cover * 1.2);
-        //    //for (int i = 0; i < stirrupLp.Vertices.Length; i++)
-        //    //{
-        //    //    //stirrupLp.Vertices[i].Z += CADConfig.Units == linearUnitsType.Meters?lvl+1:lvl+1000;
-        //    //    //stirrupLp.Vertices[i].Z += lvl;
-        //    //}
+        public void StirrupPopulate()
+        {
+            Stirrup = new Stirrup(VlLinPath);
+        }
 
-        //    Stirrup = new Stirrup(stirrupLp);
-        //}
 
         public override void ReinforcementPopulate()
         {
-
+            throw new NotImplementedException();
         } 
         #endregion
     }
