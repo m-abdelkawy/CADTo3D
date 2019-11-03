@@ -1,0 +1,132 @@
+﻿@using System.IO;
+@model List<string>
+@{
+    ViewBag.Title = "Home Page";
+}
+ 
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Real_state || Home</title>
+    <link rel="icon" href="img/favicon.png">
+    <!-- animate CSS -->
+    <link rel="stylesheet" href="~/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/css/animate.css">
+    <!-- owl carousel CSS -->
+    <link rel="stylesheet" href="~/css/owl.carousel.min.css">
+    <!-- themify CSS -->
+    <link rel="stylesheet" href="~/css/themify-icons.css">
+    <!-- flaticon CSS -->
+    <link rel="stylesheet" href="~/css/flaticon.css">
+    <!-- magnific-popup CSS -->
+    <link rel="stylesheet" href="~/css/magnific-popup.css">
+    <!-- font awesome CSS -->
+    <link rel="stylesheet" href="~/fontawesome/css/all.min.css">
+    <!-- style CSS -->
+    <link rel="stylesheet" href="~/css/style.css">
+</head>
+<!--::menu part start::-->
+<header class="main_menu home_menu">
+    <div class="container" style="max-width:1345px">
+        <div class="row">
+            <div class="col-lg-12">
+                <nav class="navbar navbar-expand-lg navbar-light">
+                    <a class="navbar-brand" href="/Home/Home"> <img src="~/img/nlogo.png" width="180" alt="logo"></a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse main-menu-item" id="navbarNav">
+                        <ul class="navbar-nav">
+                            <li class="nav-item active">
+                                <a class="nav-link" href="/Home/Home">Home<span class="sr-only">(current)</span></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="about.html">about</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="contact.html">Contact us</a>
+                            </li>
+                            <li class="nav-item">@Html.ActionLink("Projects", "Index", "Home", new { @class = "nav-link" })</li>
+                        </ul>
+                        <div style="margin-left:100px">
+
+                            @Html.Partial("_LoginPartial")
+                        </div>
+                    </div>
+                    <div class="navbar-collapse collapse">
+
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+<!--::menu part end::-->
+<div class="apartment_part" style="padding-top:200px">
+    <div class="container">
+        <div class="row justify-content-between align-content-center">
+            <div class="col-md-8 col-lg-7">
+                <div class="section_tittle">
+                    <h1>
+                        Projects <br> 
+                    </h1>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            @{
+                for (int i = 0; i < Model.Count; i++)
+                {
+                    <div class="col-md-4 col-lg-4">
+                        <div class="single_appartment_part projdiv" id="@i">
+                            <div class="appartment_img">
+                                <img src="~/Images/@(Path.GetFileName(Model[i])).png" alt="">
+                            </div>
+                            <div class="single_appartment_content "> 
+                                <p>Yanbu Buildings</p>
+                                <a><h4>@Path.GetFileName(Model[i])</h4></a>
+                                <ul class="list-unstyled">
+                                    <li><a href=""><span class="flaticon-bath"></span></a> 04</li>
+                                    <li><a href=""><span class="flaticon-bed"></span></a> 03</li>
+                                    <li><a href=""><span class="flaticon-frame"></span></a>  1077 sqft</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+
+
+        </div>
+    </div>
+</div>
+ 
+
+<script src="~/js/jquery-1.12.1.min.js"></script>
+<!-- popper j~/s -->
+<script src="~/js/popper.min.js"></script>
+<!-- bootstra~/p js -->
+<script src="~/js/bootstrap.min.js"></script>
+<!-- easing j~/s -->
+<script src="~/js/jquery.magnific-popup.js"></script>
+<!-- particle~/s js -->
+<script src="~/js/owl.carousel.min.js"></script>
+<!-- easing j~/s -->
+<script src="~/js/jquery.easing.min.js"></script>
+<!-- custom j~/s -->
+<script src="~/js/custom.js"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $(".projdiv").click(function (e) {
+            var index = $(this).attr('id');
+              var url = '@Url.Action("LoadProject", "Home", new { projectIndex = "__param__" })';
+            var newurl = url.replace('__param__', encodeURIComponent(index));
+            window.location.href = newurl;
+        });
+    });
+</script>

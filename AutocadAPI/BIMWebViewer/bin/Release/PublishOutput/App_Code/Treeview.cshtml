@@ -1,0 +1,60 @@
+﻿@helper GetCategories(List<BIMWebViewer.Classes.ProductCategory> cateogries)
+{
+    foreach (var i in cateogries)
+    {
+        <li style="list-style-type: none; cursor: default;" class="ACY-tree-node">
+            <span class="collapsetree collapse collapsible" style="display:inline-block">&nbsp;</span>
+            
+            <span class="ACY-entity" style="display:unset">
+                @i.Name.Replace("Ifc", "")
+            </span>
+            <ul>
+                @Treeview.GetFamilies(i) 
+            </ul>
+        </li>
+    }
+}
+@helper GetFamilies(BIMWebViewer.Classes.ProductCategory cateogory)
+{
+    foreach (var i in cateogory.Families)
+    {
+        <li style="list-style-type: none; cursor: default;" class="ACY-tree-node">
+            <span class="collapsetree collapse collapsible" style="display:inline-block">&nbsp;</span>
+            <span class="ACY-entity" style="display:unset">
+                @i.Name
+            </span>
+            <ul>
+                @Treeview.GetTypes(i) 
+            </ul>
+        </li>
+    }
+}
+@helper GetTypes(BIMWebViewer.Classes.ProductFamily family)
+{
+    foreach (var i in family.Types)
+    {
+        <li style="list-style-type: none; cursor: default;" class="ACY-tree-node">
+            <span class="collapsetree collapse collapsible" style="display:inline-block">&nbsp;</span>
+            <span class="ACY-entity ACY-Type"  id="@i.Id" style="display:unset" >
+                @i.Name
+            </span>
+            <ul>
+                @Treeview.GetInstances(i) 
+            </ul>
+        </li>
+    }
+}
+@helper GetInstances(BIMWebViewer.Classes.ProductType type)
+{
+foreach (var i in type.Products)
+{
+    string name = i.Name.Value.Value.ToString().Split(':').ToList()[2];
+        <li class="ACY-tree-leaf"
+            style="list-style-type: none; cursor: default;">
+            <span style="width:15px; display:inline-block" >&nbsp;</span>
+            <span class="ACY-entity" id="@i.EntityLabel" style="display:unset">
+                @name
+            </span>
+        </li>
+    }
+}

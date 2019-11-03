@@ -775,9 +775,6 @@
     <Content Include="fonts\poppins\Poppins-SemiBoldItalic.ttf" />
     <Content Include="fonts\poppins\Poppins-Thin.ttf" />
     <Content Include="fonts\poppins\Poppins-ThinItalic.ttf" />
-    <Content Include="CAD Files\01.Foundation.dwg" />
-    <Content Include="CAD Files\02.Basement Roof SLab.dwg" />
-    <Content Include="CAD Files\03.Ground Roof Slab.dwg" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Properties\PublishProfiles\CustomProfile1.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
@@ -803,6 +800,7 @@
     <Content Include="sass\_single_blog.scss" />
     <Content Include="sass\_team.scss" />
     <Content Include="sass\_variables.scss" />
+    <None Include="Properties\PublishProfiles\FolderProfile2.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\browser.js" />
     <Content Include="Scripts\ej.gantt.min.js" />
@@ -917,6 +915,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="CAD Files\" />
     <Folder Include="Content\bootstrap-theme\icons\" />
     <Folder Include="UploadedFiles\Projects\Building B\Update 1\" />
   </ItemGroup>
