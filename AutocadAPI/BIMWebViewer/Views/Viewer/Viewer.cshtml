@@ -105,37 +105,6 @@
     .selected-ui-comment {
         background-color: dodgerblue;
     }
-
-
-    div#load_screen {
-        background: #000;
-        opacity: 0.5;
-        position: fixed;
-        z-index: 10000;
-        top: 0px;
-        width: 100%;
-        height: 100%;
-    }
-    .loader {
-        border: 16px solid #f3f3f3; /* Light grey */
-        border-top: 16px solid #3498db; /* Blue */
-        border-radius: 50%;
-        width: 120px;
-        height: 120px;
-        animation: spin 2s linear infinite;
-        background: #000;
-        opacity: 1;
-        margin:auto;
-
-        top:50%;
-        left:50%;
-        position:absolute;
-    }
-
-@@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
 </style>
 
 <!--::menu part start::-->
@@ -187,9 +156,9 @@
                 <div class="treeview">
                     @if (Model != null && Model.Count() > 0)
                     {
-                    <ul style="padding-left: 0px;">
-                        @Treeview.GetCategories(Model)
-                    </ul>
+                        <ul style="padding-left: 0px;">
+                            @Treeview.GetCategories(Model)
+                        </ul>
                     }
                 </div>
             </div>
@@ -248,8 +217,6 @@
 
 
 
-
-
 <script type="text/javascript">
 
 
@@ -297,8 +264,6 @@
     };
 
   //Viewer inialize
-        var loading = '<div id="load_screen"><div class="loader"></div></div>';
-        $("body").append(loading);
 
         var viewer = new xViewer("viewer-canvas");
         viewer.load('@Url.Action("ViewerLoad", "Viewer", new { FileName = ViewBag.FilePath })');
@@ -358,9 +323,9 @@
         SelectedClass = "";
         //viewer.resetStates();
         viewer.setState(xState.UNDEFINED, [id]);
-
+            
             viewer.renderingMode = "normal";
-            id = args.id;
+            id = args.id; 
             SelectedElementId = id;
             if (SelectedElementId == null) {
                 $('#Commentbtn').css("display", "none");
@@ -381,16 +346,9 @@
             viewer.setState(xState.HIGHLIGHTED, [id]);
             viewer.zoomTo(id);
             keepTarget = true;
-        });
-
-        var productIds = [];
-
+    });
+        var productIds=[];
         $('#btnSubmission').click(function () {
-            var loading = '<div id="load_screen"><div class="loader"></div></div>';
-            
-            $("body").append(loading);
-
-
             $.ajax({
                 url: '@Url.Action("GetElemetsToRender", "Viewer")',
                 type: 'POST',
@@ -413,19 +371,13 @@
                     //var myArray = Data.ProductIdList.filter((el) => !productIds.includes(el));
 
                     productIds = productIds.concat(Data.ProductIdList);
-                    viewer.setState(xState.UNDEFINED, Data.ProductIdList.map(e => e.Id));
-
-                    var load_screen = document.getElementById("load_screen");
-                    document.body.removeChild(load_screen);
+                    viewer.setState(xState.UNDEFINED, Data.ProductIdList.map(e=>e.Id));
                 },
                 error: function (err) {
                     console.log(err);
                 }
             });
         });
-
-
-
         $('#btnHideAll').click(function () {
             HideAllElements();
 
@@ -464,8 +416,6 @@
         }
 
         viewer.on('loaded', function () {
-            var load_screen = document.getElementById("load_screen");
-            document.body.removeChild(load_screen);
            //Recolour();
             ColorByTypeFixed();
             HideAllElements();
@@ -697,11 +647,11 @@
                             $.ajax({
                 url: '@Url.Action("GetAllProductIds", "Viewer")',
                 type: 'GET',
-                 success: function (dat) {
+                 success: function (dat) { 
                      var Data = JSON.parse(dat);
                      var productIds = [];
                      debugger;
-                     productIds = Data.ProductIdList;
+                     productIds = Data.ProductIdList; 
                      productIds.splice(productIds.indexOf(SelectedElementId), 1);
                      viewer.setState(xState.XRAYVISIBLE, productIds);
                      viewer.zoomTo(id);
