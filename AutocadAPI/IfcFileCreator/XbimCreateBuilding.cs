@@ -506,7 +506,8 @@ namespace IfcFileCreator
                             foreach (ReinforcedCadWall rcWall in foundation.LstRCCadWall)
                             {
 
-                                IfcWall wall = CreateIfcWall(model, rcWall.CadWall, wallHeight, building);
+                                IfcWallStandardCase wall = CreateIfcWall(model, rcWall.CadWall, wallHeight, building);
+                                if (wall != null) AddPropertiesToWall(model, wall);
 
                                 using (var txn = model.BeginTransaction("Add RetainingWall"))
                                 {
@@ -1383,33 +1384,41 @@ namespace IfcFileCreator
 
         private void CreateSimpleProperty(IfcStore model, IfcWallStandardCase wall)
         {
-            var Time = model.Instances.New<IfcPropertySingleValue>(psv =>
-            {
-                psv.Name = "Time";
-                psv.Description = "";
-                psv.NominalValue = new IfcTimeMeasure(150.0);
-                psv.Unit = model.Instances.New<IfcSIUnit>(siu =>
-                {
-                    siu.UnitType = IfcUnitEnum.TIMEUNIT;
-                    siu.Name = IfcSIUnitName.SECOND;
-                });
-            });
-            var Sound = model.Instances.New<IfcPropertySingleValue>(psv =>
-            {
-                psv.Name = "Sound";
-                psv.Description = "";
-                psv.NominalValue = new IfcTimeMeasure(150.0);
-                psv.Unit = model.Instances.New<IfcSIUnit>(siu =>
-                {
-                    siu.UnitType = IfcUnitEnum.POWERUNIT;
-                    siu.Name = IfcSIUnitName.COULOMB;
-                });
-            });
             var Material = model.Instances.New<IfcPropertySingleValue>(psv =>
             {
                 psv.Name = "Material";
                 psv.Description = "";
                 psv.NominalValue = new IfcLabel("Concrete");
+            });
+            var Area = model.Instances.New<IfcPropertySingleValue>(psv =>
+            {
+                psv.Name = "Area";
+                psv.Description = "";
+                psv.NominalValue = new IfcLabel(random.Next(500)+ " m2");
+                psv.Unit = model.Instances.New<IfcSIUnit>(siu =>
+                {
+                    siu.UnitType = IfcUnitEnum.AREAUNIT;
+                    siu.Name = IfcSIUnitName.METRE;
+                });
+            });
+            var Volume = model.Instances.New<IfcPropertySingleValue>(psv =>
+            {
+                psv.Name = "Volume";
+                psv.Description = "";
+                psv.NominalValue = new IfcLabel(random.Next(5000) + " m3");
+                psv.Unit = model.Instances.New<IfcSIUnit>(siu =>
+                {
+                    siu.UnitType = IfcUnitEnum.VOLUMEUNIT;
+                    siu.Name = IfcSIUnitName.METRE;
+                });
+            });
+
+            var Building = model.Instances.New<IfcPropertySingleValue>(psv =>
+            {
+                psv.Name = "Building";
+                psv.Description = "";
+                psv.NominalValue = new IfcLabel("Building A");
+              
             });
 
             //lets create the IfcElementQuantity
@@ -1417,9 +1426,10 @@ namespace IfcFileCreator
             {
                 ps.Name = "Element Properties";
                 ps.Description = "Property Set";
-                ps.HasProperties.Add(Time);
-                ps.HasProperties.Add(Sound);
                 ps.HasProperties.Add(Material);
+                ps.HasProperties.Add(Area);
+                ps.HasProperties.Add(Volume);
+                ps.HasProperties.Add(Building);
             });
 
             //need to create the relationship

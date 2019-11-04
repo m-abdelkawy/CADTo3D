@@ -106,7 +106,6 @@
         background-color: dodgerblue;
     }
 
-
     div#load_screen {
         background: #000;
         opacity: 0.5;
@@ -116,6 +115,7 @@
         width: 100%;
         height: 100%;
     }
+
     .loader {
         border: 16px solid #f3f3f3; /* Light grey */
         border-top: 16px solid #3498db; /* Blue */
@@ -125,17 +125,21 @@
         animation: spin 2s linear infinite;
         background: #000;
         opacity: 1;
-        margin:auto;
-
-        top:50%;
-        left:50%;
-        position:absolute;
+        margin: auto;
+        top: 50%;
+        left: 50%;
+        position: absolute;
     }
 
-@@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
+    @@keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
 </style>
 
 <!--::menu part start::-->
@@ -176,27 +180,26 @@
     </div>
 </header>
 <!--::menu part end::-->
-
-<div id="semantic-model-container" class="noselect" style="top:150px; width:300px;">
-    <div id="semantic-model">
-        <h3>Elements</h3>
-        <div class="no-overflow ui-accordion-content ui-helper-reset .ui-widget-header ui-corner-bottom ui-accordion-content-active"
-             id="ui-id-11" aria-labelledby="ui-id-10" role="tabpanel" aria-hidden="false"
-             style="display: block; height: 483px; overflow: auto; background:#1b212e;color:white;">
-            <div id="assetTypes" class="semantic-model-tree ACY-tree">
-                <div class="treeview">
-                    @if (Model != null && Model.Count() > 0)
-                    {
-                    <ul style="padding-left: 0px;">
-                        @Treeview.GetCategories(Model)
-                    </ul>
-                    }
+@*<div id="semantic-model-container" class="noselect" style="top:150px; width:300px;">
+        <div id="semantic-model">
+            <h3>Elements</h3>
+            <div class="no-overflow ui-accordion-content ui-helper-reset .ui-widget-header ui-corner-bottom ui-accordion-content-active"
+                 id="ui-id-11" aria-labelledby="ui-id-10" role="tabpanel" aria-hidden="false"
+                 style="display: block; height: 483px; overflow: auto; background:#1b212e;color:white;">
+                <div id="assetTypes" class="semantic-model-tree ACY-tree">
+                    <div class="treeview">
+                        @if (Model != null && Model.Count() > 0)
+                        {
+                            <ul style="padding-left: 0px;">
+                                @Treeview.GetCategories(Model)
+                            </ul>
+                        }
+                    </div>
                 </div>
             </div>
-        </div>
 
-    </div>
-</div>
+        </div>
+    </div>*@
 
 <div id="semantic-descriptive-info-container" style="top:150px; width:300px;">
     <div id="semantic-descriptive-info">
@@ -211,7 +214,7 @@
     </div>
 </div>
 
-<div id="viewer-container" style="top:150px; background:#f9f9f9; left:310px;right:310px;">
+<div id="viewer-container" style="top:150px; background:#f9f9f9; left:0px;right:310px;">
     <canvas id="viewer-canvas"></canvas>
     <div style="position: absolute; left: 5px; top: 5px; padding: 5px;" id="toolbar" class="ui-widget-header ui-corner-all">
         <button id="btnClip">Clip</button>
@@ -245,8 +248,6 @@
         <input id="color-picker" type="color" value="Red" class="ui-widget-header ui-corner-all">
     </div>
 </div>
-
-
 
 
 
@@ -297,8 +298,11 @@
     };
 
   //Viewer inialize
-        var loading = '<div id="load_screen"><div class="loader"></div></div>';
-        $("body").append(loading);
+    var loading = '<div id="load_screen"><div class="loader"></div></div>';
+
+    $("body").append(loading);
+
+
 
         var viewer = new xViewer("viewer-canvas");
         viewer.load('@Url.Action("ViewerLoad", "Viewer", new { FileName = ViewBag.FilePath })');
@@ -314,7 +318,7 @@
             $('#TimeLine').css("display","none");
         }
     }
-         
+
    // Camera position
     var viewPointsarr = [];
     var GetCamPos = function () {
@@ -381,16 +385,13 @@
             viewer.setState(xState.HIGHLIGHTED, [id]);
             viewer.zoomTo(id);
             keepTarget = true;
-        });
+    });
+    var productIds = [];
+        var productFormWorkIds=[];
+    $('#btnSubmission').click(function () {
+        var loading = '<div id="load_screen"><div class="loader"></div></div>';
 
-        var productIds = [];
-
-        $('#btnSubmission').click(function () {
-            var loading = '<div id="load_screen"><div class="loader"></div></div>';
-            
-            $("body").append(loading);
-
-
+        $("body").append(loading);
             $.ajax({
                 url: '@Url.Action("GetElemetsToRender", "Viewer")',
                 type: 'POST',
@@ -399,20 +400,33 @@
                     var Data = JSON.parse(dat);
                     console.log(Data);
 
-                    if (productIds != null && Data !=null) {
+                    if (/*productIds != null && */Data !=null) {
                         debugger;
-                        if (!Data.ProductIdList[Data.ProductIdList.length-1].isReinforcement) {
-                            for (var i = 0; i < productIds.length; i++) {
-                                if ((productIds[i].isFormWork)) {
-                                    viewer.setState(xState.HIDDEN, [productIds[i].Id]);
-                                }
+                        //if (!Data.ProductIdList[Data.ProductIdList.length-1].isReinforcement) {
+                        //    for (var i = 0; i < productIds.length; i++) {
+                        //        if ((productIds[i].isFormWork)) {
+                        //            viewer.setState(xState.HIDDEN, [productIds[i].Id]);
+                        //        }
+                        //    }
+                        //}
+                        if (Data.ProductIdList[Data.ProductIdList.length - 1].isFormWork) {
+                            productFormWorkIds = [];
+                        for (var i = 0; i < Data.ProductIdList.length; i++) {
+                                productFormWorkIds.push(Data.ProductIdList[i].Id);
                             }
                         }
+
+                        if (Data.ProductIdList[Data.ProductIdList.length - 1].isConcrete) {
+                            for (var i = 0; i < productFormWorkIds.length; i++) {
+                                viewer.setState(xState.HIDDEN, [productFormWorkIds[i]]);
+                            }
+                        }
+
 
                     }
                     //var myArray = Data.ProductIdList.filter((el) => !productIds.includes(el));
 
-                    productIds = productIds.concat(Data.ProductIdList);
+                    //productIds = productIds.concat(Data.ProductIdList);
                     viewer.setState(xState.UNDEFINED, Data.ProductIdList.map(e => e.Id));
 
                     var load_screen = document.getElementById("load_screen");
@@ -423,11 +437,8 @@
                 }
             });
         });
-
-
-
-        $('#btnHideAll').click(function () {
-            HideAllElements();
+    $('#btnHideAll').click(function () {
+        HideAllElements(typeList);
 
              $.ajax({
                 url: '@Url.Action("ResetCounter", "Viewer")',
@@ -453,9 +464,9 @@
                 index++;
             }
         };
+    var typeList = ['IFCCOLUMN', 'IFCFOOTING', 'IFCWALLSTANDARDCASE', 'IFCSLAB', 'IFCREINFORCINGBAR', 'IFCBUILDINGELEMENTPART', 'IFCCABLECARRIERSEGMENT', 'IFCBEAM', 'IFCSTAIRFLIGHT'];
         function ColorByTypeFixed() {
-            var typeList = ['IFCCOLUMN', 'IFCFOOTING', 'IFCWALLSTANDARDCASE', 'IFCSLAB', 'IFCREINFORCINGBAR', 'IFCBUILDINGELEMENTPART', 'IFCCABLECARRIERSEGMENT'];
-            var colorList = [[85, 85, 85, 255], [103, 103, 103, 255], [178, 190, 181, 255], [153, 153, 153, 255], [224, 223, 219, 255], [222, 184, 135, 255], [255, 53, 3, 255]];
+            var colorList = [[85, 85, 85, 255], [103, 103, 103, 255], [178, 190, 181, 255], [153, 153, 153, 255], [224, 223, 219, 255], [222, 184, 135, 255], [255, 53, 3, 255], [153, 153, 153, 255], [153, 153, 153, 255]];
 
             for (var i = 0; i < typeList.length; i++) {
                 viewer.defineStyle(i, colorList[i]);
@@ -463,12 +474,13 @@
             }
         }
 
-        viewer.on('loaded', function () {
-            var load_screen = document.getElementById("load_screen");
-            document.body.removeChild(load_screen);
+    viewer.on('loaded', function () {
+        debugger;
+        var load_screen = document.getElementById("load_screen");
+        document.body.removeChild(load_screen);
            //Recolour();
             ColorByTypeFixed();
-            HideAllElements();
+        HideAllElements(typeList);
             $.ajax({
                 url: '@Url.Action("ResetCounter", "Viewer")',
                 type: 'POST',
@@ -494,22 +506,30 @@
         }
         var IsolateElement = function () {
             if (id === undefined) return;
-            HideAllElements();
+            HideAllElements(typeList);
             viewer.setState(xState.UNDEFINED, [id]);
             viewer.zoomTo(id);
         };
-        var Reset = function () {
-            for (var type in xProductType) {
-                viewer.setState(xState.UNDEFINED, xProductType[type]);
+    var Reset = function () {
+           for (var i = 0; i < typeList.length; i++) {
+               viewer.setState(xState.UNDEFINED, xProductType[typeList[i]]);
             }
+            viewer.setState(xState.HIDDEN, xProductType['IFCBUILDINGELEMENTPART']);
             viewer.renderingMode = "normal";
-            FullExtent();
+            //FullExtent();
             hiddenIds = [];
         };
-        var HideAllElements = function () {
+    var HideAllElements = function (lsttype) {
+        if (lsttype) {
+            for (var i = 0; i < typeList.length; i++) {
+                viewer.setState(xState.HIDDEN, xProductType[typeList[i]]);
+            }
+        }
+        else {
             for (var key in xProductType) {
                 viewer.setState(xState.HIDDEN, xProductType[key]);
             }
+        }
         }
         var FullExtent = function () {
             viewer.zoomTo();
@@ -706,7 +726,7 @@
                      viewer.zoomTo(id);
                      keepTarget = false;
                      viewer.setState(xState.UNDEFINED, [SelectedElementId]);
-
+                     viewer.setState(xState.HIDDEN, xProductType['IFCBUILDINGELEMENTPART']);
                 viewer.renderingMode = "x-ray";
             },
                 error: function (err) {

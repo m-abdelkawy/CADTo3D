@@ -34,34 +34,34 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/05/2019 16:30:26</publishTime>
     </File>
     <File Include="bin/App_Code.compiled">
-      <publishTime>11/03/2019 11:37:35</publishTime>
+      <publishTime>11/04/2019 12:21:26</publishTime>
     </File>
     <File Include="bin/App_Code.dll">
-      <publishTime>11/03/2019 11:37:35</publishTime>
+      <publishTime>11/04/2019 12:21:25</publishTime>
     </File>
     <File Include="bin/App_global.asax.compiled">
-      <publishTime>11/03/2019 11:37:35</publishTime>
+      <publishTime>11/04/2019 12:21:26</publishTime>
     </File>
     <File Include="bin/App_global.asax.dll">
-      <publishTime>11/03/2019 11:37:35</publishTime>
+      <publishTime>11/04/2019 12:21:26</publishTime>
     </File>
     <File Include="bin/ATEXT_20.5_11.TX">
       <publishTime>09/05/2019 16:30:28</publishTime>
     </File>
     <File Include="bin/BIMWebViewer.dll">
-      <publishTime>11/03/2019 11:37:29</publishTime>
+      <publishTime>11/04/2019 12:21:17</publishTime>
     </File>
     <File Include="bin/BIMWebViewer.pdb">
-      <publishTime>11/03/2019 11:37:29</publishTime>
+      <publishTime>11/04/2019 12:21:17</publishTime>
     </File>
     <File Include="bin/CADReader.dll">
-      <publishTime>11/03/2019 10:04:49</publishTime>
+      <publishTime>11/04/2019 12:20:53</publishTime>
     </File>
     <File Include="bin/CADReader.dll.config">
-      <publishTime>10/24/2019 09:22:48</publishTime>
+      <publishTime>11/03/2019 12:31:35</publishTime>
     </File>
     <File Include="bin/CADReader.pdb">
-      <publishTime>11/03/2019 10:04:49</publishTime>
+      <publishTime>11/04/2019 12:20:53</publishTime>
     </File>
     <File Include="bin/CopyModules.dll">
       <publishTime>09/05/2019 16:30:28</publishTime>
@@ -103,10 +103,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/04/2019 13:31:19</publishTime>
     </File>
     <File Include="bin/IfcFileCreator.dll">
-      <publishTime>11/03/2019 11:37:29</publishTime>
+      <publishTime>11/04/2019 12:20:54</publishTime>
     </File>
     <File Include="bin/IfcFileCreator.pdb">
-      <publishTime>11/03/2019 11:37:29</publishTime>
+      <publishTime>11/04/2019 12:20:54</publishTime>
     </File>
     <File Include="bin/ISM_20.5_11.TX">
       <publishTime>09/05/2019 16:30:28</publishTime>
@@ -2341,7 +2341,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/05/2019 16:30:26</publishTime>
     </File>
     <File Include="PrecompiledApp.config">
-      <publishTime>11/03/2019 11:37:30</publishTime>
+      <publishTime>11/04/2019 12:21:19</publishTime>
     </File>
     <File Include="Resources/doctemplate/publish.js">
       <publishTime>09/05/2019 16:30:26</publishTime>
@@ -3244,10 +3244,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/24/2019 09:22:41</publishTime>
     </File>
     <File Include="Views/Home/Index.cshtml">
-      <publishTime>10/24/2019 09:22:41</publishTime>
+      <publishTime>11/04/2019 10:41:20</publishTime>
     </File>
     <File Include="Views/Home/LoadProject.cshtml">
-      <publishTime>10/24/2019 09:22:41</publishTime>
+      <publishTime>11/04/2019 10:29:40</publishTime>
     </File>
     <File Include="Views/Home/Versions.cshtml">
       <publishTime>09/05/2019 16:30:26</publishTime>
@@ -3298,7 +3298,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/05/2019 16:30:26</publishTime>
     </File>
     <File Include="Views/Viewer/Viewer.cshtml">
-      <publishTime>10/30/2019 15:39:55</publishTime>
+      <publishTime>11/04/2019 12:19:38</publishTime>
     </File>
     <File Include="Views/Viewer/_GanttChartPartial.cshtml">
       <publishTime>09/05/2019 16:30:26</publishTime>
@@ -3310,7 +3310,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/05/2019 16:30:26</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>11/03/2019 11:23:13</publishTime>
+      <publishTime>11/04/2019 12:21:18</publishTime>
     </File>
   </ItemGroup>
 </Project>

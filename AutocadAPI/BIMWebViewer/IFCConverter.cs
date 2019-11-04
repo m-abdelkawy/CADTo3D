@@ -201,8 +201,8 @@ namespace BIMWebViewer
             {
                 Model = model;
                 Products = GetProducts();
-                ModelTypes = Model.Instances.OfType<IIfcRelDefinesByType>().ToList();
-                Categories = GetCategories();
+                //ModelTypes = Model.Instances.OfType<IIfcRelDefinesByType>().ToList();
+                //Categories = GetCategories();
                 if (model.IfcSchemaVersion == Xbim.Common.Step21.IfcSchemaVersion.Ifc4)
                     propertySetsx4 = GetPropertySets();
                 else

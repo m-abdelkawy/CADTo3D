@@ -11,8 +11,7 @@ using Xbim.ModelGeometry.Scene;
 using BIMWebViewer.Classes;
 using System.Drawing;
 using Newtonsoft.Json;
-using Xbim.IO;
-using Xbim.Ifc2x3.SharedBldgElements;
+using Xbim.IO; 
 using Xbim.Ifc4.Kernel;
 using Xbim.ModelGeometry.Scene.Extensions;
 using Newtonsoft.Json.Serialization;
@@ -21,6 +20,7 @@ using IfcFileCreator;
 using Xbim.Ifc4.SharedComponentElements;
 using Xbim.Ifc4.StructuralElementsDomain;
 using devDept.Geometry;
+using Xbim.Ifc4.SharedBldgElements;
 
 namespace BIMWebViewer.Controllers
 {
@@ -92,21 +92,17 @@ namespace BIMWebViewer.Controllers
             //var CADFileDirectoryBuildingB = $"{Server.MapPath("~")}\\CAD Files\\BuildingB";
             var cadfilesBuildingA = Directory.GetFiles(CADFileDirectoryBuildingA).ToList();
             //var cadfilesBuildingB = Directory.GetFiles(CADFileDirectoryBuildingB).ToList();
-            Building buildingA = new Building("Building A",new Point3D(0,0,0));
+            Building buildingA = new Building("Building A", new Point3D(0, 0, 0));
             //Building buildingB = new Building("Building B", new Point3D(500, 0, 0));
             //building.AddNewFloor(cadfiles.Where(e=>e.Contains("Ground")).FirstOrDefault(), 3);
             buildingA.AddNewFloor(cadfilesBuildingA.Where(e => e.Contains("Ground")).FirstOrDefault(), 3);
             buildingA.AddNewFloor(cadfilesBuildingA.Where(e => e.Contains("Basement")).FirstOrDefault(), 0);
             buildingA.AddBuildingFoundation(cadfilesBuildingA.Where(e => e.Contains("Foundation")).FirstOrDefault(), -4);
 
-            //buildingB.AddNewFloor(cadfilesBuildingB.Where(e => e.Contains("Basement")).FirstOrDefault(), 0);
+            //buildingB.AddNewFloor(cadfilesBuildingB.Where(e => e.sContains("Basement")).FirstOrDefault(), 0);
             //buildingB.AddBuildingFoundation(cadfilesBuildingB.Where(e => e.Contains("Foundation")).FirstOrDefault(), -4);
 
             newBuilding = new XbimCreateBuilding(buildingA, versionPath);
-            // devDept.Eyeshot.Translators.ReadAutodesk.OnApplicationExit(null, null);
-
-
-
             List<string> files = Directory.GetFiles(versionPath).ToList();
             // string wexFile = files.Where(a => Path.GetExtension(a) == ".wexBIM").FirstOrDefault();
             string IFCFile = files.Where(a => Path.GetExtension(a) == ".ifc").FirstOrDefault();
@@ -125,7 +121,10 @@ namespace BIMWebViewer.Controllers
             }
             else
             {
-                var newPath = IFCConverter.ToWexBIM(IFCFile);
+              
+                // devDept.Eyeshot.Translators.ReadAutodesk.OnApplicationExit(null, null);
+                string ifcFile = files.Where(a => Path.GetExtension(a) == ".ifc").FirstOrDefault();
+                var newPath = IFCConverter.ToWexBIM(ifcFile);
                 TempData["wexbimFilePath"] = newPath;
                 TempData["IFCFilePath"] = IFCFile;
 
@@ -142,7 +141,8 @@ namespace BIMWebViewer.Controllers
             {
                 return new EmptyResult();
             }
-           ElementIDsToRenders.AddRange(newBuilding.BuildingSubmissions.SubmittedElems[counter].Select(p => new {Id= p.EntityLabel,  isFormWork= p is IfcBuildingElementPart, isReinforcement = p is IfcReinforcingBar }));
+           ElementIDsToRenders.AddRange(newBuilding.BuildingSubmissions.SubmittedElems[counter].Select(p => new {Id= p.EntityLabel,  isFormWork= p is IfcBuildingElementPart, isConcrete = p is IfcBeam || p is IfcColumn || p is IfcSlab || p is IfcFooting || p is IfcWallStandardCase }));
+           //ElementIDsToRenders.AddRange(newBuilding.BuildingSubmissions.SubmittedElems[counter].Select(p => new {Id= p.EntityLabel,  isFormWork= p is IfcBuildingElementPart, isReinforcement = p is IfcReinforcingBar }));
             counter++;
             JsonResult result = new JsonResult();
             var jsonData = new { ProductIdList = ElementIDsToRenders };
