@@ -27,7 +27,7 @@ function xViewer(canvas, preserveDrawingBuffer) {
         throw 'You have to specify canvas either as an ID of HTML element or the element itself';
     }
 
-    preserveDrawingBuffer = typeof (preserveDrawingBuffer) !== 'undefined' ? preserveDrawingBuffer : false;
+    preserveDrawingBuffer = typeof (preserveDrawingBuffer) !== 'undefined' ? preserveDrawingBuffer : true;
 
     /**
     * This is a structure that holds settings of perspective camera.

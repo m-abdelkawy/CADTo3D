@@ -79,6 +79,8 @@ namespace IfcFileCreator
 
                         if (i + 1 != lstSortedFloors.Count)
                             lvlDifference = Math.Abs(lstSortedFloors[i].Level - lstSortedFloors[i + 1].Level);
+                        else
+                            lvlDifference = lstSortedFloors[i].Level;
 
 
                         Floor floor = lstSortedFloors[i] as Floor;
@@ -420,13 +422,13 @@ namespace IfcFileCreator
                                     //lstPCFooting.Add(footing);
 
                                     //Steel
-                                    for (int l = 0; l < cadSemelle.Rebars.Count(); l++)
-                                    {
-                                        IfcReinforcingBar bar = CreateIfcRebar(model, cadSemelle.Rebars[l], 0);
-                                        storey.AddElement(bar);
-                                        lstRebar.Add(bar);
+                                    //for (int l = 0; l < cadSemelle.Rebars.Count(); l++)
+                                    //{
+                                    //    IfcReinforcingBar bar = CreateIfcRebar(model, cadSemelle.Rebars[l], 0);
+                                    //    storey.AddElement(bar);
+                                    //    lstRebar.Add(bar);
 
-                                    }
+                                    //}
 
                                     lstRCFormWork.Add(opening);
                                     lstRCFormWork.Add(formWork);
@@ -458,20 +460,20 @@ namespace IfcFileCreator
                                     lstRCFormWork.Add(opening);
                                     lstRCFormWork.Add(formWork);
 
-                                    foreach (var longBar in cadFooting.LongRft)
-                                    {
-                                        IfcReinforcingBar barLong = CreateIfcRebar(model, longBar, 0);
-                                        storey.AddElement(barLong);
-                                        lstRebar.Add(barLong);
-                                    }
+                                    //foreach (var longBar in cadFooting.LongRft)
+                                    //{
+                                    //    IfcReinforcingBar barLong = CreateIfcRebar(model, longBar, 0);
+                                    //    storey.AddElement(barLong);
+                                    //    lstRebar.Add(barLong);
+                                    //}
 
-                                    foreach (var transverseBar in cadFooting.TransverseRft)
-                                    {
-                                        IfcReinforcingBar barLong = CreateIfcRebar(model, transverseBar, 0);
-                                        storey.AddElement(barLong);
-                                        lstRebar.Add(barLong);
+                                    //foreach (var transverseBar in cadFooting.TransverseRft)
+                                    //{
+                                    //    IfcReinforcingBar barLong = CreateIfcRebar(model, transverseBar, 0);
+                                    //    storey.AddElement(barLong);
+                                    //    lstRebar.Add(barLong);
 
-                                    }
+                                    //}
 
                                     txn.Commit();
                                 }
@@ -525,21 +527,21 @@ namespace IfcFileCreator
                                     lstWallFormWork.Add(formWork);
 
                                     //Wall Rft
-                                    for (int j = 0; j < rcWall.LstRebar.Count; j++)
-                                    {
-                                        IfcReinforcingBar bar = CreateIfcRebar(model, rcWall.LstRebar[j], wallHeight);
-                                        storey.AddElement(bar);
-                                        lstWallRebar.Add(bar);
-                                    }
-                                    int nStirrups = Convert.ToInt32((lvlDifference + (CADConfig.Units == linearUnitsType.Meters ? 1 : 1000)) / (DefaultValues.StirrupsSpacing));
-                                    for (int j = 0; j < nStirrups; j++)
-                                    {
-                                        IfcReinforcingBar stirrup = CreateIfcStirrup(model, rcWall.Stirrup, DefaultValues.StirrupsSpacing);
-                                        storey.AddElement(stirrup);
-                                        //lstColRebar.Add(stirrup);
-                                        lstWallRebar.Add(stirrup);
+                                    //for (int j = 0; j < rcWall.LstRebar.Count; j++)
+                                    //{
+                                    //    IfcReinforcingBar bar = CreateIfcRebar(model, rcWall.LstRebar[j], wallHeight);
+                                    //    storey.AddElement(bar);
+                                    //    lstWallRebar.Add(bar);
+                                    //}
+                                    //int nStirrups = Convert.ToInt32((lvlDifference + (CADConfig.Units == linearUnitsType.Meters ? 1 : 1000)) / (DefaultValues.StirrupsSpacing));
+                                    //for (int j = 0; j < nStirrups; j++)
+                                    //{
+                                    //    IfcReinforcingBar stirrup = CreateIfcStirrup(model, rcWall.Stirrup, DefaultValues.StirrupsSpacing);
+                                    //    storey.AddElement(stirrup);
+                                    //    //lstColRebar.Add(stirrup);
+                                    //    lstWallRebar.Add(stirrup);
 
-                                    }
+                                    //}
 
                                     txn.Commit();
                                 }
@@ -565,20 +567,20 @@ namespace IfcFileCreator
 
 
 
-                                    foreach (var rebar in rcCol.LstRebar)
-                                    {
-                                        IfcReinforcingBar bar = CreateIfcRebar(model, rebar, lvlDifference);
-                                        storey.AddElement(bar);
-                                        lstColRebar.Add(bar);
-                                    }
-                                    int nStirrups = Convert.ToInt32((lvlDifference + (CADConfig.Units == linearUnitsType.Meters ? 1 : 1000)) / DefaultValues.StirrupsSpacing);
-                                    for (int j = 0; j < nStirrups; j++)
-                                    {
-                                        IfcReinforcingBar stirrup = CreateIfcStirrup(model, rcCol.Stirrup, DefaultValues.StirrupsSpacing);
-                                        storey.AddElement(stirrup);
-                                        lstColRebar.Add(stirrup);
+                                    //foreach (var rebar in rcCol.LstRebar)
+                                    //{
+                                    //    IfcReinforcingBar bar = CreateIfcRebar(model, rebar, lvlDifference);
+                                    //    storey.AddElement(bar);
+                                    //    lstColRebar.Add(bar);
+                                    //}
+                                    //int nStirrups = Convert.ToInt32((lvlDifference + (CADConfig.Units == linearUnitsType.Meters ? 1 : 1000)) / DefaultValues.StirrupsSpacing);
+                                    //for (int j = 0; j < nStirrups; j++)
+                                    //{
+                                    //    IfcReinforcingBar stirrup = CreateIfcStirrup(model, rcCol.Stirrup, DefaultValues.StirrupsSpacing);
+                                    //    storey.AddElement(stirrup);
+                                    //    lstColRebar.Add(stirrup);
 
-                                    }
+                                    //}
 
                                     txn.Commit();
                                 }
@@ -605,20 +607,20 @@ namespace IfcFileCreator
                                     lstShearWallFormWork.Add(opening);
                                     lstShearWallFormWork.Add(formWork);
 
-                                    foreach (var rebar in cadShearWall.VlRebar)
-                                    {
-                                        IfcReinforcingBar bar = CreateIfcRebar(model, rebar, lvlDifference);
-                                        storey.AddElement(bar);
-                                        lstShearWallRebar.Add(bar);
-                                    }
-                                    int nstirrups = Convert.ToInt32((lvlDifference + (CADConfig.Units == linearUnitsType.Meters ? 1 : 1000)) / (DefaultValues.StirrupsSpacing));
-                                    for (int j = 0; j < nstirrups - 1; j++)
-                                    {
-                                        IfcReinforcingBar stirrup = CreateIfcStirrup(model, cadShearWall.Stirrup, DefaultValues.StirrupsSpacing);
-                                        storey.AddElement(stirrup);
-                                        lstShearWallRebar.Add(stirrup);
+                                    //foreach (var rebar in cadShearWall.VlRebar)
+                                    //{
+                                    //    IfcReinforcingBar bar = CreateIfcRebar(model, rebar, lvlDifference);
+                                    //    storey.AddElement(bar);
+                                    //    lstShearWallRebar.Add(bar);
+                                    //}
+                                    //int nstirrups = Convert.ToInt32((lvlDifference + (CADConfig.Units == linearUnitsType.Meters ? 1 : 1000)) / (DefaultValues.StirrupsSpacing));
+                                    //for (int j = 0; j < nstirrups - 1; j++)
+                                    //{
+                                    //    IfcReinforcingBar stirrup = CreateIfcStirrup(model, cadShearWall.Stirrup, DefaultValues.StirrupsSpacing);
+                                    //    storey.AddElement(stirrup);
+                                    //    lstShearWallRebar.Add(stirrup);
 
-                                    }
+                                    //}
 
                                     txn.Commit();
                                 }

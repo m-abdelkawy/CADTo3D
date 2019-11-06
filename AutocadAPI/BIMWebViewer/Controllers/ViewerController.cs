@@ -95,9 +95,9 @@ namespace BIMWebViewer.Controllers
             Building buildingA = new Building("Building A", new Point3D(0, 0, 0));
             //Building buildingB = new Building("Building B", new Point3D(500, 0, 0));
             //building.AddNewFloor(cadfiles.Where(e=>e.Contains("Ground")).FirstOrDefault(), 3);
-            buildingA.AddNewFloor(cadfilesBuildingA.Where(e => e.Contains("Ground")).FirstOrDefault(), 3);
-            buildingA.AddNewFloor(cadfilesBuildingA.Where(e => e.Contains("Basement")).FirstOrDefault(), 0);
-            buildingA.AddBuildingFoundation(cadfilesBuildingA.Where(e => e.Contains("Foundation")).FirstOrDefault(), -4);
+            //buildingA.AddNewFloor(cadfilesBuildingA.Where(e => e.Contains("Ground")).FirstOrDefault(), 3);
+           // buildingA.AddNewFloor(cadfilesBuildingA.Where(e => e.Contains("Basement")).FirstOrDefault(), 0);
+            buildingA.AddBuildingFoundation(cadfilesBuildingA.Where(e => e.Contains("Foundation")).FirstOrDefault(), 0.2);
 
             //buildingB.AddNewFloor(cadfilesBuildingB.Where(e => e.sContains("Basement")).FirstOrDefault(), 0);
             //buildingB.AddBuildingFoundation(cadfilesBuildingB.Where(e => e.Contains("Foundation")).FirstOrDefault(), -4);
@@ -117,12 +117,10 @@ namespace BIMWebViewer.Controllers
             {
                 TempData["wexbimFilePath"] = wexFile;
                 IFCConverter.CreateTree(IFCFile);
-                RedirectToAction("Viewer");
             }
             else
             {
               
-                // devDept.Eyeshot.Translators.ReadAutodesk.OnApplicationExit(null, null);
                 string ifcFile = files.Where(a => Path.GetExtension(a) == ".ifc").FirstOrDefault();
                 var newPath = IFCConverter.ToWexBIM(ifcFile);
                 TempData["wexbimFilePath"] = newPath;
@@ -130,7 +128,7 @@ namespace BIMWebViewer.Controllers
 
             }
 
-            RedirectToAction("Viewer");
+            //RedirectToAction("Viewer");
 
             return RedirectToAction("Viewer");
         }
@@ -156,10 +154,11 @@ namespace BIMWebViewer.Controllers
             counter = 0;
         }
         [HttpPost]
-        public void UploadPic(string imageData)
+        public void UploadPic(string imageData, string name)
         {
-            string Pic_Path = HttpContext.Server.MapPath("MyPicture.png");
-            using (FileStream fs = new FileStream(Pic_Path, FileMode.Create))
+            var path = Path.Combine(FileStruc.CurrentVersion, name+".png");
+          //  string Pic_Path = HttpContext.Server.MapPath("~/");
+            using (FileStream fs = new FileStream(path, FileMode.Create))
             {
                 using (BinaryWriter bw = new BinaryWriter(fs))
                 {
@@ -175,6 +174,7 @@ namespace BIMWebViewer.Controllers
         {
             var currentVersionPath = FileStruc.CurrentVersion;
             System.IO.File.WriteAllText(currentVersionPath + @"\viewList.json", viewList);
+           
             return RedirectToAction("Viewer");
         }
         public ActionResult GetViewPoints()
@@ -191,14 +191,8 @@ namespace BIMWebViewer.Controllers
             var serializerSettings = new JsonSerializerSettings { PreserveReferencesHandling = PreserveReferencesHandling.Objects };
             return new JsonResult { Data = JsonConvert.SerializeObject(jsonData, Formatting.Indented, serializerSettings), MaxJsonLength = Int32.MaxValue, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
         }
-        public ActionResult GanttChart()
-        {
-            return View("_GanttChartPartial");
-        }
-        public ActionResult GanttChartTest()
-        {
-            return View();
-        }
+        
+        
         [HttpPost]
         public ActionResult GetProductIdsByType(int TypeId)
         {

@@ -49,13 +49,13 @@ namespace BIMWebViewer
                     var context = new Xbim3DModelContext(model);
                     context.CreateContext();
                     Model = model;
-                    Products = GetProducts();
-                    ModelTypes = Model.Instances.OfType<IIfcRelDefinesByType>().ToList();
-                    Categories = GetCategories();
-                    if (model.IfcSchemaVersion == Xbim.Common.Step21.IfcSchemaVersion.Ifc4)
-                        propertySetsx4 = GetPropertySets();
-                    else
-                        propertySets2x3 = GetPropertySets2x3();
+                    //Products = GetProducts();
+                    //ModelTypes = Model.Instances.OfType<IIfcRelDefinesByType>().ToList();
+                    //Categories = GetCategories();
+                    //if (model.IfcSchemaVersion == Xbim.Common.Step21.IfcSchemaVersion.Ifc4)
+                    //    propertySetsx4 = GetPropertySets();
+                    //else
+                    //    propertySets2x3 = GetPropertySets2x3();
                     wexBimFilename = Path.ChangeExtension(fileName, "wexBIM");
                     using (var wexBiMfile = File.Create(wexBimFilename))
                     {
