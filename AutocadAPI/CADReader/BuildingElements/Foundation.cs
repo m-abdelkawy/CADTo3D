@@ -59,6 +59,38 @@ namespace CADReader.BuildingElements
             LstRCCadWall = base.GetRCWalls(cadReader);
 
         }
+
+        public Foundation(ReadAutodesk cadReader, double height, double level)
+        {
+            Level = level;
+            Height = height;
+
+            //Ramps
+            LstRamp = GetRamps(cadReader);
+
+            //Reinforced Columns
+            LstRcColumn = base.GetRCColumns(cadReader);
+
+            //PC Footingds
+            GetPCFooting(cadReader);
+
+            //RC Footings
+            GetRCFooting(cadReader);
+
+            //RC Shear Walls
+            LstRCShearWall = GetRCShearWalls(cadReader);
+
+            //RC Semelles
+            LstRCSemelle = GetReinforcedSemelles(cadReader);
+
+            //RC Footing
+            LstRCCadFooting = GetReinforcedFootings(cadReader);
+
+            //RC Retaining Wall
+            LstRCCadWall = base.GetRCWalls(cadReader);
+
+        }
+
         #endregion
 
 

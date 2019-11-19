@@ -16,6 +16,7 @@ namespace CADReader.BuildingElements
         public string Name { get; set; }
         public CADConfig CadConfig { get; set; }
         public Point3D Location { get; set; }
+        public double ZeroLevel { get; set; }
         #endregion
 
         #region Constructor
@@ -26,6 +27,15 @@ namespace CADReader.BuildingElements
             Name = buildingName;
             Location = _location;
         }
+
+        public Building(string buildingName, Point3D _location, double _zeroLvl)
+        {
+            CadConfig = new CADConfig();
+            Floors = new List<FloorBase>();
+            Name = buildingName;
+            Location = _location;
+            ZeroLevel = _zeroLvl;
+        }
         #endregion
 
         #region Public Functions
@@ -33,8 +43,17 @@ namespace CADReader.BuildingElements
         {
             CadConfig.CadReader = new ReadAutodesk(filePath);
             CADConfig.Units = CadConfig.CadReader.Units;
-          
+
             Floor floor = new Floor(CadConfig.CadReader, level);
+            Floors.Add(floor);
+        }
+
+        public void AddNewFloor(string filePath, double level, double height)
+        {
+            CadConfig.CadReader = new ReadAutodesk(filePath);
+            CADConfig.Units = CadConfig.CadReader.Units;
+
+            Floor floor = new Floor(CadConfig.CadReader, level, height);
             Floors.Add(floor);
         }
 
@@ -44,6 +63,15 @@ namespace CADReader.BuildingElements
             CADConfig.Units = CadConfig.CadReader.Units;
 
             Foundation foundation = new Foundation(CadConfig.CadReader, level);
+            Floors.Add(foundation);
+        }
+
+        public void AddBuildingFoundation(string filePath, double level, double height)
+        {
+            CadConfig.CadReader = new ReadAutodesk(filePath);
+            CADConfig.Units = CadConfig.CadReader.Units;
+
+            Foundation foundation = new Foundation(CadConfig.CadReader, height, level);
             Floors.Add(foundation);
         }
         #endregion

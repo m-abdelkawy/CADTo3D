@@ -11,7 +11,6 @@ namespace CADReader.Helpers
 {
     public static class CadHelper
     {
-        //  public static ReadAutodesk CADReader { get; set; }
         public static List<LinearPath> PLinesGetByLayerName(ReadAutodesk cadReader, string layerName)
         {
             return cadReader.Entities.Where(e => e.LayerName == layerName && e is LinearPath).Cast<LinearPath>().ToList();
@@ -31,8 +30,7 @@ namespace CADReader.Helpers
             }
             return lstEntity;
         }
-
-
+        
         public static List<LinearPath> PLinesGetByLayerName(ReadAutodesk cadReader, string layerName, bool isClosed)
         {
             if (isClosed)

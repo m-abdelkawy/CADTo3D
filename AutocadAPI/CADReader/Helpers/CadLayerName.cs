@@ -20,5 +20,6 @@ namespace CADReader.Helpers
         internal const string ShearWall = "ShearWall";
         internal const string Semelle = "Semelle";
         internal const string ElecConduit = "ElecConduit";
+        internal const string Axes = "Axes";
     }
 }

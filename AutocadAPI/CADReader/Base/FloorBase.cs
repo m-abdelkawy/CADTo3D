@@ -13,8 +13,9 @@ namespace CADReader.BuildingElements
     {
         #region Properties
         public double Level { get; set; }
+        public double Height { get; set; }
         #endregion
-        
+
         #region Class Methods
         private List<Wall> GetWalls(ReadAutodesk CadReader)
         {
@@ -36,7 +37,7 @@ namespace CADReader.BuildingElements
 
             return Walls;
         }
-      
+
         public List<Column> GetColumns(ReadAutodesk cadFileReader)
         {
 

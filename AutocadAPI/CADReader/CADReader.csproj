@@ -71,8 +71,10 @@
     <Compile Include="BuildingElements\Semelle.cs" />
     <Compile Include="BuildingElements\Stair.cs" />
     <Compile Include="ElectricalElements\ElectricalConduit.cs" />
+    <Compile Include="ElementComponents\Axis.cs" />
     <Compile Include="ElementComponents\Rebar.cs" />
     <Compile Include="ElementComponents\Stirrup.cs" />
+    <Compile Include="Helpers\CadBlockName.cs" />
     <Compile Include="Helpers\CADConfig.cs" />
     <Compile Include="Helpers\CadHelper.cs" />
     <Compile Include="Helpers\PointEqualityComparer.cs" />

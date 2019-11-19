@@ -1,4 +1,5 @@
-﻿using devDept.Eyeshot.Entities;
+﻿using CADReader.Reinforced_Elements;
+using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,7 @@ namespace IfcFileCreator.Helpers
 {
     public static class IFCHelper
     {
+        #region Geometry
         internal static IfcRectangleProfileDef RectProfileCreate(IfcStore model, double length, double width)
         {
             IfcRectangleProfileDef rectProf = model.Instances.New<IfcRectangleProfileDef>();
@@ -34,7 +36,7 @@ namespace IfcFileCreator.Helpers
         {
             IfcCircleProfileDef cirProf = model.Instances.New<IfcCircleProfileDef>();
             cirProf.ProfileType = IfcProfileTypeEnum.AREA;
-            cirProf.Radius = radius; 
+            cirProf.Radius = radius;
 
             return cirProf;
         }
@@ -55,7 +57,7 @@ namespace IfcFileCreator.Helpers
 
             return profile;
         }
-         
+
         public static void ProfileInsertionPointSet(this IfcParameterizedProfileDef prof, IfcStore model, IfcCartesianPoint insertionPt)
         {
             IfcCartesianPoint insertionPoint = model.Instances.New<IfcCartesianPoint>();
@@ -73,8 +75,8 @@ namespace IfcFileCreator.Helpers
 
             return body;
         }
-         
-        internal static IfcSurfaceCurveSweptAreaSolid ProfileSurfaceSweptSolidCreate(IfcStore model, IfcProfileDef prof, List<Point3D> lstPoints, IfcDirection planeZaxis = null, IfcDirection refDir=null)
+
+        internal static IfcSurfaceCurveSweptAreaSolid ProfileSurfaceSweptSolidCreate(IfcStore model, IfcProfileDef prof, List<Point3D> lstPoints, IfcDirection planeZaxis = null, IfcDirection refDir = null)
         {
             IfcSurfaceCurveSweptAreaSolid body = model.Instances.New<IfcSurfaceCurveSweptAreaSolid>();
             IfcPolyline pLine = model.Instances.New<IfcPolyline>();
@@ -88,7 +90,7 @@ namespace IfcFileCreator.Helpers
 
             body.Directrix = pLine;
             body.SweptArea = prof;
-            
+
             var plane = model.Instances.New<IfcPlane>();
             plane.Position = model.Instances.New<IfcAxis2Placement3D>();
             plane.Position.Location = model.Instances.New<IfcCartesianPoint>();
@@ -134,7 +136,7 @@ namespace IfcFileCreator.Helpers
         {
             IfcSurfaceCurveSweptAreaSolid body = model.Instances.New<IfcSurfaceCurveSweptAreaSolid>();
             IfcCompositeCurve compositeCurve = model.Instances.New<IfcCompositeCurve>();
-            if(profPath is LinearPath)
+            if (profPath is LinearPath)
             {
                 LinearPath linearPath = profPath as LinearPath;
                 IfcCompositeCurveSegment segment = model.Instances.New<IfcCompositeCurveSegment>();
@@ -154,7 +156,7 @@ namespace IfcFileCreator.Helpers
                 CompositeCurve compCurvePath = profPath as CompositeCurve;
                 for (int i = 0; i < compCurvePath.CurveList.Count; i++)
                 {
-                    if(compCurvePath.CurveList[i] is Line)
+                    if (compCurvePath.CurveList[i] is Line)
                     {
                         Line line = compCurvePath.CurveList[i] as Line;
                         IfcCompositeCurveSegment segment = model.Instances.New<IfcCompositeCurveSegment>();
@@ -175,8 +177,8 @@ namespace IfcFileCreator.Helpers
                         IfcCompositeCurveSegment segment = model.Instances.New<IfcCompositeCurveSegment>();
                         IfcTrimmedCurve trimmedCurve = model.Instances.New<IfcTrimmedCurve>();
                         IfcCircle cir = model.Instances.New<IfcCircle>(e => e.Radius = arc.Radius);
-                        cir.Position = model.Instances.New<IfcAxis2Placement3D>(e=>e.Location=model.Instances.New<IfcCartesianPoint>(p=>p.SetXYZ(arc.Center.X,arc.Center.Y,arc.Center.Z)));
-                                                 
+                        cir.Position = model.Instances.New<IfcAxis2Placement3D>(e => e.Location = model.Instances.New<IfcCartesianPoint>(p => p.SetXYZ(arc.Center.X, arc.Center.Y, arc.Center.Z)));
+
                         trimmedCurve.BasisCurve = cir;
                         trimmedCurve.Trim1.Add(model.Instances.New<IfcCartesianPoint>(p => p.SetXYZ(arc.StartPoint.X, arc.StartPoint.Y, arc.StartPoint.Z)));
                         trimmedCurve.Trim2.Add(model.Instances.New<IfcCartesianPoint>(p => p.SetXYZ(arc.EndPoint.X, arc.EndPoint.Y, arc.EndPoint.Z)));
@@ -189,7 +191,7 @@ namespace IfcFileCreator.Helpers
                     }
                 }
             }
-             
+
 
 
             body.Directrix = compositeCurve;
@@ -220,7 +222,7 @@ namespace IfcFileCreator.Helpers
                 for (int i = 0; i < linearPath.Vertices.Length; i++)
                 {
                     IfcCartesianPoint point = model.Instances.New<IfcCartesianPoint>();
-                    point.SetXYZ(linearPath.Vertices[i].X , linearPath.Vertices[i].Y , linearPath.Vertices[i].Z );
+                    point.SetXYZ(linearPath.Vertices[i].X, linearPath.Vertices[i].Y, linearPath.Vertices[i].Z);
                     pLine.Points.Add(point);
                 }
                 segment.ParentCurve = pLine;
@@ -243,7 +245,7 @@ namespace IfcFileCreator.Helpers
                         for (int j = 0; j < line.Vertices.Length; j++)
                         {
                             IfcCartesianPoint point = model.Instances.New<IfcCartesianPoint>();
-                            point.SetXYZ(line.Vertices[j].X , line.Vertices[j].Y , line.Vertices[j].Z );
+                            point.SetXYZ(line.Vertices[j].X, line.Vertices[j].Y, line.Vertices[j].Z);
                             pLine.Points.Add(point);
                         }
                         segment.ParentCurve = pLine;
@@ -253,13 +255,13 @@ namespace IfcFileCreator.Helpers
                     {
                         Arc arc = compCurvePath.CurveList[i] as Arc;
                         IfcTrimmedCurve trimmedCurve = model.Instances.New<IfcTrimmedCurve>();
-                        IfcCircle cir = model.Instances.New<IfcCircle>(e => e.Radius = arc.Radius );
+                        IfcCircle cir = model.Instances.New<IfcCircle>(e => e.Radius = arc.Radius);
                         cir.Position = model.Instances.New<IfcAxis2Placement3D>(e =>
-                        e.Location = model.Instances.New<IfcCartesianPoint>(p => p.SetXYZ(arc.Center.X , arc.Center.Y , arc.Center.Z )));
+                        e.Location = model.Instances.New<IfcCartesianPoint>(p => p.SetXYZ(arc.Center.X, arc.Center.Y, arc.Center.Z)));
 
                         trimmedCurve.BasisCurve = cir;
-                        trimmedCurve.Trim1.Add(model.Instances.New<IfcCartesianPoint>(p => p.SetXYZ(arc.StartPoint.X , arc.StartPoint.Y , arc.StartPoint.Z )));
-                        trimmedCurve.Trim2.Add(model.Instances.New<IfcCartesianPoint>(p => p.SetXYZ(arc.EndPoint.X , arc.EndPoint.Y , arc.EndPoint.Z )));
+                        trimmedCurve.Trim1.Add(model.Instances.New<IfcCartesianPoint>(p => p.SetXYZ(arc.StartPoint.X, arc.StartPoint.Y, arc.StartPoint.Z)));
+                        trimmedCurve.Trim2.Add(model.Instances.New<IfcCartesianPoint>(p => p.SetXYZ(arc.EndPoint.X, arc.EndPoint.Y, arc.EndPoint.Z)));
                         trimmedCurve.SenseAgreement = arc.Plane.AxisZ == Vector3D.AxisZ ? true : false;
                         //segment.SameSense = arc.Plane.AxisZ == Vector3D.AxisZ ? false : true;
                         trimmedCurve.MasterRepresentation = IfcTrimmingPreference.CARTESIAN;
@@ -285,9 +287,9 @@ namespace IfcFileCreator.Helpers
             location.SetXYZ(x, y, z);
             areaSolidBody.Position.Location = location;
 
-             
+
         }
-        
+
         internal static void BodyPlacementSet(this IfcExtrudedAreaSolid areaSolidBody, IfcStore model, IfcCartesianPoint insertionPt)
         {
             areaSolidBody.Position = model.Instances.New<IfcAxis2Placement3D>();
@@ -368,6 +370,27 @@ namespace IfcFileCreator.Helpers
             body.Radius = radius;
             return body;
         }
+        #endregion
+        #endregion
+
+        #region to be named
+        internal static IfcBuildingStorey CreateStorey(IfcStore model,IfcBuilding building)
+        {
+            IfcBuildingStorey storey;
+            using (var trans = model.BeginTransaction("Add Storey"))
+            {
+                storey = model.Instances.New<IfcBuildingStorey>();
+                IfcRelAggregates rel = model.Instances.New<IfcRelAggregates>();
+                rel.RelatingObject = building;
+                rel.RelatedObjects.Add(storey);
+
+                trans.Commit();
+            }
+
+            return storey;
+        }
+
+        
         #endregion
     }
 }
