@@ -1,6 +1,8 @@
 ﻿using CADReader.Base;
+using CADReader.ElementComponents;
 using CADReader.Helpers;
 using CADReader.Reinforced_Elements;
+using devDept.Eyeshot;
 using devDept.Eyeshot.Entities;
 using devDept.Eyeshot.Translators;
 using devDept.Geometry;
@@ -27,6 +29,8 @@ namespace CADReader.BuildingElements
 
         public List<ReinforcedCadWall> LstRCCadWall { get; set; }
         public List<ReinforcedCadShearWall> LstRCShearWall { get; set; }
+        public List<Axis> LstAxis { get; set; }
+
         #endregion
 
         #region Constructor
@@ -89,6 +93,8 @@ namespace CADReader.BuildingElements
             //RC Retaining Wall
             LstRCCadWall = base.GetRCWalls(cadReader);
 
+            //floor axes
+            LstAxis = GetAxes(cadReader);
         }
 
         #endregion
@@ -190,6 +196,88 @@ namespace CADReader.BuildingElements
 
             return lstRCSemelle;
         }
+
+        private List<Axis> GetAxes(ReadAutodesk cadReader)
+        {
+            //get lines and plines of axes
+            List<Entity> lstEntAxes = CadHelper.EntitiesGetByLayerName(cadReader, CadLayerName.Axes);
+
+            List<Axis> lstAxis = new List<Axis>();
+
+            //get axis block
+            Block blkCircle = cadReader.Blocks.Where(b => b.Name == CadBlockName.GridCircle).FirstOrDefault();
+
+            //get lines and polylines from axis block
+            List<LinearPath> lstLinPathAxes = new List<LinearPath>();
+            for (int i = 0; i < lstEntAxes.Count; i++)
+            {
+                if (lstEntAxes[i] is LinearPath)
+                {
+                    lstLinPathAxes.Add(lstEntAxes[i] as LinearPath);
+                }
+                else if (lstEntAxes[i] is Line)
+                {
+                    LinearPath linPath = new LinearPath((lstEntAxes[i] as Line).StartPoint, (lstEntAxes[i] as Line).EndPoint);
+                    lstLinPathAxes.Add(linPath);
+                }
+            }
+
+            //get circle grid blocks
+            List<BlockReferenceEx> lstGridCircleBlkRef = cadReader.Entities.Where(b => b is BlockReferenceEx).Cast<BlockReferenceEx>().ToList();
+
+            //get circles from circle grid block
+
+
+            //for each line get the nearest two circles to its end points and their attribute
+            double circleRadius = (blkCircle.Entities.FirstOrDefault(e => e is Circle) as Circle).Radius;
+
+            for (int i = 0; i < lstLinPathAxes.Count(); i++)
+            {
+                List<Circle> lstCircleAddToAxis = new List<Circle>();
+
+                double minDist1 = double.MaxValue;
+                double minDist2 = double.MaxValue;
+
+                Point3D insertionPt1 = new Point3D(0, 0, 0);
+                Point3D insertionPt2 = new Point3D(0, 0, 0);
+
+                string textAttr1 = "";
+                string textAttr2 = "";
+
+
+                for (int j = 0; j < lstGridCircleBlkRef.Count(); j++)
+                {
+                    //first end point
+                    double dist1 = MathHelper.CalcDistanceBetweenTwoPoint3D(lstLinPathAxes[i].StartPoint, lstGridCircleBlkRef[j].InsertionPoint);
+                    if (dist1 < minDist1)
+                    {
+                        minDist1 = dist1;
+                        insertionPt1 = lstGridCircleBlkRef[j].InsertionPoint;
+                        textAttr1 = lstGridCircleBlkRef[j].Attributes["GRID-CIRC"].Value.ToString();
+                    }
+
+                    //second end point
+                    double dist2 = MathHelper.CalcDistanceBetweenTwoPoint3D(lstLinPathAxes[i].EndPoint, lstGridCircleBlkRef[j].InsertionPoint);
+                    if (dist2 < minDist2)
+                    {
+                        minDist2 = dist2;
+                        insertionPt2 = lstGridCircleBlkRef[j].InsertionPoint;
+                        textAttr2 = lstGridCircleBlkRef[j].Attributes["GRID-CIRC"].Value.ToString();
+                    }
+                }
+                Circle c1 = new Circle(insertionPt1, circleRadius);
+                Circle c2 = new Circle(insertionPt2, circleRadius);
+
+                lstCircleAddToAxis.Add(c1);
+                lstCircleAddToAxis.Add(c2);
+
+                Axis axis = new Axis(new LinearPath(lstLinPathAxes[i].Vertices), lstCircleAddToAxis, textAttr1.Equals(textAttr2) ? textAttr1 : "ccc");
+                lstAxis.Add(axis);
+            }
+
+            return lstAxis;
+        }
+
 
         #endregion
 

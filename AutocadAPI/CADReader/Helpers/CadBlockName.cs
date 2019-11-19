@@ -8,6 +8,6 @@ namespace CADReader.Helpers
 {
     internal class CadBlockName
     {
-        internal const string GridCircle = "GridCircle";
+        internal const string GridCircle = "S-GRID-CIRC";
     }
 }

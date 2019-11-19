@@ -663,15 +663,17 @@ namespace IfcFileCreator
 
         public XbimCreateBuilding(Building cadBuilding, string pathToSave, bool createEachFloorIFC)
         {
-            using (IfcStore model = CreateandInitModel("Demo2"))
-            {
-                List<FloorBase> lstFloorSorted = cadBuilding.Floors.OrderBy(f => f.Level).ToList();
-                if (model != null)
-                {
-                    IfcBuilding building = CreateBuilding(model, "BuildingB", cadBuilding.Location);
 
-                    for (int i = 0; i < lstFloorSorted.Count; i++)
+            List<FloorBase> lstFloorSorted = cadBuilding.Floors.OrderBy(f => f.Level).ToList();
+
+
+            for (int i = 0; i < lstFloorSorted.Count; i++)
+            {
+                using (IfcStore model = CreateandInitModel("Demo2"))
+                {
+                    if (model != null)
                     {
+                        IfcBuilding building = CreateBuilding(model, "BuildingB", cadBuilding.Location);
                         IfcBuildingStorey storey = IFCHelper.CreateStorey(model, building);
 
                         Floor floor = lstFloorSorted[i] as Floor;
@@ -690,6 +692,12 @@ namespace IfcFileCreator
                             CreateRamps(model, storey, floor);
 
                             CreateStoreyElectricalConduit(model, storey, floor);
+
+                            using (var txn = model.BeginTransaction("Add Axes"))
+                            {
+                                CreateAxesFloor(model, storey, floor);
+                                txn.Commit();
+                            }
                         }
 
                         else //floor is foundation floor
@@ -703,6 +711,12 @@ namespace IfcFileCreator
                             CreateFoundationRetainingWalls(model, building, storey, foundation);
                             CreateFoundationColumns(model, storey, foundation);
                             CreateFoundationShearWalls(model, storey, foundation);
+
+                            using (var txn = model.BeginTransaction("Add Axes"))
+                            {
+                                CreateAxesFoundation(model, storey, foundation);
+                                txn.Commit();
+                            }
                         }
 
                         try
@@ -713,11 +727,41 @@ namespace IfcFileCreator
                         {
                             Console.WriteLine(e.Message);
                         }
-
-                        
                     }
                 }
+
             }
+
+
+        }
+
+        private void CreateAxesFloor(IfcStore model, IfcBuildingStorey storey, Floor floor)
+        {
+
+            foreach (Axis axis in floor.LstAxis)
+            {
+                Rebar bar = new Rebar(axis.AxisLinPath);
+                IfcReinforcingBar ifcBar = CreateIfcRebar(model, bar, 0);
+
+
+                storey.AddElement(ifcBar);
+
+            }
+        }
+
+        private void CreateAxesFoundation(IfcStore model, IfcBuildingStorey storey, Foundation foundation)
+        {
+
+            foreach (Axis axis in foundation.LstAxis)
+            {
+                Rebar bar = new Rebar(axis.AxisLinPath);
+                IfcReinforcingBar ifcBar = CreateIfcRebar(model, bar, 0);
+
+
+                storey.AddElement(ifcBar);
+
+            }
+
         }
 
         private void CreateFoundationShearWalls(IfcStore model, IfcBuildingStorey storey, Foundation foundation)

@@ -10,13 +10,13 @@ namespace CADReader.ElementComponents
     public class Axis
     {
         public string AxisText { get; set; }
-        public LinearPath AxisLine { get; set; }
+        public LinearPath AxisLinPath { get; set; }
         //public List<CircBlockObject> CircBlockObj { get; set; }
         public List<Circle> LstCircle { get; set; }
 
-        public Axis(LinearPath _axisLine, List<Circle> _lstCircle, string _axisText)
+        public Axis(LinearPath _axisLinPath, List<Circle> _lstCircle, string _axisText)
         {
-            this.AxisLine = _axisLine;
+            this.AxisLinPath = _axisLinPath;
             this.LstCircle = _lstCircle;
             this.AxisText = _axisText;
         }

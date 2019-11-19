@@ -56,8 +56,6 @@ namespace CADReader.BuildingElements
             //Electricity hoses
             GetElectricalConduit(cadReader);
 
-            //floor axes
-            LstAxis = GetAxes(cadReader);
         }
 
         public Floor(ReadAutodesk cadReader, double level, double height)
@@ -85,6 +83,9 @@ namespace CADReader.BuildingElements
 
             //Electricity hoses
             GetElectricalConduit(cadReader);
+
+            //floor axes
+            LstAxis = GetAxes(cadReader);
         }
 
         #endregion
@@ -193,7 +194,7 @@ namespace CADReader.BuildingElements
             List<Axis> lstAxis = new List<Axis>();
 
             //get axis block
-            Block blkCircle = cadReader.Blocks.Where(b => b.Name == "S-GRID-CIRC").FirstOrDefault();
+            Block blkCircle = cadReader.Blocks.Where(b => b.Name == CadBlockName.GridCircle).FirstOrDefault();
 
             //get lines and polylines from axis block
             List<LinearPath> lstLinPathAxes = new List<LinearPath>();
@@ -211,7 +212,7 @@ namespace CADReader.BuildingElements
             }
 
             //get circle grid blocks
-            List<BlockReferenceEx> lstGridCircleBlkRef = cadReader.Entities.Where(b => b is BlockReferenceEx).Cast<BlockReferenceEx>().ToList();
+            List<BlockReferenceEx> lstGridCircleBlkRef = cadReader.Entities.Where(b => b is BlockReferenceEx).Cast<BlockReferenceEx>().Where(b=>b.BlockName==CadBlockName.GridCircle).ToList();
 
             //get circles from circle grid block
 
