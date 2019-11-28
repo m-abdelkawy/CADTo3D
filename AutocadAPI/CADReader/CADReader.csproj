@@ -90,6 +90,7 @@
     <Compile Include="BuildingElements\Wall.cs" />
     <Compile Include="Helpers\CadLayerName.cs" />
     <Compile Include="Helpers\MathHelper.cs" />
+    <Compile Include="Helpers\WrapperPoint.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reinforced Elements\ReinforcedCadColumn.cs" />

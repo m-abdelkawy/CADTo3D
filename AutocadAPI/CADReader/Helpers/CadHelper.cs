@@ -246,5 +246,22 @@ namespace CADReader.Helpers
 
             return new Line(lineModifiedStPt, lineModifiedEndPt);
         }
+
+        public static Dictionary<int, LinearPath> SubmittedElementsGet(LinearPath linPathAxesBoundary, Dictionary<int, LinearPath> dicElement)
+        {
+            Dictionary<int, LinearPath> SubmittedElements = new Dictionary<int, LinearPath>();
+            foreach (KeyValuePair<int, LinearPath> elem in dicElement)
+            {
+                for (int i = 0; i < elem.Value.Vertices.Length; i++)
+                {
+                   if(MathHelper.IsInsidePolygon(elem.Value.Vertices[i], linPathAxesBoundary))
+                    {
+                        SubmittedElements.Add(elem.Key, elem.Value);
+                        break;
+                    }
+                }
+            }
+            return SubmittedElements;
+        }
     }
 }

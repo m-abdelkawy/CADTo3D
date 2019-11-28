@@ -11,7 +11,7 @@ using Xbim.ModelGeometry.Scene;
 using BIMWebViewer.Classes;
 using System.Drawing;
 using Newtonsoft.Json;
-using Xbim.IO; 
+using Xbim.IO;
 using Xbim.Ifc4.Kernel;
 using Xbim.ModelGeometry.Scene.Extensions;
 using Newtonsoft.Json.Serialization;
@@ -28,12 +28,11 @@ namespace BIMWebViewer.Controllers
     public class ViewerController : Controller
     {
         static XbimCreateBuilding newBuilding;
-        static int counter=0;
+        static int counter = 0;
         List<object> ElementIDsToRenders = new List<object>();
         // GET: Upload
         public ActionResult Index()
         {
-
             return View();
         }
         [HttpGet]
@@ -43,12 +42,12 @@ namespace BIMWebViewer.Controllers
         }
 
         public ActionResult Viewer()
-      {
+        {
             var filePath = "";
 
             filePath = TempData["wexbimFilePath"].ToString();
             //// file = TempData["wexbimFilePath"].ToString();
-            ViewBag.FilePath = filePath; 
+            ViewBag.FilePath = filePath;
             ViewBag.VersionName = TempData["VersionName"].ToString();
             if (TempData["ViewPoints"] != null)
                 ViewBag.ViewPoints = TempData["ViewPoints"];
@@ -101,9 +100,9 @@ namespace BIMWebViewer.Controllers
             // buildingA.AddNewFloor(cadfilesBuildingA.Where(e => e.Contains("Basement")).FirstOrDefault(), 0);
 
             {//new
-                buildingA2.AddBuildingFoundation(cadfilesBuildingA.Where(b => b.Contains("Foundation")).FirstOrDefault(), -7.50, 4.50);
-                buildingA2.AddNewFloor(cadfilesBuildingA.Where(b => b.Contains("Basement")).FirstOrDefault(), -3, 3);
-                buildingA2.AddNewFloor(cadfilesBuildingA.Where(b => b.Contains("Ground")).FirstOrDefault(), 0, 3);
+                buildingA2.AddBuildingFoundation(cadfilesBuildingA.Where(b => b.Contains("Foundation")).FirstOrDefault(), 373.55, 0);
+                buildingA2.AddNewFloor(cadfilesBuildingA.Where(b => b.Contains("Basement")).FirstOrDefault(), 378.5, 4.95);
+                buildingA2.AddNewFloor(cadfilesBuildingA.Where(b => b.Contains("Ground")).FirstOrDefault(), 382.3, 3.8);
                 //buildingA2.AddNewFloor(cadfilesBuildingA.Where(b => b.Contains("Ground")).FirstOrDefault(), 3, 3); //top level = lvl + height
             }
             //buildingA.AddBuildingFoundation(cadfilesBuildingA.Where(e => e.Contains("Foundation")).FirstOrDefault(),4.50, 0.2);
@@ -114,7 +113,7 @@ namespace BIMWebViewer.Controllers
             newBuilding = new XbimCreateBuilding(buildingA2, versionPath, true);
             List<string> files = Directory.GetFiles(versionPath).ToList();
             // string wexFile = files.Where(a => Path.GetExtension(a) == ".wexBIM").FirstOrDefault();
-            string IFCFile = files.Where(a => Path.GetExtension(a) == ".ifc").FirstOrDefault();
+            List<string> lstIfcFile = files.Where(a => Path.GetExtension(a) == ".ifc").ToList();
             //string wexFile = files.Where(a => Path.GetExtension(a) == ".wexBIM").FirstOrDefault();
             string wexFile = files.Where(a => Path.GetExtension(a) == ".wexBIM").FirstOrDefault();
             var verName = Path.GetFileName(versionPath);
@@ -126,15 +125,19 @@ namespace BIMWebViewer.Controllers
             if (wexFile != null)
             {
                 TempData["wexbimFilePath"] = wexFile;
-                IFCConverter.CreateTree(IFCFile);
+                IFCConverter.CreateTree(lstIfcFile[2]);
             }
             else
             {
+                string newPath = null;
+                for (int i = 0; i < lstIfcFile.Count; i++)
+                {
+                    string ifcFile = files.Where(a => Path.GetExtension(a) == ".ifc").ToList()[i];
+                    newPath = IFCConverter.ToWexBIM(ifcFile);
+                }
 
-                string ifcFile = files.Where(a => Path.GetExtension(a) == ".ifc").ToList()[2];
-                var newPath = IFCConverter.ToWexBIM(ifcFile);
                 TempData["wexbimFilePath"] = newPath;
-                TempData["IFCFilePath"] = IFCFile;
+                TempData["IFCFilePath"] = lstIfcFile[0];
 
             }
 
@@ -149,14 +152,15 @@ namespace BIMWebViewer.Controllers
             {
                 return new EmptyResult();
             }
-           ElementIDsToRenders.AddRange(newBuilding.BuildingSubmissions.SubmittedElems[counter].Select(p => new {Id= p.EntityLabel,  isFormWork= p is IfcBuildingElementPart, isConcrete = p is IfcBeam || p is IfcColumn || p is IfcSlab || p is IfcFooting || p is IfcWallStandardCase }));
-           //ElementIDsToRenders.AddRange(newBuilding.BuildingSubmissions.SubmittedElems[counter].Select(p => new {Id= p.EntityLabel,  isFormWork= p is IfcBuildingElementPart, isReinforcement = p is IfcReinforcingBar }));
+            ElementIDsToRenders.AddRange(newBuilding.BuildingSubmissions.SubmittedElems[counter].Select(p => new { Id = p.EntityLabel, isFormWork = p is IfcBuildingElementPart, isConcrete = p is IfcBeam || p is IfcColumn || p is IfcSlab || p is IfcFooting || p is IfcWallStandardCase }));
+            //ElementIDsToRenders.AddRange(newBuilding.BuildingSubmissions.SubmittedElems[counter].Select(p => new {Id= p.EntityLabel,  isFormWork= p is IfcBuildingElementPart, isReinforcement = p is IfcReinforcingBar }));
             counter++;
             JsonResult result = new JsonResult();
             var jsonData = new { ProductIdList = ElementIDsToRenders };
             var serializerSettings = new JsonSerializerSettings { PreserveReferencesHandling = PreserveReferencesHandling.Objects };
-            return new JsonResult { Data = JsonConvert.SerializeObject(jsonData, Formatting.Indented, serializerSettings), MaxJsonLength = Int32.MaxValue, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
- 
+            return new JsonResult { Data = JsonConvert.SerializeObject(jsonData, Formatting.Indented, serializerSettings),
+                MaxJsonLength = Int32.MaxValue, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+
         }
         [HttpPost]
         public void ResetCounter()
@@ -166,8 +170,8 @@ namespace BIMWebViewer.Controllers
         [HttpPost]
         public void UploadPic(string imageData, string name)
         {
-            var path = Path.Combine(FileStruc.CurrentVersion, name+".png");
-          //  string Pic_Path = HttpContext.Server.MapPath("~/");
+            var path = Path.Combine(FileStruc.CurrentVersion, name + ".png");
+            //  string Pic_Path = HttpContext.Server.MapPath("~/");
             using (FileStream fs = new FileStream(path, FileMode.Create))
             {
                 using (BinaryWriter bw = new BinaryWriter(fs))
@@ -184,7 +188,7 @@ namespace BIMWebViewer.Controllers
         {
             var currentVersionPath = FileStruc.CurrentVersion;
             System.IO.File.WriteAllText(currentVersionPath + @"\viewList.json", viewList);
-           
+
             return RedirectToAction("Viewer");
         }
         public ActionResult GetViewPoints()
@@ -201,8 +205,8 @@ namespace BIMWebViewer.Controllers
             var serializerSettings = new JsonSerializerSettings { PreserveReferencesHandling = PreserveReferencesHandling.Objects };
             return new JsonResult { Data = JsonConvert.SerializeObject(jsonData, Formatting.Indented, serializerSettings), MaxJsonLength = Int32.MaxValue, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
         }
-        
-        
+
+
         [HttpPost]
         public ActionResult GetProductIdsByType(int TypeId)
         {
@@ -221,7 +225,7 @@ namespace BIMWebViewer.Controllers
         {
 
             List<int> productIds = IFCConverter.Products.Select(p => p.EntityLabel).ToList();
-            
+
             JsonResult result = new JsonResult();
             var jsonData = new { ProductIdList = productIds };
             var serializerSettings = new JsonSerializerSettings { PreserveReferencesHandling = PreserveReferencesHandling.Objects };

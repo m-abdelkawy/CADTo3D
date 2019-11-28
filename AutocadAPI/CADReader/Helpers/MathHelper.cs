@@ -157,7 +157,7 @@ namespace CADReader
 
             return true;
         }
- 
+
         public static double CalcDistanceBetweenTwoPoint3D(Point3D pt1, Point3D pt2)
         {
             return Math.Sqrt(Math.Pow(pt1.X - pt2.X, 2) + Math.Pow(pt1.Y - pt2.Y, 2) + Math.Pow(pt1.Z - pt2.Z, 2));
@@ -415,40 +415,10 @@ namespace CADReader
             List<Point3D> lstIntersecionPts = new List<Point3D>();
             foreach (Line line1 in linPath.ConvertToLines())
             {
-                double a1 = line1.EndPoint.Y - line1.StartPoint.Y;
-                double b1 = line1.StartPoint.X - line1.EndPoint.X;
-                double c1 = a1 * line1.StartPoint.X + b1 * line1.StartPoint.Y;
-
-                double a2 = line2.EndPoint.Y - line2.StartPoint.Y;
-                double b2 = line2.StartPoint.X - line2.EndPoint.X;
-                double c2 = a2 * line2.StartPoint.X + b2 * line2.StartPoint.Y;
-
-                double delta = a1 * b2 - a2 * b1;
-                if (Math.Abs(delta) > 0.0001) // !=0
-                {
-                    int o1 = orientation(line1.StartPoint, line1.EndPoint, line2.StartPoint);
-                    int o2 = orientation(line1.StartPoint, line1.EndPoint, line2.EndPoint);
-                    int o3 = orientation(line2.StartPoint, line2.EndPoint, line1.StartPoint);
-                    int o4 = orientation(line2.StartPoint, line2.EndPoint, line1.EndPoint);
-
-                    if ((o1 != o2 && o3 != o4)
-                        ||
-                        (o1 == 0 && onSegment(line1.StartPoint, line2.StartPoint, line1.EndPoint))
-                        ||
-                        (o2 == 0 && onSegment(line1.StartPoint, line2.EndPoint, line1.EndPoint))
-                        ||
-                        (o3 == 0 && onSegment(line2.StartPoint, line1.StartPoint, line2.EndPoint))
-                        ||
-                        (o4 == 0 && onSegment(line2.StartPoint, line1.EndPoint, line2.EndPoint))
-                        )
-                    {
-                        lstIntersecionPts.Add(new Point3D((b2 * c1 - b1 * c2) / delta, (a1 * c2 - a2 * c1) / delta, line2.StartPoint.Z));
-                    }
-                }
+                Point3D intersectionPt = IntersectionOfTwoLineSegments(line1, line2);
+                if (intersectionPt != null)
+                    lstIntersecionPts.Add(intersectionPt);
             }
-
-
-
             return lstIntersecionPts; // Doesn't fall in any of the above cases
         }
 
@@ -470,6 +440,41 @@ namespace CADReader
                 }
             }
             return lstIntersectionPts;
+        }
+
+        internal static Point3D IntersectionOfTwoLineSegments(Line line1, Line line2)
+        {
+            double a1 = line1.EndPoint.Y - line1.StartPoint.Y;
+            double b1 = line1.StartPoint.X - line1.EndPoint.X;
+            double c1 = a1 * line1.StartPoint.X + b1 * line1.StartPoint.Y;
+
+            double a2 = line2.EndPoint.Y - line2.StartPoint.Y;
+            double b2 = line2.StartPoint.X - line2.EndPoint.X;
+            double c2 = a2 * line2.StartPoint.X + b2 * line2.StartPoint.Y;
+
+            double delta = a1 * b2 - a2 * b1;
+            if (Math.Abs(delta) > 0.0001) // !=0
+            {
+                int o1 = orientation(line1.StartPoint, line1.EndPoint, line2.StartPoint);
+                int o2 = orientation(line1.StartPoint, line1.EndPoint, line2.EndPoint);
+                int o3 = orientation(line2.StartPoint, line2.EndPoint, line1.StartPoint);
+                int o4 = orientation(line2.StartPoint, line2.EndPoint, line1.EndPoint);
+
+                if ((o1 != o2 && o3 != o4)
+                    ||
+                    (o1 == 0 && onSegment(line1.StartPoint, line2.StartPoint, line1.EndPoint))
+                    ||
+                    (o2 == 0 && onSegment(line1.StartPoint, line2.EndPoint, line1.EndPoint))
+                    ||
+                    (o3 == 0 && onSegment(line2.StartPoint, line1.StartPoint, line2.EndPoint))
+                    ||
+                    (o4 == 0 && onSegment(line2.StartPoint, line1.EndPoint, line2.EndPoint))
+                    )
+                {
+                    return new Point3D((b2 * c1 - b1 * c2) / delta, (a1 * c2 - a2 * c1) / delta, line2.StartPoint.Z);
+                }
+            }
+            return null;
         }
 
 
@@ -500,7 +505,70 @@ namespace CADReader
         }
         #endregion
 
+        public static LinearPath LinPathAxesIntersection(List<Line> lstLine)
+        {
+            List<Point3D> lstIntersectionPt = new List<Point3D>();
+            if (lstLine.Count == 4)
+            {
+                for (int i = 0; i < lstLine.Count; i++)
+                {
+                    for (int j = 0; j < lstLine.Count; j++)
+                    {
+                        Point3D intersectionPt = null;
 
+                        intersectionPt = IntersectionOfTwoLineSegments(lstLine[i], lstLine[j]);
+
+                        if (intersectionPt != null)
+                            lstIntersectionPt.Add(intersectionPt);
+                    }
+
+                }
+            }
+            //remove duplicates
+            lstIntersectionPt = lstIntersectionPt.Distinct().ToList();
+
+            //sort points counterClockwise
+            lstIntersectionPt = lstIntersectionPt.SortCounterClockWise();
+            lstIntersectionPt.Add(lstIntersectionPt[0]);
+            return new LinearPath(lstIntersectionPt);
+        }
+
+        public static List<Point3D> SortCounterClockWise(this List<Point3D> lstPoint)
+        {
+            List<WrapperPoint> lstWrapperPoint = new List<WrapperPoint>();
+            double cz = lstPoint[0].Z;
+
+            lstPoint = lstPoint.OrderBy(p => p.Y).ToList();
+            double cy = (lstPoint[lstPoint.Count - 1].Y + lstPoint[0].Y) / 2;
+
+            lstPoint = lstPoint.OrderBy(p => p.X).ToList();
+            double cx = (lstPoint[lstPoint.Count - 1].X + lstPoint[0].X) / 2;
+
+            //center point:
+            Point3D center = new Point3D(cx, cy, cz);
+
+            double? stAngle = null;
+            lstPoint.ForEach(point =>
+            {
+                double angle = Math.Atan2(point.Y - center.Y, point.X - center.X);
+                if (stAngle == null)
+                {
+                    stAngle = angle;
+                }
+                else
+                {
+                    if (angle < stAngle)
+                    {
+                        angle += Math.PI * 2;
+                    }
+                }
+                lstWrapperPoint.Add(new WrapperPoint(point, angle));
+            });
+            lstWrapperPoint=lstWrapperPoint.OrderBy(p => p.angle).ToList();
+            lstPoint = lstWrapperPoint.Select(p => p.point).ToList();
+
+            return lstPoint;
+        }
 
     }
 }

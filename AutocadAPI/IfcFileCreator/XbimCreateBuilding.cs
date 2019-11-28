@@ -43,14 +43,14 @@ namespace IfcFileCreator
     {
         public Submissions BuildingSubmissions { get; set; }
 
-        IfcSlab slab = null;
         private Random random = new Random(1000);
         public XbimCreateBuilding(/*List<Building> lstBuilding, */Building cadBuilding, string pathToSave)
         {
             BuildingSubmissions = new Submissions();
 
-            using (var model = CreateandInitModel("Demo1"))
+            using (var model = IFCHelper.CreateandInitModel("Demo1"))
             {
+                IfcSlab slab = null;
 
                 //for (int m = 0; m < lstBuilding.Count; m++)
 
@@ -58,9 +58,9 @@ namespace IfcFileCreator
 
                 if (model != null)
                 {
-                    IfcBuilding building = CreateBuilding(model, "Default Building", cadBuilding.Location);
+                    IfcBuilding building = IFCHelper.CreateBuilding(model, "Default Building", cadBuilding.Location);
                     //rel.
-                    double lvlDifference = 0;
+                    //double lvlDifference = 0;
 
                     for (int i = 0; i < lstSortedFloors.Count; i++)
                     {
@@ -77,10 +77,10 @@ namespace IfcFileCreator
                         }
 
 
-                        if (i + 1 != lstSortedFloors.Count)
-                            lvlDifference = Math.Abs(lstSortedFloors[i].Level - lstSortedFloors[i + 1].Level);
-                        else
-                            lvlDifference = lstSortedFloors[i].Level;
+                        //if (i - 1 >= lstSortedFloors.Count)
+                        //    lvlDifference = Math.Abs(lstSortedFloors[i].Level - lstSortedFloors[i - 1].Level);
+                        //else
+                        //    lvlDifference = lstSortedFloors[i].Level;
 
 
                         Floor floor = lstSortedFloors[i] as Floor;
@@ -100,7 +100,10 @@ namespace IfcFileCreator
                             List<IfcProduct> lstSlabRebar = new List<IfcProduct>();
 
 
-                            double wallHeight = lvlDifference - DefaultValues.SlabThinkess;
+                            double wallHeight = floor.Height - DefaultValues.SlabThinkess;
+                            if (i == 1)//basement
+                                wallHeight = floor.Height - DefaultValues.SlabThinkess - DefaultValues.RCFootingThinkess - DefaultValues.PCFootingThinkess;
+
                             foreach (ReinforcedCadWall rcWall in floor.LstRcCadRetainingWall)
                             {
                                 IfcWallStandardCase wall = CreateIfcWall(model, rcWall.CadWall, wallHeight, building);
@@ -125,7 +128,7 @@ namespace IfcFileCreator
                                         IfcReinforcingBar bar = CreateIfcRebar(model, rcWall.LstRebar[j], wallHeight);
                                         storey.AddElement(bar);
                                     }
-                                    int nStirrups = Convert.ToInt32(lvlDifference / (DefaultValues.StirrupsSpacing));
+                                    int nStirrups = Convert.ToInt32(floor.Height / (DefaultValues.StirrupsSpacing));
                                     for (int j = 0; j < nStirrups; j++)
                                     {
                                         IfcReinforcingBar stirrup = CreateIfcStirrup(model, rcWall.Stirrup, DefaultValues.StirrupsSpacing);
@@ -139,13 +142,14 @@ namespace IfcFileCreator
 
                             foreach (ReinforcedCadColumn rcCol in floor.LstRcColumn)
                             {
-                                IfcColumn column = CreateIfcColumn(model, rcCol, lvlDifference);
+                                IfcColumn column = CreateIfcColumn(model, rcCol, floor.Height);
                                 using (var txn = model.BeginTransaction("Add RcColumn"))
                                 {
                                     storey.AddElement(column);
 
                                     IfcOpeningElement opening;
-                                    IfcBuildingElementPart formWork = CreateFormWork(model, rcCol.CadColumn.ColPath, DefaultValues.FormWorkThickness, lvlDifference, out opening);
+                                    IfcBuildingElementPart formWork = CreateFormWork(model, rcCol.CadColumn.ColPath, DefaultValues.FormWorkThickness, floor.Height
+                                        , out opening, false);
                                     storey.AddElement(opening);
                                     storey.AddElement(formWork);
 
@@ -161,11 +165,11 @@ namespace IfcFileCreator
                                     //{
                                     foreach (var rebar in rcCol.LstRebar)
                                     {
-                                        IfcReinforcingBar bar = CreateIfcRebar(model, rebar, lvlDifference);
+                                        IfcReinforcingBar bar = CreateIfcRebar(model, rebar, floor.Height);
                                         storey.AddElement(bar);
                                         lstRebar.Add(bar);
                                     }
-                                    int nstirrups = Convert.ToInt32((lvlDifference + (CADConfig.Units == linearUnitsType.Meters ? 1 : 1000)) / DefaultValues.StirrupsSpacing);
+                                    int nstirrups = Convert.ToInt32((floor.Height + (CADConfig.Units == linearUnitsType.Meters ? 1 : 1000)) / DefaultValues.StirrupsSpacing);
                                     for (int j = 0; j < nstirrups - 1; j++)
                                     {
                                         IfcReinforcingBar stirrup = CreateIfcStirrup(model, rcCol.Stirrup, DefaultValues.StirrupsSpacing);
@@ -186,7 +190,8 @@ namespace IfcFileCreator
                                     storey.AddElement(slab);
 
                                     IfcOpeningElement openingFormWork;
-                                    IfcBuildingElementPart formWork = CreateFormWork(model, cadRCSlab.Slab.LinPathSlab, DefaultValues.FormWorkThickness, cadRCSlab.Slab.Thickness, out openingFormWork, true);
+                                    IfcBuildingElementPart formWork = CreateFormWork(model, cadRCSlab.Slab.LinPathSlab, DefaultValues.FormWorkThickness,
+                                        cadRCSlab.Slab.Thickness, out openingFormWork, true);
                                     storey.AddElement(openingFormWork);
                                     storey.AddElement(formWork);
 
@@ -271,14 +276,15 @@ namespace IfcFileCreator
                             foreach (ReinforcedCadShearWall cadShearWall in floor.LstRcShearWall)
                             {
 
-                                IfcColumn shearWall = CreateIfcShearWall(model, cadShearWall.ShearWall, lvlDifference);
+                                IfcColumn shearWall = CreateIfcShearWall(model, cadShearWall.ShearWall, floor.Height);
 
                                 using (var txn = model.BeginTransaction("Add Shear Wall"))
                                 {
                                     storey.AddElement(shearWall);
 
                                     IfcOpeningElement opening;
-                                    IfcBuildingElementPart formWork = CreateFormWork(model, cadShearWall.ShearWall.ProfilePath, DefaultValues.FormWorkThickness, lvlDifference, out opening);
+                                    IfcBuildingElementPart formWork = CreateFormWork(model, cadShearWall.ShearWall.ProfilePath, DefaultValues.FormWorkThickness,
+                                        floor.Height, out opening, false);
                                     storey.AddElement(opening);
                                     storey.AddElement(formWork);
 
@@ -290,10 +296,10 @@ namespace IfcFileCreator
 
                                     foreach (var rebar in cadShearWall.VlRebar)
                                     {
-                                        IfcReinforcingBar bar = CreateIfcRebar(model, rebar, lvlDifference);
+                                        IfcReinforcingBar bar = CreateIfcRebar(model, rebar, floor.Height);
                                         storey.AddElement(bar);
                                     }
-                                    int nstirrups = Convert.ToInt32((lvlDifference + (CADConfig.Units == linearUnitsType.Meters ? 1 : 1000)) / (DefaultValues.StirrupsSpacing));
+                                    int nstirrups = Convert.ToInt32((floor.Height + (CADConfig.Units == linearUnitsType.Meters ? 1 : 1000)) / (DefaultValues.StirrupsSpacing));
                                     for (int j = 0; j < nstirrups - 1; j++)
                                     {
                                         IfcReinforcingBar stirrup = CreateIfcStirrup(model, cadShearWall.Stirrup, DefaultValues.StirrupsSpacing);
@@ -317,7 +323,8 @@ namespace IfcFileCreator
                                     storey.AddElement(ramp);
 
                                     IfcOpeningElement opening;
-                                    IfcBuildingElementPart formWork = CreateFormWork(model, cadRamp.LinPathSlopedSlab, DefaultValues.FormWorkThickness, cadRamp.Thickness, out opening, true);
+                                    IfcBuildingElementPart formWork = CreateFormWork(model, cadRamp.LinPathSlopedSlab, DefaultValues.FormWorkThickness,
+                                        cadRamp.Thickness, out opening, true);
                                     storey.AddElement(opening);
                                     storey.AddElement(formWork);
 
@@ -380,7 +387,6 @@ namespace IfcFileCreator
                             Foundation foundation = lstSortedFloors[i] as Foundation;
                             foreach (PCFooting cadFooting in foundation.LstPCFooting)
                             {
-
                                 IfcFooting footing = CreateIfcFooting(model, cadFooting);
 
 
@@ -390,7 +396,8 @@ namespace IfcFileCreator
                                     storey.AddElement(footing);
 
                                     IfcOpeningElement opening;
-                                    IfcBuildingElementPart formWork = CreateFormWork(model, cadFooting.ProfilePath, DefaultValues.FormWorkThickness, cadFooting.Thickness, out opening);
+                                    IfcBuildingElementPart formWork = CreateFormWork(model, cadFooting.ProfilePath, DefaultValues.FormWorkThickness, cadFooting.Thickness,
+                                        out opening, false, true);
                                     storey.AddElement(opening);
                                     storey.AddElement(formWork);
 
@@ -414,7 +421,7 @@ namespace IfcFileCreator
 
                                     IfcOpeningElement opening;
                                     IfcBuildingElementPart formWork = CreateFormWork(model, cadSemelle.Semelle.HzLinPath,
-                                        DefaultValues.FormWorkThickness, cadSemelle.Semelle.Thickness, out opening);
+                                        DefaultValues.FormWorkThickness, cadSemelle.Semelle.Thickness, out opening, false, false, true);
                                     storey.AddElement(opening);
                                     storey.AddElement(formWork);
                                     lstRCFooting.Add(semelle);
@@ -449,7 +456,8 @@ namespace IfcFileCreator
                                     storey.AddElement(footing);
 
                                     IfcOpeningElement opening;
-                                    IfcBuildingElementPart formWork = CreateFormWork(model, cadFooting.RcFooting.ProfilePath, DefaultValues.FormWorkThickness, cadFooting.RcFooting.Thickness, out opening);
+                                    IfcBuildingElementPart formWork = CreateFormWork(model, cadFooting.RcFooting.ProfilePath, DefaultValues.FormWorkThickness,
+                                        cadFooting.RcFooting.Thickness, out opening, false, true);
                                     storey.AddElement(opening);
                                     storey.AddElement(formWork);
 
@@ -489,7 +497,8 @@ namespace IfcFileCreator
                                     storey.AddElement(ramp);
 
                                     IfcOpeningElement opening;
-                                    IfcBuildingElementPart formWork = CreateFormWork(model, cadRamp.LinPathSlopedSlab, DefaultValues.FormWorkThickness, cadRamp.Thickness, out opening, true);
+                                    IfcBuildingElementPart formWork = CreateFormWork(model, cadRamp.LinPathSlopedSlab, DefaultValues.FormWorkThickness,
+                                        cadRamp.Thickness, out opening, true);
                                     storey.AddElement(opening);
                                     storey.AddElement(formWork);
 
@@ -503,51 +512,54 @@ namespace IfcFileCreator
                                 }
                             }
 
-                            double wallHeight = lvlDifference - DefaultValues.SlabThinkess;
+                            #region old code walls in foundation level
+                            //double wallHeight = lvlDifference - DefaultValues.SlabThinkess;
 
-                            foreach (ReinforcedCadWall rcWall in foundation.LstRCCadWall)
-                            {
+                            //foreach (ReinforcedCadWall rcWall in foundation.LstRCCadWall)
+                            //{
 
-                                IfcWallStandardCase wall = CreateIfcWall(model, rcWall.CadWall, wallHeight, building);
-                                if (wall != null) AddPropertiesToWall(model, wall);
+                            //    IfcWallStandardCase wall = CreateIfcWall(model, rcWall.CadWall, wallHeight, building);
+                            //    if (wall != null) AddPropertiesToWall(model, wall);
 
-                                using (var txn = model.BeginTransaction("Add RetainingWall"))
-                                {
-                                    storey.AddElement(wall);
+                            //    using (var txn = model.BeginTransaction("Add RetainingWall"))
+                            //    {
+                            //        storey.AddElement(wall);
 
-                                    IfcOpeningElement opening;
-                                    IfcBuildingElementPart formWork = CreateFormWork(model, rcWall.CadWall.LinPathWall, DefaultValues.FormWorkThickness, wallHeight, out opening);
-                                    storey.AddElement(opening);
-                                    storey.AddElement(formWork);
+                            //        IfcOpeningElement opening;
+                            //        IfcBuildingElementPart formWork = CreateFormWork(model, rcWall.CadWall.LinPathWall, DefaultValues.FormWorkThickness, wallHeight, out opening);
+                            //        storey.AddElement(opening);
+                            //        storey.AddElement(formWork);
 
-                                    //add rcfooting to Submission
-                                    lstWall.Add(wall);
+                            //        //add rcfooting to Submission
+                            //        lstWall.Add(wall);
 
-                                    lstWallFormWork.Add(opening);
-                                    lstWallFormWork.Add(formWork);
+                            //        lstWallFormWork.Add(opening);
+                            //        lstWallFormWork.Add(formWork);
 
-                                    //Wall Rft
-                                    //for (int j = 0; j < rcWall.LstRebar.Count; j++)
-                                    //{
-                                    //    IfcReinforcingBar bar = CreateIfcRebar(model, rcWall.LstRebar[j], wallHeight);
-                                    //    storey.AddElement(bar);
-                                    //    lstWallRebar.Add(bar);
-                                    //}
-                                    //int nStirrups = Convert.ToInt32((lvlDifference + (CADConfig.Units == linearUnitsType.Meters ? 1 : 1000)) / (DefaultValues.StirrupsSpacing));
-                                    //for (int j = 0; j < nStirrups; j++)
-                                    //{
-                                    //    IfcReinforcingBar stirrup = CreateIfcStirrup(model, rcWall.Stirrup, DefaultValues.StirrupsSpacing);
-                                    //    storey.AddElement(stirrup);
-                                    //    //lstColRebar.Add(stirrup);
-                                    //    lstWallRebar.Add(stirrup);
+                            //        //Wall Rft
+                            //        //for (int j = 0; j < rcWall.LstRebar.Count; j++)
+                            //        //{
+                            //        //    IfcReinforcingBar bar = CreateIfcRebar(model, rcWall.LstRebar[j], wallHeight);
+                            //        //    storey.AddElement(bar);
+                            //        //    lstWallRebar.Add(bar);
+                            //        //}
+                            //        //int nStirrups = Convert.ToInt32((lvlDifference + (CADConfig.Units == linearUnitsType.Meters ? 1 : 1000)) / (DefaultValues.StirrupsSpacing));
+                            //        //for (int j = 0; j < nStirrups; j++)
+                            //        //{
+                            //        //    IfcReinforcingBar stirrup = CreateIfcStirrup(model, rcWall.Stirrup, DefaultValues.StirrupsSpacing);
+                            //        //    storey.AddElement(stirrup);
+                            //        //    //lstColRebar.Add(stirrup);
+                            //        //    lstWallRebar.Add(stirrup);
 
-                                    //}
+                            //        //}
 
-                                    txn.Commit();
-                                }
-                            }
+                            //        txn.Commit();
+                            //    }
+                            //}
 
-                            foreach (ReinforcedCadColumn rcCol in foundation.LstRcColumn)
+                            #endregion
+                            #region columns old code
+                            /*foreach (ReinforcedCadColumn rcCol in foundation.LstRcColumn)
                             {
                                 IfcColumn column = CreateIfcColumn(model, rcCol, lvlDifference);
                                 using (var txn = model.BeginTransaction("Add column"))
@@ -584,48 +596,49 @@ namespace IfcFileCreator
 
                                     txn.Commit();
                                 }
-                            }
+                            }*/
+                            #endregion
 
+                            #region old code shearwall in foundation level
+                            //foreach (ReinforcedCadShearWall cadShearWall in foundation.LstRCShearWall)
+                            //{
 
-                            foreach (ReinforcedCadShearWall cadShearWall in foundation.LstRCShearWall)
-                            {
+                            //    IfcColumn shearWall = CreateIfcShearWall(model, cadShearWall.ShearWall, lvlDifference);
 
-                                IfcColumn shearWall = CreateIfcShearWall(model, cadShearWall.ShearWall, lvlDifference);
+                            //    using (var txn = model.BeginTransaction("Add Shear Wall"))
+                            //    {
+                            //        storey.AddElement(shearWall);
 
-                                using (var txn = model.BeginTransaction("Add Shear Wall"))
-                                {
-                                    storey.AddElement(shearWall);
+                            //        IfcOpeningElement opening;
+                            //        IfcBuildingElementPart formWork = CreateFormWork(model, cadShearWall.ShearWall.ProfilePath, DefaultValues.FormWorkThickness, lvlDifference, out opening);
+                            //        storey.AddElement(opening);
+                            //        storey.AddElement(formWork);
 
-                                    IfcOpeningElement opening;
-                                    IfcBuildingElementPart formWork = CreateFormWork(model, cadShearWall.ShearWall.ProfilePath, DefaultValues.FormWorkThickness, lvlDifference, out opening);
-                                    storey.AddElement(opening);
-                                    storey.AddElement(formWork);
+                            //        //add shear wall to Submission
+                            //        lstShearWall.Add(shearWall);
 
-                                    //add shear wall to Submission
-                                    lstShearWall.Add(shearWall);
+                            //        lstShearWallFormWork.Add(opening);
+                            //        lstShearWallFormWork.Add(formWork);
 
-                                    lstShearWallFormWork.Add(opening);
-                                    lstShearWallFormWork.Add(formWork);
+                            //        //foreach (var rebar in cadShearWall.VlRebar)
+                            //        //{
+                            //        //    IfcReinforcingBar bar = CreateIfcRebar(model, rebar, lvlDifference);
+                            //        //    storey.AddElement(bar);
+                            //        //    lstShearWallRebar.Add(bar);
+                            //        //}
+                            //        //int nstirrups = Convert.ToInt32((lvlDifference + (CADConfig.Units == linearUnitsType.Meters ? 1 : 1000)) / (DefaultValues.StirrupsSpacing));
+                            //        //for (int j = 0; j < nstirrups - 1; j++)
+                            //        //{
+                            //        //    IfcReinforcingBar stirrup = CreateIfcStirrup(model, cadShearWall.Stirrup, DefaultValues.StirrupsSpacing);
+                            //        //    storey.AddElement(stirrup);
+                            //        //    lstShearWallRebar.Add(stirrup);
 
-                                    //foreach (var rebar in cadShearWall.VlRebar)
-                                    //{
-                                    //    IfcReinforcingBar bar = CreateIfcRebar(model, rebar, lvlDifference);
-                                    //    storey.AddElement(bar);
-                                    //    lstShearWallRebar.Add(bar);
-                                    //}
-                                    //int nstirrups = Convert.ToInt32((lvlDifference + (CADConfig.Units == linearUnitsType.Meters ? 1 : 1000)) / (DefaultValues.StirrupsSpacing));
-                                    //for (int j = 0; j < nstirrups - 1; j++)
-                                    //{
-                                    //    IfcReinforcingBar stirrup = CreateIfcStirrup(model, cadShearWall.Stirrup, DefaultValues.StirrupsSpacing);
-                                    //    storey.AddElement(stirrup);
-                                    //    lstShearWallRebar.Add(stirrup);
+                            //        //}
 
-                                    //}
-
-                                    txn.Commit();
-                                }
-                            }
-
+                            //        txn.Commit();
+                            //    }
+                            //}
+                            #endregion
 
                             BuildingSubmissions.SubmittedElems.Add(lstPCFormWork);
                             BuildingSubmissions.SubmittedElems.Add(lstPCFooting);
@@ -663,24 +676,21 @@ namespace IfcFileCreator
 
         public XbimCreateBuilding(Building cadBuilding, string pathToSave, bool createEachFloorIFC)
         {
-
             List<FloorBase> lstFloorSorted = cadBuilding.Floors.OrderBy(f => f.Level).ToList();
-
 
             for (int i = 0; i < lstFloorSorted.Count; i++)
             {
-                using (IfcStore model = CreateandInitModel("Demo2"))
+                using (IfcStore model = IFCHelper.CreateandInitModel("Demo2"))
                 {
                     if (model != null)
                     {
-                        IfcBuilding building = CreateBuilding(model, "BuildingB", cadBuilding.Location);
+                        IfcBuilding building = IFCHelper.CreateBuilding(model, $"BuildingB-{i}", cadBuilding.Location);
                         IfcBuildingStorey storey = IFCHelper.CreateStorey(model, building);
 
                         Floor floor = lstFloorSorted[i] as Floor;
 
                         if (floor != null)
                         {
-
                             CreateStoreyRetainingWalls(model, building, storey, floor);
 
                             CreateStoreyColumns(model, storey, floor);
@@ -692,6 +702,9 @@ namespace IfcFileCreator
                             CreateRamps(model, storey, floor);
 
                             CreateStoreyElectricalConduit(model, storey, floor);
+
+                            //create stairs
+                            CreateStoreyStairs(model, storey, floor);
 
                             using (var txn = model.BeginTransaction("Add Axes"))
                             {
@@ -708,9 +721,9 @@ namespace IfcFileCreator
                             CreateBuildingSemelles(model, storey, foundation);
                             CreateRCFootings(model, storey, foundation);
                             CreateFoundationRamps(model, storey, foundation);
-                            CreateFoundationRetainingWalls(model, building, storey, foundation);
-                            CreateFoundationColumns(model, storey, foundation);
-                            CreateFoundationShearWalls(model, storey, foundation);
+                            //CreateFoundationRetainingWalls(model, building, storey, foundation);
+                            //CreateFoundationColumns(model, storey, foundation);
+                            //CreateFoundationShearWalls(model, storey, foundation);
 
                             using (var txn = model.BeginTransaction("Add Axes"))
                             {
@@ -729,13 +742,38 @@ namespace IfcFileCreator
                         }
                     }
                 }
-
             }
-
-
         }
 
-        private void CreateAxesFloor(IfcStore model, IfcBuildingStorey storey, Floor floor)
+        private void CreateStoreyStairs(IfcStore model, IfcBuildingStorey storey, Floor floor)
+        {
+            foreach (Stair cadStair in floor.LstStair)
+            {
+                IfcStairFlight flight;
+                IfcStair stair = CreateIfcStair(model, cadStair, out flight);
+
+                using (var txn = model.BeginTransaction("Add Stair"))
+                {
+                    storey.AddElement(stair);
+
+                    txn.Commit();
+                }
+            }
+            foreach (LinearPath cadLanding in floor.LstLandingLinPath)
+            {
+
+                IfcSlab landing = CreateIfcLanding(model, cadLanding, DefaultValues.SlabThinkess);
+
+                using (var txn = model.BeginTransaction("Add Landing"))
+                {
+                    storey.AddElement(landing);
+
+                    txn.Commit();
+                }
+            }
+        }
+
+        private void CreateAxesFloorOld(IfcStore model, IfcBuildingStorey storey, Floor floor)
         {
 
             foreach (Axis axis in floor.LstAxis)
@@ -745,8 +783,65 @@ namespace IfcFileCreator
 
 
                 storey.AddElement(ifcBar);
-
             }
+        }
+
+        private void CreateAxesFloor(IfcStore model, IfcBuildingStorey storey, Floor floor)
+        {
+
+            foreach (Axis axis in floor.LstAxis)
+            {
+                IfcSlabStandardCase ifcAxis = CreateIfcAxis(model, axis);
+
+                storey.AddElement(ifcAxis);
+            }
+        }
+
+        private IfcSlabStandardCase CreateIfcAxis(IfcStore model, Axis axis)
+        {
+            IfcSlabStandardCase ifcAxisToCreate = model.Instances.New<IfcSlabStandardCase>();
+            ifcAxisToCreate.Name = "Axis-" + random.Next(100000);
+            ifcAxisToCreate.Tag = axis.AxisText;
+
+            //Create Local axes system and assign it to the column
+            
+
+            IfcDirection localXDir = model.Instances.New<IfcDirection>();
+            localXDir.SetXYZ(1, 0, 0);
+
+            IfcDirection localZDir = model.Instances.New<IfcDirection>();
+            localZDir.SetXYZ(0, 0, 1);
+
+
+            //now place the wall into the model
+
+            IfcCircleProfileDef profile = IFCHelper.CircleProfileCreate(model, CADConfig.Units == linearUnitsType.Meters ? 0.080 : 80);
+
+            IfcSurfaceCurveSweptAreaSolid bodyLine = IFCHelper.ProfileSurfaceSweptSolidCreate(model, profile, axis.AxisLinPath);
+
+            IfcCircleProfileDef circProf1 = IFCHelper.CircleProfileCreate(model, axis.LstCircle[0].Radius*2);
+            IfcExtrudedAreaSolid circleAxis1 = IFCHelper.ProfileSweptSolidCreate(model, CADConfig.Units == linearUnitsType.Meters ? 0.080 : 80, circProf1);
+            circleAxis1.BodyPlacementSet(model, axis.LstCircle[0].Center.X, axis.LstCircle[0].Center.Y, axis.LstCircle[0].Center.Z);
+
+            IfcCircleProfileDef circProf2 = IFCHelper.CircleProfileCreate(model, axis.LstCircle[1].Radius*2);
+            IfcExtrudedAreaSolid circleAxis2 = IFCHelper.ProfileSweptSolidCreate(model, CADConfig.Units == linearUnitsType.Meters ? 0.080 : 80, circProf2);
+            circleAxis2.BodyPlacementSet(model, axis.LstCircle[1].Center.X, axis.LstCircle[1].Center.Y, axis.LstCircle[1].Center.Z);
+
+
+            //IfcSurfaceCurveSweptAreaSolid bodyCircle2 = IFCHelper.ProfileSurfaceSweptSolidCreate(model, profile, axis.LstCircle[1]);
+
+            //Create a Definition shape to hold the geometry
+            IfcShapeRepresentation shape = IFCHelper.ShapeRepresentationCreate(model, "AdvancedSweptSolid", "Body");
+            shape.Items.Add(bodyLine);
+            shape.Items.Add(circleAxis1);
+            shape.Items.Add(circleAxis2);
+
+            //Create a Product Definition and add the model geometry to the Axis
+            IfcProductDefinitionShape prDefShape = model.Instances.New<IfcProductDefinitionShape>();
+            prDefShape.Representations.Add(shape);
+            ifcAxisToCreate.Representation = prDefShape;
+
+            return ifcAxisToCreate;
         }
 
         private void CreateAxesFoundation(IfcStore model, IfcBuildingStorey storey, Foundation foundation)
@@ -754,12 +849,9 @@ namespace IfcFileCreator
 
             foreach (Axis axis in foundation.LstAxis)
             {
-                Rebar bar = new Rebar(axis.AxisLinPath);
-                IfcReinforcingBar ifcBar = CreateIfcRebar(model, bar, 0);
+                IfcSlabStandardCase ifcAxis = CreateIfcAxis(model, axis);
 
-
-                storey.AddElement(ifcBar);
-
+                storey.AddElement(ifcAxis);
             }
 
         }
@@ -791,14 +883,15 @@ namespace IfcFileCreator
             {
                 double colHeight = foundation.Height - DefaultValues.SlabThinkess;
                 IfcColumn column = CreateIfcColumn(model, rcCol, colHeight);
+                column.Tag = ElementType.Column;
                 using (var txn = model.BeginTransaction("Add column"))
                 {
                     storey.AddElement(column);
 
-                    IfcOpeningElement formworkVoid;
-                    IfcBuildingElementPart formWork = CreateFormWork(model, rcCol.CadColumn.ColPath, DefaultValues.FormWorkThickness, colHeight, out formworkVoid);
-                    storey.AddElement(formworkVoid);
-                    storey.AddElement(formWork);
+                    //IfcOpeningElement formworkVoid;
+                    //IfcBuildingElementPart formWork = CreateFormWork(model, rcCol.CadColumn.ColPath, DefaultValues.FormWorkThickness, colHeight, out formworkVoid);
+                    //storey.AddElement(formworkVoid);
+                    //storey.AddElement(formWork);
 
                     txn.Commit();
                 }
@@ -809,18 +902,20 @@ namespace IfcFileCreator
         {
             foreach (ReinforcedCadWall rcWall in foundation.LstRCCadWall)
             {
-                double wallHeight = foundation.Height - DefaultValues.SlabThinkess;
-                IfcWallStandardCase wall = CreateIfcWall(model, rcWall.CadWall, wallHeight, building);
-                if (wall != null) AddPropertiesToWall(model, wall);
 
                 using (var txn = model.BeginTransaction("Add RetainingWall"))
                 {
+                    double wallHeight = foundation.Height - DefaultValues.SlabThinkess;
+                    IfcWallStandardCase wall = CreateIfcWall(model, rcWall.CadWall, wallHeight, building);
+                    wall.Tag = ElementType.RetainingWall;
+                    if (wall != null) AddPropertiesToWall(model, wall);
+
                     storey.AddElement(wall);
 
-                    IfcOpeningElement formworkVoid;
-                    IfcBuildingElementPart formWork = CreateFormWork(model, rcWall.CadWall.LinPathWall, DefaultValues.FormWorkThickness, wallHeight, out formworkVoid);
-                    storey.AddElement(formworkVoid);
-                    storey.AddElement(formWork);
+                    //IfcOpeningElement formworkVoid;
+                    //IfcBuildingElementPart formWork = CreateFormWork(model, rcWall.CadWall.LinPathWall, DefaultValues.FormWorkThickness, wallHeight, out formworkVoid);
+                    //storey.AddElement(formworkVoid);
+                    //storey.AddElement(formWork);
 
                     txn.Commit();
                 }
@@ -831,10 +926,11 @@ namespace IfcFileCreator
         {
             foreach (SlopedSlab cadRamp in foundation.LstRamp)
             {
-                IfcSlab ramp = CreateIfcSlopedSlab(model, cadRamp);
 
                 using (var txn = model.BeginTransaction("Add Ramp"))
                 {
+                    IfcSlab ramp = CreateIfcSlopedSlab(model, cadRamp);
+                    ramp.Tag = ElementType.Slab;
                     storey.AddElement(ramp);
 
                     IfcOpeningElement formworkVoid;
@@ -851,16 +947,18 @@ namespace IfcFileCreator
         {
             foreach (ReinforcedCadFooting cadFooting in foundation.LstRCCadFooting)
             {
-                IfcFooting footing = CreateIfcFooting(model, cadFooting.RcFooting);
 
+                IfcFooting footing = CreateIfcFooting(model, cadFooting.RcFooting);
                 using (var txn = model.BeginTransaction("Add Footing"))
                 {
+                    footing.Tag = ElementType.RCFooting;
                     storey.AddElement(footing);
 
-                    IfcOpeningElement opening;
-                    IfcBuildingElementPart formWork = CreateFormWork(model, cadFooting.RcFooting.ProfilePath, DefaultValues.FormWorkThickness, cadFooting.RcFooting.Thickness, out opening);
-                    storey.AddElement(opening);
-                    storey.AddElement(formWork);
+                    //IfcOpeningElement opening;
+                    //IfcBuildingElementPart formWork = CreateFormWork(model, cadFooting.RcFooting.ProfilePath, DefaultValues.FormWorkThickness, 
+                    //    cadFooting.RcFooting.Thickness, out opening, false, true);
+                    //storey.AddElement(opening);
+                    //storey.AddElement(formWork);
 
                     txn.Commit();
                 }
@@ -871,17 +969,18 @@ namespace IfcFileCreator
         {
             foreach (ReinforcedCadSemelle cadSemelle in foundation.LstRCSemelle)
             {
-                IfcBeam semelle = CreateIfcBeam(model, cadSemelle.Semelle);
 
+                IfcBeam semelle = CreateIfcBeam(model, cadSemelle.Semelle);
                 using (var txn = model.BeginTransaction("Add Semelle"))
                 {
+                    semelle.Tag = ElementType.Semelle;
                     storey.AddElement(semelle);
 
-                    IfcOpeningElement formworkVoid;
-                    IfcBuildingElementPart formWork = CreateFormWork(model, cadSemelle.Semelle.HzLinPath,
-                        DefaultValues.FormWorkThickness, cadSemelle.Semelle.Thickness, out formworkVoid);
-                    storey.AddElement(formworkVoid);
-                    storey.AddElement(formWork);
+                    //IfcOpeningElement formworkVoid;
+                    //IfcBuildingElementPart formWork = CreateFormWork(model, cadSemelle.Semelle.HzLinPath,
+                    //    DefaultValues.FormWorkThickness, cadSemelle.Semelle.Thickness, out formworkVoid, false, false, true);
+                    //storey.AddElement(formworkVoid);
+                    //storey.AddElement(formWork);
 
                     txn.Commit();
                 }
@@ -892,16 +991,17 @@ namespace IfcFileCreator
         {
             foreach (PCFooting cadFooting in foundation.LstPCFooting)
             {
-                IfcFooting footing = CreateIfcFooting(model, cadFooting);
 
+                IfcFooting footing = CreateIfcFooting(model, cadFooting);
                 using (var txn = model.BeginTransaction("Add Footing"))
                 {
+                    footing.Tag = ElementType.PCFooting;
                     storey.AddElement(footing);
 
-                    IfcOpeningElement formworkVoid;
-                    IfcBuildingElementPart formWork = CreateFormWork(model, cadFooting.ProfilePath, DefaultValues.FormWorkThickness, cadFooting.Thickness, out formworkVoid);
-                    storey.AddElement(formworkVoid);
-                    storey.AddElement(formWork);
+                    //IfcOpeningElement formworkVoid;
+                    //IfcBuildingElementPart formWork = CreateFormWork(model, cadFooting.ProfilePath, DefaultValues.FormWorkThickness, cadFooting.Thickness, out formworkVoid, false, true);
+                    //storey.AddElement(formworkVoid);
+                    //storey.AddElement(formWork);
 
 
                     txn.Commit();
@@ -913,10 +1013,11 @@ namespace IfcFileCreator
         {
             foreach (ElectricalConduit cadConduit in floor.LstElectConduit)
             {
-
                 using (var txn = model.BeginTransaction("Add conduit"))
                 {
                     IfcCableCarrierSegment conduit = CreateIfcConduit(model, cadConduit);
+                    conduit.Tag = ElementType.ElectricalConduit;
+
                     storey.AddElement(conduit);
                     txn.Commit();
                 }
@@ -931,12 +1032,13 @@ namespace IfcFileCreator
 
                 using (var txn = model.BeginTransaction("Add Ramp"))
                 {
+                    ramp.Tag = ElementType.Slab;
                     storey.AddElement(ramp);
 
-                    IfcOpeningElement formworkVoid;
-                    IfcBuildingElementPart formWork = CreateFormWork(model, cadRamp.LinPathSlopedSlab, DefaultValues.FormWorkThickness, cadRamp.Thickness, out formworkVoid, true);
-                    storey.AddElement(formworkVoid);
-                    storey.AddElement(formWork);
+                    //IfcOpeningElement formworkVoid;
+                    //IfcBuildingElementPart formWork = CreateFormWork(model, cadRamp.LinPathSlopedSlab, DefaultValues.FormWorkThickness, cadRamp.Thickness, out formworkVoid, true);
+                    //storey.AddElement(formworkVoid);
+                    //storey.AddElement(formWork);
 
                     txn.Commit();
                 }
@@ -947,20 +1049,21 @@ namespace IfcFileCreator
         {
             foreach (ReinforcedCadShearWall cadShearWall in floor.LstRcShearWall)
             {
-                double wallHeight = floor.Height - DefaultValues.SlabThinkess;
+                double wallHeight = floor.Height/* - DefaultValues.SlabThinkess*/;
                 IfcColumn shearWall = CreateIfcShearWall(model, cadShearWall.ShearWall, floor.Height);
 
                 using (var txn = model.BeginTransaction("Add Shear Wall"))
                 {
+                    shearWall.Tag = ElementType.ShearWall;
                     storey.AddElement(shearWall);
 
-                    IfcOpeningElement formworkVoid;
-                    IfcBuildingElementPart formWork = CreateFormWork(model, cadShearWall.ShearWall.ProfilePath, DefaultValues.FormWorkThickness, wallHeight, out formworkVoid);
-                    storey.AddElement(formworkVoid);
-                    storey.AddElement(formWork);
+                    //IfcOpeningElement formworkVoid;
+                    //IfcBuildingElementPart formWork = CreateFormWork(model, cadShearWall.ShearWall.ProfilePath, DefaultValues.FormWorkThickness, wallHeight, out formworkVoid);
+                    //storey.AddElement(formworkVoid);
+                    //storey.AddElement(formWork);
 
                     //create wall reinforcement
-                    CreateWallRft(model, storey, cadShearWall, wallHeight);
+                    //CreateWallRft(model, storey, cadShearWall, wallHeight);
 
                     txn.Commit();
                 }
@@ -972,24 +1075,42 @@ namespace IfcFileCreator
             foreach (ReinforcedCadSlab cadRCSlab in floor.LstRcSlab)
             {
                 IfcSlab slab = CreateIfcSlab(model, cadRCSlab.Slab);
+
                 using (var trans = model.BeginTransaction("Add Slab"))
                 {
+                    slab.Tag = ElementType.Slab;
                     storey.AddElement(slab);
 
-                    IfcOpeningElement formworkVoid;
-                    IfcBuildingElementPart formwork = CreateFormWork(model, cadRCSlab.Slab.LinPathSlab, DefaultValues.FormWorkThickness, cadRCSlab.Slab.Thickness, out formworkVoid, true);
-                    storey.AddElement(formworkVoid);
-                    storey.AddElement(formwork);
+                    //IfcOpeningElement formworkVoid;
+                    //IfcBuildingElementPart formwork = CreateFormWork(model, cadRCSlab.Slab.LinPathSlab, DefaultValues.FormWorkThickness, cadRCSlab.Slab.Thickness, out formworkVoid, true);
+                    //storey.AddElement(formworkVoid);
+                    //storey.AddElement(formwork);
 
 
-                    List<IfcOpeningElement> lstOpening = ModelSlabOpenings(cadRCSlab, formwork, model, storey);
+                    //List<IfcOpeningElement> lstOpening = ModelSlabOpenings(cadRCSlab, formwork, model, storey, slab);
+                    List<IfcOpeningElement> lstOpening = ModelSlabOpenings(cadRCSlab, null, model, storey, slab);
 
                     //Create Slab Reinforcement
-                    CreateSlabRft(model, storey, cadRCSlab, lstOpening);
+                    //CreateSlabRft(model, storey, cadRCSlab, lstOpening);
+
+                    //create slab openingd
+                    //List<IfcOpeningElement> lstOpening = CreateSlabOpenings(model, cadRCSlab);
 
                     trans.Commit();
                 }
             }
+        }
+
+        private List<IfcOpeningElement> CreateSlabOpenings(IfcStore model, IfcBuildingStorey storey, ReinforcedCadSlab cadRCSlab)
+        {
+            List<IfcOpeningElement> lstIfcOpening = new List<IfcOpeningElement>();
+            foreach (Opening cadOpening in cadRCSlab.Slab.Openings)
+            {
+                IfcOpeningElement ifcOpening = CreateIfcOpening(model, cadOpening, DefaultValues.SlabThinkess);
+
+                lstIfcOpening.Add(ifcOpening);
+            }
+            return lstIfcOpening;
         }
 
         private void CreateStoreyColumns(IfcStore model, IfcBuildingStorey storey, Floor floor)
@@ -997,17 +1118,19 @@ namespace IfcFileCreator
             foreach (ReinforcedCadColumn rcCol in floor.LstRcColumn)
             {
                 IfcColumn column = CreateIfcColumn(model, rcCol, floor.Height);
+
                 using (var txn = model.BeginTransaction("Add RcColumn"))
                 {
+                    column.Tag = ElementType.Column;
                     storey.AddElement(column);
 
-                    IfcOpeningElement formworkVoid;
-                    IfcBuildingElementPart formWork = CreateFormWork(model, rcCol.CadColumn.ColPath, DefaultValues.FormWorkThickness, floor.Height, out formworkVoid);
-                    storey.AddElement(formworkVoid);
-                    storey.AddElement(formWork);
+                    //IfcOpeningElement formworkVoid;
+                    //IfcBuildingElementPart formWork = CreateFormWork(model, rcCol.CadColumn.ColPath, DefaultValues.FormWorkThickness, floor.Height, out formworkVoid);
+                    //storey.AddElement(formworkVoid);
+                    //storey.AddElement(formWork);
 
                     //create column reinforcement
-                    CreateColumnRft(rcCol, storey, model, floor.Height);
+                    //CreateColumnRft(rcCol, storey, model, floor.Height);
 
                     txn.Commit();
                 }
@@ -1023,16 +1146,17 @@ namespace IfcFileCreator
 
                 using (var txn = model.BeginTransaction("Add RetainingWall"))
                 {
+                    wall.Tag = ElementType.RetainingWall;
 
-                    IfcOpeningElement formWorkVoid;
-                    IfcBuildingElementPart formwork = CreateFormWork(model, rcWall.CadWall.LinPathWall, DefaultValues.FormWorkThickness, wallHeight, out formWorkVoid);
+                    //IfcOpeningElement formWorkVoid;
+                    //IfcBuildingElementPart formwork = CreateFormWork(model, rcWall.CadWall.LinPathWall, DefaultValues.FormWorkThickness, wallHeight, out formWorkVoid);
 
                     storey.AddElement(wall);
-                    storey.AddElement(formwork);
-                    storey.AddElement(formWorkVoid);
+                    //storey.AddElement(formwork);
+                    //storey.AddElement(formWorkVoid);
 
                     //create wall reinforcement
-                    CreateWallRft(rcWall, storey, model, wallHeight);
+                    //CreateWallRft(rcWall, storey, model, wallHeight);
 
                     txn.Commit();
                 }
@@ -1074,7 +1198,7 @@ namespace IfcFileCreator
             }
         }
 
-        private List<IfcOpeningElement> ModelSlabOpenings(ReinforcedCadSlab cadRCSlab, IfcBuildingElementPart formWork, IfcStore model, IfcBuildingStorey storey)
+        private List<IfcOpeningElement> ModelSlabOpenings(ReinforcedCadSlab cadRCSlab, IfcBuildingElementPart formWork, IfcStore model, IfcBuildingStorey storey, IfcSlab slab)
         {
             List<IfcOpeningElement> lstOpening = new List<IfcOpeningElement>();
             IfcOpeningElement opening = null;
@@ -1089,72 +1213,19 @@ namespace IfcFileCreator
 
                 //attach opening
                 slab.AttchOpening(model, opening);
-                formWork.AttchOpening(model, opening);
+                //formWork.AttchOpening(model, opening);
             }
 
             return lstOpening;
         }
 
-        private IfcBuilding CreateBuilding(IfcStore model, string name, Point3D location)
 
-        {
-            using (var txn = model.BeginTransaction("Create Building"))
-            {
-                var building = model.Instances.New<IfcBuilding>();
-                building.Name = name;
-
-                building.CompositionType = IfcElementCompositionEnum.ELEMENT;
-                var localPlacement = model.Instances.New<IfcLocalPlacement>();
-
-                var placement = model.Instances.New<IfcAxis2Placement3D>();
-                placement.Location = model.Instances.New<IfcCartesianPoint>(p => p.SetXYZ(location.X, location.Y, location.Z));
-
-                localPlacement.RelativePlacement = placement;
-                building.ObjectPlacement = localPlacement;
-                //get the project there should only be one and it should exist
-                var project = model.Instances.OfType<IfcProject>().FirstOrDefault();
-                project?.AddBuilding(building);
-                txn.Commit();
-                return building;
-            }
-        }
-
-        private IfcStore CreateandInitModel(string projectName)
-        {
-            //first we need to set up some credentials for ownership of data in the new model
-            var credentials = new XbimEditorCredentials
-            {
-                ApplicationDevelopersName = "xBimTeam",
-                ApplicationFullName = "Hello Wall Application",
-                ApplicationIdentifier = "HelloWall.exe",
-                ApplicationVersion = "1.0",
-                EditorsFamilyName = "Team",
-                EditorsGivenName = "xBIM",
-                EditorsOrganisationName = "xBimTeam"
-            };
-            //now we can create an IfcStore, it is in Ifc4 format and will be held in memory rather than in a database
-            //database is normally better in performance terms if the model is large >50MB of Ifc or if robust transactions are required
-
-            var model = IfcStore.Create(credentials, IfcSchemaVersion.Ifc4, XbimStoreType.InMemoryModel);
-
-            //Begin a transaction as all changes to a model are ACID
-            using (var txn = model.BeginTransaction("Initialise Model"))
-            {
-
-                //create a project
-                var project = model.Instances.New<IfcProject>();
-                //set the units to SI (mm and metres)
-                project.InitProject(CADConfig.Units);
-                project.Name = projectName;
-                //now commit the changes, else they will be rolled back at the end of the scope of the using statement
-                txn.Commit();
-            }
-            return model;
-
-        }
         private IfcWallStandardCase CreateIfcWall(IfcStore model, Wall cadWall, double height, IfcBuilding building)
         {
-
+            for (int i = 0; i < cadWall.LinPathWall.Vertices.Length; i++)
+            {
+                cadWall.LinPathWall.Vertices[i].Z -= DefaultValues.SlabThinkess;
+            }
 
             //begin a transaction
             using (var trans = model.BeginTransaction("Create Wall"))
@@ -1168,7 +1239,7 @@ namespace IfcFileCreator
 
                 //model as a swept area solid
                 IfcDirection extrusionDir = model.Instances.New<IfcDirection>();
-                extrusionDir.SetXYZ(0, 0, 1);
+                extrusionDir.SetXYZ(0, 0, -1);
 
 
                 IfcExtrudedAreaSolid body = IFCHelper.ProfileSweptSolidCreate(model, height, rectProf, extrusionDir);
@@ -1294,7 +1365,7 @@ namespace IfcFileCreator
 
                 //model as a swept area solid
                 IfcDirection extrusionDir = model.Instances.New<IfcDirection>();
-                extrusionDir.SetXYZ(0, 0, 1);
+                extrusionDir.SetXYZ(0, 0, -1);
 
                 IfcExtrudedAreaSolid body = IFCHelper.ProfileSweptSolidCreate(model, height, rectProf, extrusionDir);
 
@@ -1446,7 +1517,7 @@ namespace IfcFileCreator
 
 
         }
-        private IfcOpeningElement CreateIfcOpening(IfcStore model, LinearPath cadOpeninlinPath, double thickness, bool isSlab = false)
+        public static IfcOpeningElement CreateIfcOpening(IfcStore model, LinearPath cadOpeninlinPath, double thickness, bool isSlab = false, bool isFooting = false, bool isBeam = false)
         {
 
 
@@ -1461,7 +1532,7 @@ namespace IfcFileCreator
 
             //model as a swept area solid
             IfcDirection extrusionDir = model.Instances.New<IfcDirection>();
-            extrusionDir.SetXYZ(0, 0, isSlab ? -1 : 1);
+            extrusionDir.SetXYZ(0, 0, (isBeam || isFooting) ? 1 : -1);
 
             IfcExtrudedAreaSolid body = IFCHelper.ProfileSweptSolidCreate(model, thickness, profile, extrusionDir);
 
@@ -1599,7 +1670,7 @@ namespace IfcFileCreator
 
                 //model as a swept area solid
                 IfcDirection extrusionDir = model.Instances.New<IfcDirection>();
-                extrusionDir.SetXYZ(0, 0, 1);
+                extrusionDir.SetXYZ(0, 0, -1);
 
                 IfcExtrudedAreaSolid body = IFCHelper.ProfileSweptSolidCreate(model, height, rectProf, extrusionDir);
 
@@ -1622,10 +1693,10 @@ namespace IfcFileCreator
 
         }
 
-        private IfcReinforcingBar CreateIfcRebar(IfcStore model, Rebar rebar, double height)
+        public static IfcReinforcingBar CreateIfcRebar(IfcStore model, Rebar rebar, double height)
         {
             IfcReinforcingBar rebarToCreate = model.Instances.New<IfcReinforcingBar>();
-            rebarToCreate.Name = "Rebar:UC305x305x97:" + random.Next(100000);
+            rebarToCreate.Name = "Rebar:UC305x305x97:" + 10000;
 
             //represent column as a rectangular profile
             IfcCircleProfileDef cirProf = IFCHelper.CircleProfileCreate(model, rebar.Diameter / 2);
@@ -1633,12 +1704,12 @@ namespace IfcFileCreator
 
             if (rebar.Type.ToLower() == "Vertical".ToLower())
             {
-
-                height += (CADConfig.Units == linearUnitsType.Meters ? 1 : 1000);
+                double dowelHeight = (CADConfig.Units == linearUnitsType.Meters ? 1 : 1000);
+                height += dowelHeight;
 
                 //model as a swept area solid
                 IfcDirection extrusionDir = model.Instances.New<IfcDirection>();
-                extrusionDir.SetXYZ(0, 0, 1);
+                extrusionDir.SetXYZ(0, 0, -1);
 
                 IfcExtrudedAreaSolid body = IFCHelper.ProfileSweptSolidCreate(model, height, cirProf, extrusionDir);
 
@@ -1653,7 +1724,7 @@ namespace IfcFileCreator
 
                 //Create Local axes system and assign it to the column
                 IfcCartesianPoint location3D = model.Instances.New<IfcCartesianPoint>();
-                location3D.SetXYZ(rebar.LocationPt.X, rebar.LocationPt.Y, rebar.LocationPt.Z);
+                location3D.SetXYZ(rebar.LocationPt.X, rebar.LocationPt.Y, rebar.LocationPt.Z + dowelHeight);
 
                 IfcDirection localXDir = model.Instances.New<IfcDirection>();
                 localXDir.SetXYZ(1, 0, 0);
@@ -1706,22 +1777,17 @@ namespace IfcFileCreator
                 prDefShape.Representations.Add(shape);
                 rebarToCreate.Representation = prDefShape;
             }
-
-
-
             return rebarToCreate;
-            // }
-
         }
 
-        private IfcReinforcingBar CreateIfcStirrup(IfcStore model, Stirrup stirrup, double zPosition)
+        public static IfcReinforcingBar CreateIfcStirrup(IfcStore model, Stirrup stirrup, double zPosition)
         {
 
             for (int i = 0; i < stirrup.StirrupPath.Vertices.Length; i++)
-                stirrup.StirrupPath.Vertices[i].Z += zPosition;
+                stirrup.StirrupPath.Vertices[i].Z -= zPosition;
 
             IfcReinforcingBar stirrupToCreate = model.Instances.New<IfcReinforcingBar>();
-            stirrupToCreate.Name = "Rebar:UC305x305x97:" + random.Next(100000);
+            stirrupToCreate.Name = "Rebar:UC305x305x97:" +1000;
 
             IfcCircleProfileDef cirProf = IFCHelper.CircleProfileCreate(model, stirrup.Diameter / 2);
 
@@ -1764,11 +1830,18 @@ namespace IfcFileCreator
 
 
 
-        private IfcBuildingElementPart CreateFormWork(IfcStore model, LinearPath linPathElem, double formWorkThickness, double extrusionHeight
-            , out IfcOpeningElement open, bool isSlabOrBeam = false)
+        public static IfcBuildingElementPart CreateFormWork(IfcStore model, LinearPath linPathElem, double formWorkThickness, double extrusionHeight
+            , out IfcOpeningElement open, bool isSlab = false, bool isFooting = false, bool isBeam = false)
         {
             LinearPath outerLinPath = (LinearPath)linPathElem.Offset(formWorkThickness);
 
+            if (isBeam)
+            {//new
+                for (int i = 0; i < outerLinPath.Vertices.Length; i++)
+                {
+                    outerLinPath.Vertices[i].Z -= formWorkThickness;
+                }
+            }
 
             IfcBuildingElementPart formWork = model.Instances.New<IfcBuildingElementPart>();
             formWork.Name = " Foundation - Footing:UC305x305x97: ";
@@ -1780,9 +1853,9 @@ namespace IfcFileCreator
 
             //model as a swept area solid
             IfcDirection extrusionDir = model.Instances.New<IfcDirection>();
-            extrusionDir.SetXYZ(0, 0, isSlabOrBeam ? -1 : 1);
+            extrusionDir.SetXYZ(0, 0, (isBeam || isFooting) ? 1 : -1);
 
-            IfcExtrudedAreaSolid body = IFCHelper.ProfileSweptSolidCreate(model, isSlabOrBeam ? extrusionHeight + formWorkThickness : extrusionHeight, outerRectProfile, extrusionDir);
+            IfcExtrudedAreaSolid body = IFCHelper.ProfileSweptSolidCreate(model, (isSlab || isBeam) ? extrusionHeight + formWorkThickness : extrusionHeight, outerRectProfile, extrusionDir);
 
 
 
@@ -1797,9 +1870,7 @@ namespace IfcFileCreator
 
 
 
-
-
-            open = CreateIfcOpening(model, linPathElem, extrusionHeight, isSlabOrBeam);
+            open = CreateIfcOpening(model, linPathElem, extrusionHeight, isSlab, isFooting, isBeam);
             IfcRelVoidsElement relVoids = model.Instances.New<IfcRelVoidsElement>();
 
             relVoids.RelatedOpeningElement = open;
@@ -1895,7 +1966,7 @@ namespace IfcFileCreator
             }
         }
 
-        internal void CreateColumnRft(ReinforcedCadColumn rcCol, IfcBuildingStorey storey, IfcStore model, double colHeight)
+        public static void CreateColumnRft(ReinforcedCadColumn rcCol, IfcBuildingStorey storey, IfcStore model, double colHeight)
         {
             foreach (var rebar in rcCol.LstRebar)
             {

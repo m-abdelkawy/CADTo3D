@@ -1,4 +1,5 @@
-﻿using CADReader.Reinforced_Elements;
+﻿using CADReader.Helpers;
+using CADReader.Reinforced_Elements;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
 using System;
@@ -6,6 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xbim.Common;
+using Xbim.Common.Step21;
 using Xbim.Ifc;
 using Xbim.Ifc4.GeometricConstraintResource;
 using Xbim.Ifc4.GeometricModelResource;
@@ -35,6 +38,7 @@ namespace IfcFileCreator.Helpers
         internal static IfcCircleProfileDef CircleProfileCreate(IfcStore model, double radius)
         {
             IfcCircleProfileDef cirProf = model.Instances.New<IfcCircleProfileDef>();
+            
             cirProf.ProfileType = IfcProfileTypeEnum.AREA;
             cirProf.Radius = radius;
 
@@ -66,12 +70,19 @@ namespace IfcFileCreator.Helpers
             prof.Position.Location = insertionPoint;
         }
 
-        internal static IfcExtrudedAreaSolid ProfileSweptSolidCreate(IfcStore model, double extrusionDepth, IfcProfileDef prof, IfcDirection extrusionDirection)
+        internal static IfcExtrudedAreaSolid ProfileSweptSolidCreate(IfcStore model, double extrusionDepth, IfcProfileDef prof, IfcDirection extrusionDirection = null)
         {
             IfcExtrudedAreaSolid body = model.Instances.New<IfcExtrudedAreaSolid>();
             body.Depth = extrusionDepth;
             body.SweptArea = prof;
-            body.ExtrudedDirection = extrusionDirection;
+            if (extrusionDirection != null)
+            {
+                body.ExtrudedDirection = extrusionDirection;
+            }
+            else
+            {
+                body.ExtrudedDirection = model.Instances.New<IfcDirection>(d => d.SetXYZ(0, 0, 1));
+            }
 
             return body;
         }
@@ -128,6 +139,74 @@ namespace IfcFileCreator.Helpers
             plane.Position.RefDirection = model.Instances.New<IfcDirection>();
             plane.Position.RefDirection.SetXYZ(1, 0, 0);
             body.ReferenceSurface = plane;
+            //body.FixedReference.SetXYZ(1, 0, 0);
+            return body;
+        }
+
+
+
+        internal static IfcSurfaceCurveSweptAreaSolid ProfileSurfaceSweptSolidCreate(IfcStore model, IfcProfileDef prof, Entity profPath)
+        {
+            IfcSurfaceCurveSweptAreaSolid body = model.Instances.New<IfcSurfaceCurveSweptAreaSolid>();
+
+            if (profPath is LinearPath)
+            {
+                List<Point3D> lstPoints = (profPath as LinearPath).Vertices.ToList();
+                IfcPolyline pLine = model.Instances.New<IfcPolyline>();
+                for (int i = 0; i < lstPoints.Count; i++)
+                {
+                    IfcCartesianPoint point = model.Instances.New<IfcCartesianPoint>();
+                    point.SetXYZ(lstPoints[i].X, lstPoints[i].Y, lstPoints[i].Z);
+                    pLine.Points.Add(point);
+
+                }
+
+                body.Directrix = pLine;
+                body.SweptArea = prof;
+
+                var plane = model.Instances.New<IfcPlane>();
+                plane.Position = model.Instances.New<IfcAxis2Placement3D>();
+                plane.Position.Location = model.Instances.New<IfcCartesianPoint>();
+                plane.Position.Location.SetXYZ(lstPoints[0].X, lstPoints[0].Y, lstPoints[0].Z);
+
+                plane.Position.Axis = model.Instances.New<IfcDirection>();
+                plane.Position.Axis.SetXYZ(0, 0, 1);
+                plane.Position.RefDirection = model.Instances.New<IfcDirection>();
+                plane.Position.RefDirection.SetXYZ(1, 0, 0);
+                body.ReferenceSurface = plane;
+            }
+            else if (profPath is Circle)
+            {
+                Circle cadCircle = profPath as Circle;
+
+                IfcCircle c = model.Instances.New<IfcCircle>();
+                c.Radius = cadCircle.Radius * 2;
+                IfcAxis2Placement3D placement = model.Instances.New<IfcAxis2Placement3D>();
+                placement.Location = model.Instances.New<IfcCartesianPoint>();
+                placement.Location.SetXYZ(cadCircle.Center.X, cadCircle.Center.Y, cadCircle.Center.Z);
+                c.Position = placement;
+
+
+                body.Directrix = c;
+                body.SweptArea = prof;
+
+                IfcPlane plane = model.Instances.New<IfcPlane>();
+                plane.Position = model.Instances.New<IfcAxis2Placement3D>();
+                plane.Position.Location = model.Instances.New<IfcCartesianPoint>();
+                plane.Position.Location.SetXYZ(cadCircle.Center.X, cadCircle.Center.Y, cadCircle.Center.Z);
+
+
+                plane.Position.RefDirection = model.Instances.New<IfcDirection>();
+                plane.Position.RefDirection.SetXYZ(1, 0, 0);
+
+                plane.Position.Axis = model.Instances.New<IfcDirection>();
+                plane.Position.Axis.SetXYZ(0, 0, 1);
+
+                body.ReferenceSurface = plane; //plane containing directrix
+
+                //body.StartParam = 0;
+                //body.EndParam = 360;
+            }
             //body.FixedReference.SetXYZ(1, 0, 0);
             return body;
         }
@@ -229,7 +308,7 @@ namespace IfcFileCreator.Helpers
                 segment.Transition = IfcTransitionCode.CONTINUOUS;
                 compositeCurve.Segments.Add(segment);
             }
-            else
+            else if (profPath is CompositeCurve)
             {
                 CompositeCurve compCurvePath = profPath as CompositeCurve;
                 for (int i = 0; i < compCurvePath.CurveList.Count; i++)
@@ -271,6 +350,11 @@ namespace IfcFileCreator.Helpers
                     }
                 }
             }
+            else if (profPath is Circle)
+            {
+                IfcCircle ifcCirc = model.Instances.New<IfcCircle>();
+
+            }
 
 
 
@@ -286,8 +370,6 @@ namespace IfcFileCreator.Helpers
             IfcCartesianPoint location = model.Instances.New<IfcCartesianPoint>();
             location.SetXYZ(x, y, z);
             areaSolidBody.Position.Location = location;
-
-
         }
 
         internal static void BodyPlacementSet(this IfcExtrudedAreaSolid areaSolidBody, IfcStore model, IfcCartesianPoint insertionPt)
@@ -295,6 +377,7 @@ namespace IfcFileCreator.Helpers
             areaSolidBody.Position = model.Instances.New<IfcAxis2Placement3D>();
             IfcCartesianPoint location = model.Instances.New<IfcCartesianPoint>();
             location.SetXYZ(insertionPt.X, insertionPt.Y, insertionPt.Z);
+            
             areaSolidBody.Position.Location = location;
         }
 
@@ -374,7 +457,7 @@ namespace IfcFileCreator.Helpers
         #endregion
 
         #region to be named
-        internal static IfcBuildingStorey CreateStorey(IfcStore model,IfcBuilding building)
+        internal static IfcBuildingStorey CreateStorey(IfcStore model, IfcBuilding building)
         {
             IfcBuildingStorey storey;
             using (var trans = model.BeginTransaction("Add Storey"))
@@ -390,7 +473,142 @@ namespace IfcFileCreator.Helpers
             return storey;
         }
 
-        
+
         #endregion
+
+        public static List<Line> AxesLinesGet(List<IIfcProduct> Axes)
+        {
+            List<Line> lstLineAxes = new List<Line>();
+            for (int i = 0; i < Axes.Count; i++)
+            {
+                var axisItems = Axes[i].Representation.Representations.FirstOrDefault().Items.ToList();
+                var axisItem = axisItems.FirstOrDefault(item => (item as IIfcSurfaceCurveSweptAreaSolid).Directrix is IIfcPolyline);
+                var axisLine = (axisItem as IIfcSurfaceCurveSweptAreaSolid).Directrix as IIfcPolyline;
+
+                var startPoint = new Point3D(axisLine.Points[0].X, axisLine.Points[0].Y, axisLine.Points[0].Z);
+                var endPoint = new Point3D(axisLine.Points[axisLine.Points.Count - 1].X, axisLine.Points[axisLine.Points.Count - 1].Y, axisLine.Points[axisLine.Points.Count - 1].Z);
+                lstLineAxes.Add(new Line(startPoint, endPoint));
+            }
+            return lstLineAxes;
+        }
+
+        public static Dictionary<int, LinearPath> DicLinPathOfProductsGet(List<IIfcProduct> lstProduct)
+        {
+            Dictionary<int, LinearPath> dicLinPath = new Dictionary<int, LinearPath>();
+            for (int i = 0; i < lstProduct.Count; i++)
+            {
+                IIfcRepresentationItem repItem = lstProduct[i].Representation.Representations.First.Items.First;
+                IIfcProfileDef profile = (repItem as IIfcExtrudedAreaSolid).SweptArea;
+                IIfcCurve curve = (profile as IIfcArbitraryClosedProfileDef).OuterCurve;
+
+                IIfcPolyline pLine = curve as IfcPolyline;
+                IItemSet<IIfcCartesianPoint> ptSet = pLine.Points;
+
+                List<Point3D> lstPt = new List<Point3D>();
+
+                for (int j = 0; j < ptSet.Count; j++)
+                {
+                    lstPt.Add(new Point3D(ptSet[j].X, ptSet[j].Y, ptSet[j].Z));
+                }
+                dicLinPath.Add(lstProduct[i].EntityLabel, new LinearPath(lstPt));
+            }
+            return dicLinPath;
+        }
+
+        public static IfcBuilding CreateBuilding(IfcStore model, string name, Point3D location)
+        {
+            using (var txn = model.BeginTransaction("Create Building"))
+            {
+                var building = model.Instances.New<IfcBuilding>();
+                building.Name = name;
+
+                building.CompositionType = IfcElementCompositionEnum.ELEMENT;
+                var localPlacement = model.Instances.New<IfcLocalPlacement>();
+
+                var placement = model.Instances.New<IfcAxis2Placement3D>();
+                placement.Location = model.Instances.New<IfcCartesianPoint>(p => p.SetXYZ(location.X, location.Y, location.Z));
+
+                localPlacement.RelativePlacement = placement;
+                building.ObjectPlacement = localPlacement;
+                //get the project there should only be one and it should exist
+                var project = model.Instances.OfType<IfcProject>().FirstOrDefault();
+                project?.AddBuilding(building);
+                txn.Commit();
+                return building;
+            }
+        }
+
+        public static IfcStore CreateandInitModel(string projectName)
+        {
+            //first we need to set up some credentials for ownership of data in the new model
+            var credentials = new XbimEditorCredentials
+            {
+                ApplicationDevelopersName = "xBimTeam",
+                ApplicationFullName = "Hello Wall Application",
+                ApplicationIdentifier = "HelloWall.exe",
+                ApplicationVersion = "1.0",
+                EditorsFamilyName = "Team",
+                EditorsGivenName = "xBIM",
+                EditorsOrganisationName = "xBimTeam"
+            };
+            //now we can create an IfcStore, it is in Ifc4 format and will be held in memory rather than in a database
+            //database is normally better in performance terms if the model is large >50MB of Ifc or if robust transactions are required
+
+            var model = IfcStore.Create(credentials, IfcSchemaVersion.Ifc4, XbimStoreType.InMemoryModel);
+
+            //Begin a transaction as all changes to a model are ACID
+            using (var txn = model.BeginTransaction("Initialise Model"))
+            {
+
+                //create a project
+                var project = model.Instances.New<IfcProject>();
+                //set the units to SI (mm and metres)
+                project.InitProject(CADConfig.Units);
+                project.Name = projectName;
+                //now commit the changes, else they will be rolled back at the end of the scope of the using statement
+                txn.Commit();
+            }
+            return model;
+        }
+
+        public static IfcStore CreateandInitModel(string projectName, IfcUnitAssignment unitType)
+        {
+            IfcSIUnit unit = unitType.Units.FirstOrDefault(u => (u as IfcSIUnit).UnitType == IfcUnitEnum.LENGTHUNIT) as IfcSIUnit;
+            if (unit.Name == IfcSIUnitName.METRE)
+                CADConfig.Units = linearUnitsType.Meters;
+            else
+                CADConfig.Units = linearUnitsType.Millimeters;
+
+            //first we need to set up some credentials for ownership of data in the new model
+            var credentials = new XbimEditorCredentials
+            {
+                ApplicationDevelopersName = "xBimTeam",
+                ApplicationFullName = "Hello Wall Application",
+                ApplicationIdentifier = "HelloWall.exe",
+                ApplicationVersion = "1.0",
+                EditorsFamilyName = "Team",
+                EditorsGivenName = "xBIM",
+                EditorsOrganisationName = "xBimTeam"
+            };
+            //now we can create an IfcStore, it is in Ifc4 format and will be held in memory rather than in a database
+            //database is normally better in performance terms if the model is large >50MB of Ifc or if robust transactions are required
+
+            var model = IfcStore.Create(credentials, IfcSchemaVersion.Ifc4, XbimStoreType.InMemoryModel);
+
+            //Begin a transaction as all changes to a model are ACID
+            using (var txn = model.BeginTransaction("Initialise Model"))
+            {
+
+                //create a project
+                var project = model.Instances.New<IfcProject>();
+                //set the units to SI (mm and metres)
+                project.InitProject(CADConfig.Units);
+                project.Name = projectName;
+                //now commit the changes, else they will be rolled back at the end of the scope of the using statement
+                txn.Commit();
+            }
+            return model;
+        }
+
     }
 }

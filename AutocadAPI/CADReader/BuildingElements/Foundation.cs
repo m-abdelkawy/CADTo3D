@@ -265,11 +265,20 @@ namespace CADReader.BuildingElements
                         textAttr2 = lstGridCircleBlkRef[j].Attributes["GRID-CIRC"].Value.ToString();
                     }
                 }
+
+                insertionPt1.Z = Level;
+                insertionPt2.Z = Level;
                 Circle c1 = new Circle(insertionPt1, circleRadius);
                 Circle c2 = new Circle(insertionPt2, circleRadius);
 
                 lstCircleAddToAxis.Add(c1);
                 lstCircleAddToAxis.Add(c2);
+
+                for (int j = 0; j < lstLinPathAxes[i].Vertices.Length; j++)
+                {
+                    lstLinPathAxes[i].Vertices[j].Z = Level;
+                }
+
 
                 Axis axis = new Axis(new LinearPath(lstLinPathAxes[i].Vertices), lstCircleAddToAxis, textAttr1.Equals(textAttr2) ? textAttr1 : "ccc");
                 lstAxis.Add(axis);
