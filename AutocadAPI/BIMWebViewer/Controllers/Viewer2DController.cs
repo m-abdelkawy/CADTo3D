@@ -127,6 +127,7 @@ namespace BIMWebViewer.Controllers
 
                 List<Line> lstLines = IFCHelper.AxesLinesGet(Axes);
 
+
                 //Axes Boundaries
                 LinearPath linPathSubmittal = MathHelper.LinPathAxesIntersection(lstLines);
 
@@ -153,8 +154,8 @@ namespace BIMWebViewer.Controllers
                                     double height = (repItem as IIfcExtrudedAreaSolid).Depth;
 
                                     IfcOpeningElement open;
-                                    XbimCreateBuilding.CreateFormWork(subModelRFT,elementsWithinAxesBoundary.Values.ToList()[i], DefaultValues.FormWorkThickness,
-                                        height, out open, false, false, false);
+                                    XbimCreateBuilding.CreateFormWork(subModelRFT, elementsWithinAxesBoundary.Values.ToList()[i], DefaultValues.FormWorkThickness,
+                                        height, out open, "", false, false, false);
 
                                 }
                                 //switch (elemTypeFormwork)
@@ -226,7 +227,7 @@ namespace BIMWebViewer.Controllers
                                             IIfcRepresentationItem repItem = product.Representation.Representations.First.Items.First;
                                             double height = (repItem as IIfcExtrudedAreaSolid).Depth;
 
-                                            XbimCreateBuilding.CreateColumnRft(rftCol, storey, subModelRFT, height);
+                                            XbimCreateBuilding.CreateColumnRft(rftCol, storey, subModelRFT, height, "");
 
                                         }
                                         break;
@@ -257,7 +258,7 @@ namespace BIMWebViewer.Controllers
                         }
                     }
                 }
-                
+
             }
 
             return new EmptyResult();

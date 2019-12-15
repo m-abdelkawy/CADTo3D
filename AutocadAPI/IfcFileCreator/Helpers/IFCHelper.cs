@@ -1,4 +1,5 @@
-﻿using CADReader.Helpers;
+﻿using CADReader.BuildingElements;
+using CADReader.Helpers;
 using CADReader.Reinforced_Elements;
 using devDept.Eyeshot.Entities;
 using devDept.Geometry;
@@ -38,7 +39,7 @@ namespace IfcFileCreator.Helpers
         internal static IfcCircleProfileDef CircleProfileCreate(IfcStore model, double radius)
         {
             IfcCircleProfileDef cirProf = model.Instances.New<IfcCircleProfileDef>();
-            
+
             cirProf.ProfileType = IfcProfileTypeEnum.AREA;
             cirProf.Radius = radius;
 
@@ -377,7 +378,7 @@ namespace IfcFileCreator.Helpers
             areaSolidBody.Position = model.Instances.New<IfcAxis2Placement3D>();
             IfcCartesianPoint location = model.Instances.New<IfcCartesianPoint>();
             location.SetXYZ(insertionPt.X, insertionPt.Y, insertionPt.Z);
-            
+
             areaSolidBody.Position.Location = location;
         }
 
@@ -457,15 +458,19 @@ namespace IfcFileCreator.Helpers
         #endregion
 
         #region to be named
-        internal static IfcBuildingStorey CreateStorey(IfcStore model, IfcBuilding building)
+        internal static IfcBuildingStorey CreateStorey(IfcStore model, IfcBuilding building, string BlkName, int storeyNumber, FloorBase cadFloor)
         {
             IfcBuildingStorey storey;
             using (var trans = model.BeginTransaction("Add Storey"))
             {
+
                 storey = model.Instances.New<IfcBuildingStorey>();
+                storey.Name = BlkName + $"F{storeyNumber}";
                 IfcRelAggregates rel = model.Instances.New<IfcRelAggregates>();
                 rel.RelatingObject = building;
                 rel.RelatedObjects.Add(storey);
+
+                XbimCreateBuilding.AddStoreyProperties(model, storey, cadFloor.Height, cadFloor.Level);
 
                 trans.Commit();
             }
@@ -582,13 +587,13 @@ namespace IfcFileCreator.Helpers
             //first we need to set up some credentials for ownership of data in the new model
             var credentials = new XbimEditorCredentials
             {
-                ApplicationDevelopersName = "xBimTeam",
-                ApplicationFullName = "Hello Wall Application",
-                ApplicationIdentifier = "HelloWall.exe",
+                ApplicationDevelopersName = "Cad2Bim",
+                ApplicationFullName = "CadTo3D Application",
+                ApplicationIdentifier = "ThinkDev.exe",
                 ApplicationVersion = "1.0",
                 EditorsFamilyName = "Team",
-                EditorsGivenName = "xBIM",
-                EditorsOrganisationName = "xBimTeam"
+                EditorsGivenName = "ThinkDev",
+                EditorsOrganisationName = "ThinkDevTeam"
             };
             //now we can create an IfcStore, it is in Ifc4 format and will be held in memory rather than in a database
             //database is normally better in performance terms if the model is large >50MB of Ifc or if robust transactions are required

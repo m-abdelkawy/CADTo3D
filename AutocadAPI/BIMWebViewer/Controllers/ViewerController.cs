@@ -59,7 +59,7 @@ namespace BIMWebViewer.Controllers
 
         public ActionResult ViewerLoad(string FileName)
         {
-            return File(FileName, "application/octet-stream", FileName);
+            return File(FileName, "application/octet-stream");
         }
 
         public ActionResult BrowserLoad(string FileName)

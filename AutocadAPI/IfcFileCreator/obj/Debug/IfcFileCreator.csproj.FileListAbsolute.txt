@@ -569,6 +569,8 @@ D:\Coding Trials\GIT\Akam Project\CADTo3D\AutocadAPI\IfcFileCreator\bin\Debug\W3
 D:\Coding Trials\GIT\Akam Project\CADTo3D\AutocadAPI\IfcFileCreator\bin\Debug\WHIPTK.DLL
 D:\Coding Trials\GIT\Akam Project\CADTo3D\AutocadAPI\IfcFileCreator\bin\Debug\WINOPENGL_20.5_11.TXV
 D:\Coding Trials\GIT\Akam Project\CADTo3D\AutocadAPI\IfcFileCreator\bin\Debug\WIPEOUT_20.5_11.TX
-D:\Coding Trials\GIT\Akam Project\CADTo3D\AutocadAPI\IfcFileCreator\obj\Debug\IfcFileCreator.csprojResolveAssemblyReference.cache
+D:\Coding Trials\GIT\Akam Project\CADTo3D\AutocadAPI\IfcFileCreator\obj\Debug\IfcFileCreator.csprojAssemblyReference.cache
+D:\Coding Trials\GIT\Akam Project\CADTo3D\AutocadAPI\IfcFileCreator\obj\Debug\IfcFileCreator.csproj.CoreCompileInputs.cache
+D:\Coding Trials\GIT\Akam Project\CADTo3D\AutocadAPI\IfcFileCreator\obj\Debug\IfcFileCreator.csproj.CopyComplete
 D:\Coding Trials\GIT\Akam Project\CADTo3D\AutocadAPI\IfcFileCreator\obj\Debug\IfcFileCreator.dll
 D:\Coding Trials\GIT\Akam Project\CADTo3D\AutocadAPI\IfcFileCreator\obj\Debug\IfcFileCreator.pdb

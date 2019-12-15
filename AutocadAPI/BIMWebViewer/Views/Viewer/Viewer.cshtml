@@ -342,10 +342,10 @@
 
     $("body").append(loading);
 
+    var viewer = new xViewer("viewer-canvas");
 
-
-        var viewer = new xViewer("viewer-canvas");
     viewer.load('@Url.Action("ViewerLoad", "Viewer", new { FileName = ViewBag.FilePath })');
+
     viewer.start();
 
    // Camera position
@@ -355,7 +355,7 @@
      //   image = image.replace('data:image/png;base64,', '');
         viewPointsarr.push({ viewName: viewname, image: image.replace('data:image/png;base64,', ''), camPos: viewer.getCameraPosition() });
         var viewname = "View" + viewPointsarr.length;
-      
+
         var span = `<div id=${viewPointsarr.length - 1} onclick="SetCamPos(event)"  class="ACY-Viewpoint" style="cursor:pointer;"><img width=50px height=50px src="${image}"/><span> ${viewname} </span></div>`;
         $('#pViews').append(span);
     }
@@ -397,7 +397,7 @@
     //Viewer Events
         var hiddenIds = [];
 
-       
+
         viewer.on("pick", function (args) {
         SelectedClass = "";
             //viewer.resetStates();
@@ -485,7 +485,7 @@
                 type: 'POST',
             });
         });
-      
+
 
         var Recolour = function () {
             if (!viewer) return;
@@ -691,7 +691,7 @@
 
             //})
 
-           
+
         @*$('.ACY-Type').dblclick(function (e) {
             SelectedClass = 'ACY-Type';
             viewer.resetStates();
