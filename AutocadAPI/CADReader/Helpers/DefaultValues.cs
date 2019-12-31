@@ -25,5 +25,7 @@ namespace CADReader.Helpers
         public static double SmellesWithFootingThickness { get; set; } = CADConfig.Units == linearUnitsType.Meters ? 0.5 : 500;
         public static double SmellesWithColumnThickness { get; set; } = CADConfig.Units == linearUnitsType.Meters ? 0.7 : 700;
         public static double ConduitDiameter { get; set; } = CADConfig.Units == linearUnitsType.Meters ? 0.03 : 30;
+
+        public static double ColDowelLength { get; set; } = CADConfig.Units == linearUnitsType.Meters ? 1.5 : 1500;
     }
 }

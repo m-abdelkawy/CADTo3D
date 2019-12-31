@@ -19,7 +19,7 @@ namespace CADReader.Reinforced_Elements
         public List<Rebar> LongRft { get; set; } = new List<Rebar>();
         public List<Rebar> TransverseRft { get; set; } = new List<Rebar>();
         #endregion
-         
+
         #region Constructor
         public ReinforcedCadFooting(RCFooting _RcFooting)
         {

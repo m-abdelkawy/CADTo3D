@@ -19,8 +19,8 @@
     <link rel="stylesheet" href="~/fontawesome/css/all.min.css">
     <!-- style CSS -->
     <link rel="stylesheet" href="~/css/style.css">
-<link href="~/Libs/jquery-ui-styles/jquery-ui.min.css" rel="stylesheet" />
-<link href="~/Resources/doctemplate/static/styles/xbrowser-styles.css" rel="stylesheet" />
+    <link href="~/Libs/jquery-ui-styles/jquery-ui.min.css" rel="stylesheet" />
+    <link href="~/Resources/doctemplate/static/styles/xbrowser-styles.css" rel="stylesheet" />
 </head>
 <script src="~/Scripts/jquery-3.3.1.min.js"></script>
 <script src="~/js/bootstrap.min.js"></script>
@@ -206,11 +206,11 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <textarea class="modal-body" id="commenttxt" >
+            <textarea class="modal-body" id="commenttxt">
                 
             </textarea>
             <div class="modal-footer">
-                <button type="button"  class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="button" id="addCommentbtn" class="btn btn-primary">Add Comment</button>
             </div>
         </div>
@@ -246,7 +246,7 @@
              id="ui-id-3" aria-labelledby="ui-id-2" role="tabpanel" aria-hidden="true"
              style="display: none; height: 539px; overflow: auto;background:#3f3f3f;color:white;">
             <div id="pComments">
-             </div>
+            </div>
         </div>
     </div>
 </div>
@@ -254,40 +254,40 @@
 <div id="viewer-container" style="top:150px; background:#f9f9f9; left:0px;right:310px;">
     <canvas id="viewer-canvas"></canvas>
     <div style="position: absolute; left: 5px; top: 5px; padding: 5px;" id="toolbar" class="ui-widget-header ui-corner-all">
-        <button id="btnClip">Clip</button>
-        <button id="btnUnclip">Unclip</button>
+        @*<button id="btnClip">Clip</button>
+            <button id="btnUnclip">Unclip</button>*@
         <button id="btnSubmission">Submissions</button>
         <button id="btnHideAll">Hide All</button>
-        <button id="btnElementDetails">Element Details</button>
-        <button id="Commentbtn" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-            Comment
-        </button>
+        @*<button id="btnElementDetails">Element Details</button>
+            <button id="Commentbtn" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                Comment
+            </button>*@
     </div>
 
-    <div style="position: absolute; right: 5px; top: 5px;" id="toolbar" class="ui-widget-header ui-corner-all">
+    @*<div style="position: absolute; right: 5px; top: 5px;" id="toolbar" class="ui-widget-header ui-corner-all">
 
-        <button class="btn btn-dark" style="margin:5px; width:70px" onclick="viewer.show('front')">Front</button><br />
-        <button class="btn btn-dark" style="margin:5px; width:70px" onclick="viewer.show('back')">Back</button><br />
-        <button class="btn btn-dark" style="margin:5px; width:70px" onclick="viewer.show('top')">Top</button><br />
-        <button class="btn btn-dark" style="margin:5px; width:70px" onclick="viewer.show('bottom')">Bottom</button><br />
-        <button class="btn btn-dark" style="margin:5px; width:70px" onclick="viewer.show('left')">Left</button><br />
-        <button class="btn btn-dark" style="margin:5px; width:70px" onclick="viewer.show('right')">Right</button><br />
+            <button class="btn btn-dark" style="margin:5px; width:70px" onclick="viewer.show('front')">Front</button><br />
+            <button class="btn btn-dark" style="margin:5px; width:70px" onclick="viewer.show('back')">Back</button><br />
+            <button class="btn btn-dark" style="margin:5px; width:70px" onclick="viewer.show('top')">Top</button><br />
+            <button class="btn btn-dark" style="margin:5px; width:70px" onclick="viewer.show('bottom')">Bottom</button><br />
+            <button class="btn btn-dark" style="margin:5px; width:70px" onclick="viewer.show('left')">Left</button><br />
+            <button class="btn btn-dark" style="margin:5px; width:70px" onclick="viewer.show('right')">Right</button><br />
 
-    </div>
+        </div>*@
     <div style="position: absolute; left: 5px; bottom: 35px; padding: 5px;" id="toolbar" class="ui-widget-header ui-corner-all">
 
         <button class="btn btn-primary" style="width:70px" onclick="HideElement()">Hide</button>
-        <button onclick="IsolateElement()" style="width:70px" class="btn btn-dark">Isolate</button>
+        @*<button onclick="IsolateElement()" style="width:70px" class="btn btn-dark">Isolate</button>*@
         <button onclick="Reset()" class="btn btn-dark">Reset</button>
-        <button onclick="ColorElement()" class="btn btn-dark">Override Color</button>
+        @*<button onclick="ColorElement()" class="btn btn-dark">Override Color</button>
         <button onclick="ResetColor()" class="btn btn-dark">Reset Colors</button>
         <button onclick="Recolour()" class="btn btn-dark">Recolour by type</button>
-        <button class="btn btn-dark" style="margin:0 5px 0 0;" onclick="GetCamPos()">Save View</button>
+        <button class="btn btn-dark" style="margin:0 5px 0 0;" onclick="GetCamPos()">Save View</button>*@
     </div>
-    <div style="position: absolute; right: 5px; bottom: 30px; padding: 5px;" id="toolbar" class="ui-widget-header ui-corner-all">
+    @*<div style="position: absolute; right: 5px; bottom: 30px; padding: 5px;" id="toolbar" class="ui-widget-header ui-corner-all">
         <span style="color:white">Pick Color</span>
         <input id="color-picker" type="color" value="Red" class="ui-widget-header ui-corner-all">
-    </div>
+    </div>*@
 </div>
 
 
@@ -431,7 +431,7 @@
     $('#btnSubmission').click(function () {
         var loading = '<div id="load_screen"><div class="loader"></div></div>';
 
-        $("body").append(loading);
+        //$("body").append(loading);
             $.ajax({
                 url: '@Url.Action("GetElemetsToRender", "Viewer")',
                 type: 'POST',
@@ -456,11 +456,19 @@
                             }
                         }
 
-                        if (Data.ProductIdList[Data.ProductIdList.length - 1].isConcrete) {
-                            for (var i = 0; i < productFormWorkIds.length; i++) {
-                                viewer.setState(xState.HIDDEN, [productFormWorkIds[i]]);
+                        for (var i = 0; i < Data.ProductIdList.length; i++) {
+                            if (Data.ProductIdList[i].isConcrete) {
+                                for (var j = 0; j < productFormWorkIds.length; j++) {
+                                    viewer.setState(xState.HIDDEN, [productFormWorkIds[j]]);
+                                }
+                                break;
                             }
                         }
+                        //if (Data.ProductIdList[Data.ProductIdList.length - 1].isConcrete) {
+                        //    for (var i = 0; i < productFormWorkIds.length; i++) {
+                        //        viewer.setState(xState.HIDDEN, [productFormWorkIds[i]]);
+                        //    }
+                        //}
 
 
                     }
@@ -469,8 +477,8 @@
                     //productIds = productIds.concat(Data.ProductIdList);
                     viewer.setState(xState.UNDEFINED, Data.ProductIdList.map(e => e.Id));
 
-                    var load_screen = document.getElementById("load_screen");
-                    document.body.removeChild(load_screen);
+                    //var load_screen = document.getElementById("load_screen");
+                    //document.body.removeChild(load_screen);
                 },
                 error: function (err) {
                     console.log(err);

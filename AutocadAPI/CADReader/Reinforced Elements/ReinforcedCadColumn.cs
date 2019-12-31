@@ -63,7 +63,7 @@ namespace CADReader.Reinforced_Elements
         }
 
         public void StirrupPopulate()
-        {
+        { 
             LinearPath stirrupLp = (LinearPath)CadColumn.ColPath.Offset(-CadColumn.Cover);
 
             double dowelLength = (CADConfig.Units == linearUnitsType.Meters ? 1 : 1000);
