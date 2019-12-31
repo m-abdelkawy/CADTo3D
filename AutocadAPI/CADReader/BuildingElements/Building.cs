@@ -53,7 +53,13 @@ namespace CADReader.BuildingElements
             CadConfig.CadReader = new ReadAutodesk(filePath);
             CADConfig.Units = CadConfig.CadReader.Units;
 
-            Floor floor = new Floor(CadConfig.CadReader, level, height);
+            FloorBase floor;
+
+            if (filePath.ToLower().Contains("basement"))
+                floor = new BasementFloor(CadConfig.CadReader, level, height);
+            else
+                floor = new Floor(CadConfig.CadReader, level, height);
+
             Floors.Add(floor);
         }
 

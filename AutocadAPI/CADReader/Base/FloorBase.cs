@@ -184,7 +184,12 @@ namespace CADReader.BuildingElements
             }
 
             return lstRcWall;
-        } 
+        }
+
+        public List<Wall> GetMasonaryWall(ReadAutodesk cadReader)
+        {
+            return GetWalls(cadReader);
+        }
         #endregion
     }
 }

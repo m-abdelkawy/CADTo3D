@@ -64,6 +64,7 @@
   <ItemGroup>
     <Compile Include="Base\FootingBase.cs" />
     <Compile Include="Base\ReinforcedElements.cs" />
+    <Compile Include="BuildingElements\BasementFloor.cs" />
     <Compile Include="BuildingElements\PCFooting.cs" />
     <Compile Include="BuildingElements\RCFooting.cs" />
     <Compile Include="BuildingElements\ShearWall.cs" />

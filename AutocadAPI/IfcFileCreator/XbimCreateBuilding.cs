@@ -84,9 +84,12 @@ namespace IfcFileCreator
                         //    lvlDifference = lstSortedFloors[i].Level;
 
 
-                        Floor floor = lstSortedFloors[i] as Floor;
-                        if (floor != null)
+                        //Floor floor = lstSortedFloors[i] as Floor;
+                        
+                        if (lstSortedFloors[i] is BasementFloor)
                         {
+                            BasementFloor floor = lstSortedFloors[i] as BasementFloor;
+
                             List<IfcProduct> lstCols = new List<IfcProduct>();
                             List<IfcProduct> lstColFormWork = new List<IfcProduct>();
 
@@ -371,8 +374,274 @@ namespace IfcFileCreator
                             BuildingSubmissions.SubmittedElems.Add(lstSlab);
 
                         }
+                        else if (lstSortedFloors[i] is Floor)
+                        {
+                            Floor floor = lstSortedFloors[i] as Floor;
+
+                            List<IfcProduct> lstCols = new List<IfcProduct>();
+                            List<IfcProduct> lstColFormWork = new List<IfcProduct>();
+
+                            List<IfcProduct> lstShearWall = new List<IfcProduct>();
+                            List<IfcProduct> lstShearWallFormWork = new List<IfcProduct>();
+                            List<IfcProduct> lstSlabFormWork = new List<IfcProduct>();
+                            List<IfcProduct> lstSlab = new List<IfcProduct>();
+                            List<IfcProduct> lstWall = new List<IfcProduct>();
+                            List<IfcProduct> lstWallFormWork = new List<IfcProduct>();
+                            List<IfcProduct> lstStair = new List<IfcProduct>();
+                            List<IfcProduct> lstRebar = new List<IfcProduct>();
+                            List<IfcProduct> lstSlabRebar = new List<IfcProduct>();
+                            List<IfcProduct> lstWallRft = new List<IfcProduct>();
+
+
+                            double wallHeight = floor.Height - DefaultValues.SlabThinkess;
+                            if (i == 1)//basement
+                                wallHeight = floor.Height - DefaultValues.SlabThinkess - DefaultValues.RCFootingThinkess - DefaultValues.PCFootingThinkess;
+
+                            foreach (Wall masonaryWall in floor.LstMasonaryWall)
+                            {
+                                IfcWall wall = CreateIfcMasonaryWall(model, masonaryWall, wallHeight, building);
+
+                                if (wall != null) AddPropertiesToWall(model, wall);
+                                using (var txn = model.BeginTransaction("Add RetainingWall"))
+                                {
+                                    storey.AddElement(wall);
+                                   
+
+                                    //add wall to Submission
+                                    lstWall.Add(wall);
+
+                                    txn.Commit();
+                                }
+                            }
+
+                            foreach (ReinforcedCadColumn rcCol in floor.LstRcColumn)
+                            {
+                                IfcColumn column = CreateIfcColumn(model, rcCol, floor.Height);
+                                using (var txn = model.BeginTransaction("Add RcColumn"))
+                                {
+                                    storey.AddElement(column);
+
+                                    IfcOpeningElement opening;
+                                    IfcBuildingElementPart formWork = CreateFormWork(model, rcCol.CadColumn.ColPath, DefaultValues.FormWorkThickness, floor.Height
+                                        , out opening, "", false);
+                                    storey.AddElement(opening);
+                                    storey.AddElement(formWork);
+
+                                    //add columns to Submission
+                                    lstCols.Add(column);
+
+                                    lstColFormWork.Add(opening);
+                                    lstColFormWork.Add(formWork);
+
+
+                                    //rebarStopAndOperate
+                                    //if (i == lstSortedFloors.Count - 1)
+                                    //{
+                                    foreach (var rebar in rcCol.LstRebar)
+                                    {
+                                        IfcReinforcingBar bar = CreateIfcRebar(model, rebar, floor.Height);
+                                        storey.AddElement(bar);
+                                        lstRebar.Add(bar);
+                                    }
+                                    int nstirrups = Convert.ToInt32((floor.Height + (CADConfig.Units == linearUnitsType.Meters ? 1 : 1000)) / DefaultValues.StirrupsSpacing);
+                                    for (int j = 0; j < nstirrups - 1; j++)
+                                    {
+                                        IfcReinforcingBar stirrup = CreateIfcStirrup(model, rcCol.Stirrup, DefaultValues.StirrupsSpacing);
+                                        storey.AddElement(stirrup);
+                                        lstRebar.Add(stirrup);
+
+                                    }
+                                    //}
+                                    txn.Commit();
+                                }
+                            }
+
+                            foreach (ReinforcedCadSlab cadRCSlab in floor.LstRcSlab)
+                            {
+                                slab = CreateIfcSlab(model, cadRCSlab.Slab);
+                                using (var trans = model.BeginTransaction("Add Slab"))
+                                {
+                                    storey.AddElement(slab);
+
+                                    IfcOpeningElement openingFormWork;
+                                    IfcBuildingElementPart formWork = CreateFormWork(model, cadRCSlab.Slab.LinPathSlab, DefaultValues.FormWorkThickness,
+                                        cadRCSlab.Slab.Thickness, out openingFormWork, "", true);
+                                    storey.AddElement(openingFormWork);
+                                    storey.AddElement(formWork);
+
+                                    //add slab to Submission
+                                    lstSlab.Add(slab);
+
+                                    lstSlabFormWork.Add(openingFormWork);
+                                    lstSlabFormWork.Add(formWork);
+                                    List<IfcOpeningElement> lstOpening = new List<IfcOpeningElement>();
+                                    IfcOpeningElement opening = null;
+                                    for (int n = 0; n < cadRCSlab.Slab.Openings.Count; n++)
+                                    {
+                                        var cadOpening = cadRCSlab.Slab.Openings[n];
+                                        opening = CreateIfcOpening(model, cadOpening, DefaultValues.SlabThinkess + DefaultValues.FormWorkThickness);
+
+                                        lstOpening.Add(opening);
+
+                                        storey.AddElement(opening);
+
+                                        lstSlab.Add(opening);
+
+                                        //attach opening
+                                        slab.AttchOpening(model, opening);
+                                        formWork.AttchOpening(model, opening);
+
+                                    }
+
+
+                                    for (int k = 0; k < cadRCSlab.OpeningsRFT.Count; k++)
+                                    {
+                                        IfcReinforcingBar bar = CreateIfcRebar(model, cadRCSlab.OpeningsRFT[k], 0);
+                                        for (int j = 0; j < lstOpening.Count; j++)
+                                        {
+                                            bar.AttchOpening(model, lstOpening[j]);
+
+                                            lstSlabRebar.Add(bar);
+                                        }
+                                        storey.AddElement(bar);
+                                    }
+
+                                    for (int j = 0; j < cadRCSlab.RFT.Count; j++)
+                                    {
+                                        IfcReinforcingBar bar = CreateIfcRebar(model, cadRCSlab.RFT[j], 0);
+                                        storey.AddElement(bar);
+                                        lstSlabRebar.Add(bar);
+
+                                    }
+                                    trans.Commit();
+                                }
+                            }
+
+                            //Create stairs
+                            foreach (Stair cadStair in floor.LstStair)
+                            {
+                                IfcStairFlight flight;
+                                IfcStair stair = CreateIfcStair(model, cadStair, out flight);
+
+                                using (var txn = model.BeginTransaction("Add Stair"))
+                                {
+                                    storey.AddElement(stair);
+
+                                    //add stair to Submission
+                                    lstStair.Add(flight);
+
+                                    txn.Commit();
+                                }
+                            }
+                            foreach (LinearPath cadLanding in floor.LstLandingLinPath)
+                            {
+
+                                IfcSlab landing = CreateIfcLanding(model, cadLanding, DefaultValues.SlabThinkess);
+
+                                using (var txn = model.BeginTransaction("Add Landing"))
+                                {
+                                    storey.AddElement(landing);
+
+                                    lstStair.Add(landing);
+
+                                    txn.Commit();
+                                }
+                            }
+                            foreach (ReinforcedCadShearWall cadShearWall in floor.LstRcShearWall)
+                            {
+
+                                IfcColumn shearWall = CreateIfcShearWall(model, cadShearWall.ShearWall, floor.Height);
+
+                                using (var txn = model.BeginTransaction("Add Shear Wall"))
+                                {
+                                    storey.AddElement(shearWall);
+
+                                    IfcOpeningElement opening;
+                                    IfcBuildingElementPart formWork = CreateFormWork(model, cadShearWall.ShearWall.ProfilePath, DefaultValues.FormWorkThickness,
+                                        floor.Height, out opening, "", false);
+                                    storey.AddElement(opening);
+                                    storey.AddElement(formWork);
+
+                                    //add shear wall to Submission
+                                    lstShearWall.Add(shearWall);
+
+                                    lstShearWallFormWork.Add(opening);
+                                    lstShearWallFormWork.Add(formWork);
+
+                                    foreach (var rebar in cadShearWall.VlRebar)
+                                    {
+                                        IfcReinforcingBar bar = CreateIfcRebar(model, rebar, floor.Height);
+                                        storey.AddElement(bar);
+                                        lstRebar.Add(bar);
+                                    }
+                                    int nstirrups = Convert.ToInt32((floor.Height + (CADConfig.Units == linearUnitsType.Meters ? 1 : 1000)) / (DefaultValues.StirrupsSpacing));
+                                    for (int j = 0; j < nstirrups - 1; j++)
+                                    {
+                                        IfcReinforcingBar stirrup = CreateIfcStirrup(model, cadShearWall.Stirrup, DefaultValues.StirrupsSpacing);
+                                        storey.AddElement(stirrup);
+                                        lstRebar.Add(stirrup);
+                                    }
+
+
+                                    txn.Commit();
+                                }
+                            }
+
+                            foreach (SlopedSlab cadRamp in floor.LstRamp)
+                            {
+
+                                IfcSlab ramp = CreateIfcSlopedSlab(model, cadRamp);
+
+
+
+                                using (var txn = model.BeginTransaction("Add Ramp"))
+                                {
+                                    storey.AddElement(ramp);
+
+                                    IfcOpeningElement opening;
+                                    IfcBuildingElementPart formWork = CreateFormWork(model, cadRamp.LinPathSlopedSlab, DefaultValues.FormWorkThickness,
+                                        cadRamp.Thickness, out opening, "", true);
+                                    storey.AddElement(opening);
+                                    storey.AddElement(formWork);
+
+                                    //add ramp to Submission
+                                    lstSlab.Add(ramp);
+
+                                    lstSlabFormWork.Add(opening);
+                                    lstSlabFormWork.Add(formWork);
+
+                                    txn.Commit();
+                                }
+                            }
+
+                            foreach (ElectricalConduit cadConduit in floor.LstElectConduit)
+                            {
+
+                                using (var txn = model.BeginTransaction("Add conduit"))
+                                {
+                                    IfcCableCarrierSegment conduit = CreateIfcConduit(model, cadConduit);
+                                    storey.AddElement(conduit);
+                                    txn.Commit();
+                                }
+                            }
+
+                            BuildingSubmissions.SubmittedElems.Add(lstRebar);
+                            BuildingSubmissions.SubmittedElems.Add(lstColFormWork);
+                            BuildingSubmissions.SubmittedElems.Add(lstCols);
+                            BuildingSubmissions.SubmittedElems.Add(lstShearWallFormWork);
+                            BuildingSubmissions.SubmittedElems.Add(lstShearWall);
+                            BuildingSubmissions.SubmittedElems.Add(lstWallRft);
+                            BuildingSubmissions.SubmittedElems.Add(lstWallFormWork);
+                            BuildingSubmissions.SubmittedElems.Add(lstWall);
+
+                            BuildingSubmissions.SubmittedElems.Add(lstStair);
+                            BuildingSubmissions.SubmittedElems.Add(lstSlabFormWork);
+                            BuildingSubmissions.SubmittedElems.Add(lstSlabRebar);
+                            BuildingSubmissions.SubmittedElems.Add(lstSlab);
+                        }
                         else
                         {
+                            Foundation foundation = lstSortedFloors[i] as Foundation;
 
                             List<IfcProduct> lstPCFormWork = new List<IfcProduct>();
                             List<IfcProduct> lstPCFooting = new List<IfcProduct>();
@@ -395,7 +664,6 @@ namespace IfcFileCreator
                             
 
 
-                            Foundation foundation = lstSortedFloors[i] as Foundation;
                             foreach (PCFooting cadFooting in foundation.LstPCFooting)
                             {
                                 IfcFooting footing = CreateIfcFooting(model, cadFooting);
@@ -676,6 +944,7 @@ namespace IfcFileCreator
                             //BuildingSubmissions.SubmittedElems.Add(lstWall);
 
                         }
+                        
                     }
                 }
 
@@ -703,31 +972,32 @@ namespace IfcFileCreator
                         IfcBuilding building = IFCHelper.CreateBuilding(model, $"BuildingB-{i}", cadBuilding.Location);
 
                         IfcBuildingStorey storey = IFCHelper.CreateStorey(model, building, BlkName, i + 1, lstFloorSorted[i]);
-                        Floor floor = lstFloorSorted[i] as Floor;
 
 
-                        if (floor != null)
+                        if (lstFloorSorted[i] is BasementFloor != null)
                         {
-                            CreateStoreyRetainingWalls(model, building, storey, floor);
+                            //BasementFloor floor = lstFloorSorted[i] as BasementFloor;
 
-                            CreateStoreyColumns(model, storey, floor);
+                            //CreateStoreyRetainingWalls(model, building, storey, floor);
 
-                            CreateStoreyRoofSlabs(model, storey, floor);
+                            //CreateStoreyColumns(model, storey, floor);
 
-                            CreateStoreyShearWalls(model, storey, floor);
+                            //CreateStoreyRoofSlabs(model, storey, floor);
 
-                            CreateRamps(model, storey, floor);
+                            //CreateStoreyShearWalls(model, storey, floor);
 
-                            CreateStoreyElectricalConduit(model, storey, floor);
+                            //CreateRamps(model, storey, floor);
 
-                            //create stairs
-                            CreateStoreyStairs(model, storey, floor);
+                            //CreateStoreyElectricalConduit(model, storey, floor);
 
-                            using (var txn = model.BeginTransaction("Add Axes"))
-                            {
-                                CreateAxesFloor(model, storey, floor);
-                                txn.Commit();
-                            }
+                            ////create stairs
+                            //CreateStoreyStairs(model, storey, floor);
+
+                            //using (var txn = model.BeginTransaction("Add Axes"))
+                            //{
+                            //    CreateAxesFloor(model, storey, floor);
+                            //    txn.Commit();
+                            //}
                         }
 
                         else //floor is foundation floor
@@ -1215,7 +1485,7 @@ namespace IfcFileCreator
             }
         }
 
-        private void CreateStoreyRetainingWalls(IfcStore model, IfcBuilding building, IfcBuildingStorey storey, Floor floor)
+        private void CreateStoreyRetainingWalls(IfcStore model, IfcBuilding building, IfcBuildingStorey storey, BasementFloor floor)
         {
             int i = 0;
             foreach (ReinforcedCadWall rcWall in floor.LstRcCadRetainingWall)
@@ -1304,6 +1574,54 @@ namespace IfcFileCreator
             using (var trans = model.BeginTransaction("Create Wall"))
             {
                 IfcWallStandardCase wallToCreate = model.Instances.New<IfcWallStandardCase>();
+                wallToCreate.Name = " Wall - Wall:UC305x305x97:" + random.Next(1000, 10000);
+
+                //represent wall as a rectangular profile
+                IfcArbitraryClosedProfileDef rectProf = IFCHelper.ArbitraryClosedProfileCreate(model, cadWall.LinPathWall.Vertices.ToList());
+
+
+                //model as a swept area solid
+                IfcDirection extrusionDir = model.Instances.New<IfcDirection>();
+                extrusionDir.SetXYZ(0, 0, -1);
+
+
+                IfcExtrudedAreaSolid body = IFCHelper.ProfileSweptSolidCreate(model, height, rectProf, extrusionDir);
+
+
+                //Placement To building
+                var localPlacement = model.Instances.New<IfcLocalPlacement>();
+
+                localPlacement.PlacementRelTo = building.ObjectPlacement;
+                wallToCreate.ObjectPlacement = localPlacement;
+
+                //Create a Definition shape to hold the geometry of the wall 3D body
+                IfcShapeRepresentation shape = IFCHelper.ShapeRepresentationCreate(model, "SweptSolid", "Body");
+                shape.Items.Add(body);
+
+                //Create a Product Definition and add the model geometry to the wall
+                IfcProductDefinitionShape prDefShape = model.Instances.New<IfcProductDefinitionShape>();
+                prDefShape.Representations.Add(shape);
+                wallToCreate.Representation = prDefShape;
+
+
+                trans.Commit();
+                return wallToCreate;
+            }
+
+        }
+
+
+        private IfcWall CreateIfcMasonaryWall(IfcStore model, Wall cadWall, double height, IfcBuilding building)
+        {
+            for (int i = 0; i < cadWall.LinPathWall.Vertices.Length; i++)
+            {
+                cadWall.LinPathWall.Vertices[i].Z -= DefaultValues.SlabThinkess;
+            }
+
+            //begin a transaction
+            using (var trans = model.BeginTransaction("Create Wall"))
+            {
+                IfcWall wallToCreate = model.Instances.New<IfcWall>();
                 wallToCreate.Name = " Wall - Wall:UC305x305x97:" + random.Next(1000, 10000);
 
                 //represent wall as a rectangular profile
