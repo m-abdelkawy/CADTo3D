@@ -24,7 +24,7 @@ namespace CADReader.BuildingElements
 
         public List<SlopedSlab> LstRamp { get; set; }
 
-        public List<ReinforcedCadWall> LstRcCadRetainingWall { get; set; }
+        public List<Wall> LstMasonaryWall { get; set; }
         public List<ElectricalConduit> LstElectConduit { get; set; }
         public List<ReinforcedCadShearWall> LstRcShearWall { get; private set; }
         public List<Axis> LstAxis { get; set; }
@@ -42,7 +42,7 @@ namespace CADReader.BuildingElements
             LstRcColumn = base.GetRCColumns(cadReader);
 
             //RC Retaining Walls
-            this.LstRcCadRetainingWall = base.GetRCWalls(cadReader);
+            this.LstMasonaryWall = base.GetMasonaryWall(cadReader);
 
             //Stairs
             GetStairs(cadReader);
@@ -70,7 +70,7 @@ namespace CADReader.BuildingElements
             LstRcColumn = base.GetRCColumns(cadReader);
 
             //RC Retaining Walls
-            this.LstRcCadRetainingWall = base.GetRCWalls(cadReader);
+            this.LstMasonaryWall = base.GetMasonaryWall(cadReader);
 
             //Stairs
             GetStairs(cadReader);
