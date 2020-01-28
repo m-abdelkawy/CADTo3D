@@ -1,4 +1,5 @@
-﻿using CADReader.ElectricalElements;
+﻿using CADReader.Base;
+using CADReader.ElectricalElements;
 using CADReader.ElementComponents;
 using CADReader.Helpers;
 using CADReader.Reinforced_Elements;
@@ -14,8 +15,27 @@ using System.Threading.Tasks;
 
 namespace CADReader.BuildingElements
 {
-    public class BasementFloor : FloorBase
+    public class BasementFloor : SuperStructure
     {
+        public List<ReinforcedCadWall> LstRcCadRetainingWall { get; set; }
+
+        
+        public BasementFloor(ReadAutodesk cadReader, double level) : base(cadReader, level)
+        {
+            //RC Retaining Walls
+            this.LstRcCadRetainingWall = base.GetRCWalls(cadReader);
+        }
+
+        public BasementFloor(ReadAutodesk cadReader, double level, double height) : base(cadReader, level, height)
+        {
+            //RC Retaining Walls
+            this.LstRcCadRetainingWall = base.GetRCWalls(cadReader);
+        }
+    }
+
+    public class ObsoleteBasementFloor : FloorBase
+    {
+        /*
         #region Properties
         public List<ReinforcedCadColumn> LstRcColumn { get; set; }
         public List<ReinforcedCadSlab> LstRcSlab { get; set; }
@@ -31,7 +51,7 @@ namespace CADReader.BuildingElements
         #endregion
 
         #region Constructors
-        public BasementFloor(ReadAutodesk cadReader, double level)
+        public ObsoleteBasementFloor(ReadAutodesk cadReader, double level)
         {
             Level = level;
 
@@ -58,7 +78,7 @@ namespace CADReader.BuildingElements
 
         }
 
-        public BasementFloor(ReadAutodesk cadReader, double level, double height)
+        public ObsoleteBasementFloor(ReadAutodesk cadReader, double level, double height)
         {
             this.Level = level;
             this.Height = height;
@@ -212,7 +232,7 @@ namespace CADReader.BuildingElements
             }
 
             //get circle grid blocks
-            List<BlockReferenceEx> lstGridCircleBlkRef = cadReader.Entities.Where(b => b is BlockReferenceEx).Cast<BlockReferenceEx>().Where(b=>b.BlockName==CadBlockName.GridCircle).ToList();
+            List<BlockReferenceEx> lstGridCircleBlkRef = cadReader.Entities.Where(b => b is BlockReferenceEx).Cast<BlockReferenceEx>().Where(b => b.BlockName == CadBlockName.GridCircle).ToList();
 
             //get circles from circle grid block
 
@@ -259,7 +279,7 @@ namespace CADReader.BuildingElements
                 insertionPt2.Z = Level;
                 Circle c1 = new Circle(insertionPt1, circleRadius);
                 Circle c2 = new Circle(insertionPt2, circleRadius);
-                
+
 
                 lstCircleAddToAxis.Add(c1);
                 lstCircleAddToAxis.Add(c2);
@@ -268,10 +288,10 @@ namespace CADReader.BuildingElements
                     lstLinPathAxes[i].Vertices[j].Z = Level;
                 }
 
-               
+
 
                 Axis axis = new Axis(new LinearPath(lstLinPathAxes[i].Vertices), lstCircleAddToAxis, textAttr1.Equals(textAttr2) ? textAttr1 : "ccc");
-                
+
                 lstAxis.Add(axis);
             }
 
@@ -279,6 +299,6 @@ namespace CADReader.BuildingElements
         }
 
         #endregion
-
+        */
     }
 }

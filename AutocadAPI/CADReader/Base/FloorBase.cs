@@ -1,4 +1,5 @@
-﻿using CADReader.Helpers;
+﻿using CADReader.BuildingElements;
+using CADReader.Helpers;
 using CADReader.Reinforced_Elements;
 using devDept.Eyeshot.Entities;
 using devDept.Eyeshot.Translators;
@@ -7,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace CADReader.BuildingElements
+namespace CADReader.Base
 {
     public class FloorBase
     {

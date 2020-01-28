@@ -1,4 +1,5 @@
-﻿using CADReader.ElectricalElements;
+﻿using CADReader.Base;
+using CADReader.ElectricalElements;
 using CADReader.ElementComponents;
 using CADReader.Helpers;
 using CADReader.Reinforced_Elements;
@@ -14,8 +15,36 @@ using System.Threading.Tasks;
 
 namespace CADReader.BuildingElements
 {
-    public class Floor : FloorBase
+    public class Floor : SuperStructure
     {
+        #region Properties
+        public List<Wall> LstMasonaryWall { get; set; }
+        #endregion
+
+        #region Constructors
+        public Floor(ReadAutodesk cadReader, double level) : base(cadReader, level)
+        {
+            //Masonary Walls
+            this.LstMasonaryWall = base.GetMasonaryWall(cadReader);
+        }
+
+        public Floor(ReadAutodesk cadReader, double level, double height) : base(cadReader, level, height)
+        {
+            //Masonary Walls
+            this.LstMasonaryWall = base.GetMasonaryWall(cadReader);
+        }
+        #endregion
+
+        #region class Methods
+
+
+        #endregion
+
+    }
+
+    public class ObsoleteFloor : FloorBase
+    {
+        /*
         #region Properties
         public List<ReinforcedCadColumn> LstRcColumn { get; set; }
         public List<ReinforcedCadSlab> LstRcSlab { get; set; }
@@ -212,7 +241,7 @@ namespace CADReader.BuildingElements
             }
 
             //get circle grid blocks
-            List<BlockReferenceEx> lstGridCircleBlkRef = cadReader.Entities.Where(b => b is BlockReferenceEx).Cast<BlockReferenceEx>().Where(b=>b.BlockName==CadBlockName.GridCircle).ToList();
+            List<BlockReferenceEx> lstGridCircleBlkRef = cadReader.Entities.Where(b => b is BlockReferenceEx).Cast<BlockReferenceEx>().Where(b => b.BlockName == CadBlockName.GridCircle).ToList();
 
             //get circles from circle grid block
 
@@ -259,7 +288,7 @@ namespace CADReader.BuildingElements
                 insertionPt2.Z = Level;
                 Circle c1 = new Circle(insertionPt1, circleRadius);
                 Circle c2 = new Circle(insertionPt2, circleRadius);
-                
+
 
                 lstCircleAddToAxis.Add(c1);
                 lstCircleAddToAxis.Add(c2);
@@ -268,10 +297,10 @@ namespace CADReader.BuildingElements
                     lstLinPathAxes[i].Vertices[j].Z = Level;
                 }
 
-               
+
 
                 Axis axis = new Axis(new LinearPath(lstLinPathAxes[i].Vertices), lstCircleAddToAxis, textAttr1.Equals(textAttr2) ? textAttr1 : "ccc");
-                
+
                 lstAxis.Add(axis);
             }
 
@@ -279,6 +308,7 @@ namespace CADReader.BuildingElements
         }
 
         #endregion
-
+        */
     }
+
 }

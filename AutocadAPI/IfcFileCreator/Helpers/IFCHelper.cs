@@ -1,4 +1,5 @@
-﻿using CADReader.BuildingElements;
+﻿using CADReader.Base;
+using CADReader.BuildingElements;
 using CADReader.Helpers;
 using CADReader.Reinforced_Elements;
 using devDept.Eyeshot.Entities;
@@ -21,6 +22,7 @@ using Xbim.Ifc4.ProductExtension;
 using Xbim.Ifc4.ProfileResource;
 using Xbim.Ifc4.RepresentationResource;
 using Xbim.Ifc4.SharedBldgElements;
+using Xbim.IO;
 
 namespace IfcFileCreator.Helpers
 {
@@ -502,7 +504,7 @@ namespace IfcFileCreator.Helpers
             Dictionary<int, LinearPath> dicLinPath = new Dictionary<int, LinearPath>();
             for (int i = 0; i < lstProduct.Count; i++)
             {
-                IIfcRepresentationItem repItem = lstProduct[i].Representation.Representations.First.Items.First;
+                IIfcRepresentationItem repItem = lstProduct[i].Representation.Representations.First().Items.First();
                 IIfcProfileDef profile = (repItem as IIfcExtrudedAreaSolid).SweptArea;
                 IIfcCurve curve = (profile as IIfcArbitraryClosedProfileDef).OuterCurve;
 
@@ -559,7 +561,7 @@ namespace IfcFileCreator.Helpers
             //now we can create an IfcStore, it is in Ifc4 format and will be held in memory rather than in a database
             //database is normally better in performance terms if the model is large >50MB of Ifc or if robust transactions are required
 
-            var model = IfcStore.Create(credentials, IfcSchemaVersion.Ifc4, XbimStoreType.InMemoryModel);
+            var model = IfcStore.Create(credentials, XbimSchemaVersion.Ifc4, XbimStoreType.InMemoryModel);
 
             //Begin a transaction as all changes to a model are ACID
             using (var txn = model.BeginTransaction("Initialise Model"))
@@ -598,7 +600,7 @@ namespace IfcFileCreator.Helpers
             //now we can create an IfcStore, it is in Ifc4 format and will be held in memory rather than in a database
             //database is normally better in performance terms if the model is large >50MB of Ifc or if robust transactions are required
 
-            var model = IfcStore.Create(credentials, IfcSchemaVersion.Ifc4, XbimStoreType.InMemoryModel);
+            var model = IfcStore.Create(credentials, XbimSchemaVersion.Ifc4, XbimStoreType.InMemoryModel);
 
             //Begin a transaction as all changes to a model are ACID
             using (var txn = model.BeginTransaction("Initialise Model"))

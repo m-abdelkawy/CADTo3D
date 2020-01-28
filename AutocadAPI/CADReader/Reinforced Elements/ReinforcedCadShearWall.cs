@@ -49,11 +49,11 @@ namespace CADReader.Reinforced_Elements
         {
             LinearPath stirrupLp = (LinearPath)ShearWall.ProfilePath.Offset(-DefaultValues.ShearWallCover * 1.2);
 
-            double dowelLength = (CADConfig.Units == linearUnitsType.Meters ? 1 : 1000);
-            for (int i = 0; i < stirrupLp.Vertices.Length; i++)
-            {
-                stirrupLp.Vertices[i].Z += dowelLength;
-            }
+            //double dowelLength = (CADConfig.Units == linearUnitsType.Meters ? 1 : 1000);
+            //for (int i = 0; i < stirrupLp.Vertices.Length; i++)
+            //{
+            //    stirrupLp.Vertices[i].Z += dowelLength;
+            //}
 
             Stirrup = new Stirrup(stirrupLp);
         }

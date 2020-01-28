@@ -1,0 +1,448 @@
+﻿@using BIMWebViewer.Classes;
+@{
+    ViewBag.Title = "Viewer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<head>
+    <link rel="stylesheet" href="~/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/css/animate.css">
+    <!-- owl carousel CSS -->
+    <link rel="stylesheet" href="~/css/owl.carousel.min.css">
+    <!-- themify CSS -->
+    <link rel="stylesheet" href="~/css/themify-icons.css">
+    <!-- flaticon CSS -->
+    <link rel="stylesheet" href="~/css/flaticon.css">
+    <!-- magnific-popup CSS -->
+    <link rel="stylesheet" href="~/css/magnific-popup.css">
+    <!-- font awesome CSS -->
+    <link rel="stylesheet" href="~/fontawesome/css/all.min.css">
+    <!-- style CSS -->
+    <link rel="stylesheet" href="~/css/style.css">
+    <link href="~/Libs/jquery-ui-styles/jquery-ui.min.css" rel="stylesheet" />
+    <link href="~/Resources/doctemplate/static/styles/xbrowser-styles.css" rel="stylesheet" />
+</head>
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script src="~/js/bootstrap.min.js"></script>
+<script src="~/Libs/jquery.js"></script>
+<script src="~/Libs/jquery-ui.js"></script>
+<script src="~/Libs/webgl-utils.js"></script>
+<script src="~/Libs/gl-matrix.js"></script>
+<script src="~/Viewer/ACY-binary-reader.debug.js"></script>
+<script src="~/Viewer/ACY-model-geometry.debug.js"></script>
+<script src="~/Viewer/ACY-model-handle.debug.js"></script>
+<script src="~/Viewer/ACY-product-type.debug.js"></script>
+<script src="~/Viewer/ACY-shaders.debug.js"></script>
+<script src="~/Viewer/ACY-state.debug.js"></script>
+<script src="~/Viewer/ACY-triangulated-shape.debug.js"></script>
+<script src="~/Viewer/ACY-viewer.debug.js"></script>
+<script src="~/Browser/ACY-attribute-dictionary.debug.js"></script>
+<script src="~/Browser/ACY-browser.debug.js"></script>
+<script src="~/Browser/ACY-visual-attribute.debug.js"></script>
+<script src="~/Browser/ACY-visual-entity.debug.js"></script>
+<script src="~/Browser/ACY-visual-model.debug.js"></script>
+<script src="~/Browser/ACY-visual-property.debug.js"></script>
+<script src="~/Browser/ACY-visual-templates.debug.js"></script>
+<script src="~/Browser/ACY-visual-assignment-set.debug.js"></script>
+<script src="~/Scripts/browser.js"></script>
+<script src="~/Scripts/jquery.ui.resizable.js"></script>
+
+<style>
+    .ui-widget-header {
+        background: #1b212e;
+    }
+
+    .collapsetree {
+        width: 15px;
+        background-image: url('../../Images/ui-icons_454545_256x240.png');
+        background-repeat: no-repeat;
+        background-position: -36px -17px;
+        display: inline-block;
+        cursor: pointer;
+    }
+
+    .expandtree {
+        width: 15px;
+        background-image: url('../../Images/ui-icons_454545_256x240.png');
+        background-repeat: no-repeat;
+        background-position: -50px -17px;
+        display: inline-block;
+        cursor: pointer;
+    }
+
+    .treeview ul {
+        font: 14px Arial, Sans-Serif;
+        margin: 0px;
+        padding-left: 20px;
+        list-style: none;
+    }
+
+    .treeview > li > a {
+        font-weight: bold;
+    }
+
+
+    .treeview li a {
+        padding: 4px;
+        font-size: 12px;
+        display: inline-block;
+        text-decoration: none;
+        width: auto;
+    }
+
+    .selected-ui-viewpoint {
+        background-color: darkgray;
+    }
+
+    body {
+        background-color: white;
+    }
+
+    .selected-ui-comment {
+        background-color: dodgerblue;
+    }
+
+    div#load_screen {
+        background: #000;
+        opacity: 0.5;
+        position: fixed;
+        z-index: 10000;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+    }
+
+    .loader {
+        border: 16px solid #f3f3f3; /* Light grey */
+        border-top: 16px solid #3498db; /* Blue */
+        border-radius: 50%;
+        width: 120px;
+        height: 120px;
+        animation: spin 2s linear infinite;
+        background: #000;
+        opacity: 1;
+        margin: auto;
+        top: 50%;
+        left: 50%;
+        position: absolute;
+    }
+
+    @@keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+</style>
+
+<!--::menu part start::-->
+<header class="main_menu home_menu">
+
+    <div class="container" style="max-width:1345px">
+        <div class="row">
+            <div class="col-lg-12">
+                <nav class="navbar navbar-expand-lg navbar-light">
+                    <a class="navbar-brand" href="/Home/Home"> <img src="~/img/nlogo.png" width="130" alt="logo"></a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse main-menu-item" id="navbarNav">
+                        <ul class="navbar-nav">
+                            <li class="nav-item active">
+                                <a class="nav-link" href="/Home/Home">Home<span class="sr-only">(current)</span></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="about.html">about</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="contact.html">Contact us</a>
+                            </li>
+                            <li class="nav-item"> <a class="nav-link" href="/Home/Index">Projects</a></li>
+                        </ul>
+                        <div style="margin-left:100px">
+
+                            @Html.Partial("_LoginPartial")
+                        </div>
+                    </div>
+                    <div class="navbar-collapse collapse">
+
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+<div id="semantic-descriptive-info-container" style="top:150px; width:300px;">
+    <div id="semantic-descriptive-info">
+        <h3 id="attrprop-header">Properties</h3>
+        <div class="no-overflow-y ui-accordion-content ui-helper-reset .ui-widget-header ui-corner-bottom ui-accordion-content-active"
+             id="ui-id-1" aria-labelledby="attrprop-header" role="tabpanel" aria-hidden="false"
+             style="display: block; height: 86px; overflow: auto; background:#1b212e;color:white;">
+            <div id="attrprop">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="viewer-container" style="top:150px; background:#f9f9f9; left:0px;right:310px;">
+    <canvas id="viewer-canvas"></canvas>
+    <div style="position: absolute; left: 5px; top: 5px; padding: 5px;" id="toolbar" class="ui-widget-header ui-corner-all">
+        <button id="btnFW">Formwork</button>
+        <button id="btnCN">Concrete</button>
+        <button id="btnRFT">RFT</button>
+
+    </div>
+
+    <div style="position: absolute; right: 5px; top: 5px;" id="toolbar" class="ui-widget-header ui-corner-all">
+
+        <button class="btn btn-dark" style="margin:5px; width:70px" onclick="viewer.show('front')">Front</button><br />
+        <button class="btn btn-dark" style="margin:5px; width:70px" onclick="viewer.show('back')">Back</button><br />
+        <button class="btn btn-dark" style="margin:5px; width:70px" onclick="viewer.show('top')">Top</button><br />
+        <button class="btn btn-dark" style="margin:5px; width:70px" onclick="viewer.show('bottom')">Bottom</button><br />
+        <button class="btn btn-dark" style="margin:5px; width:70px" onclick="viewer.show('left')">Left</button><br />
+        <button class="btn btn-dark" style="margin:5px; width:70px" onclick="viewer.show('right')">Right</button><br />
+
+    </div>
+    <div style="position: absolute; left: 5px; bottom: 35px; padding: 5px;" id="toolbar" class="ui-widget-header ui-corner-all">
+
+        <button class="btn btn-primary" style="width:70px" onclick="HideElement()">Hide</button>
+        <button onclick="IsolateElement()" style="width:70px" class="btn btn-dark">Isolate</button>
+        <button onclick="Reset()" class="btn btn-dark">Reset</button>
+        <button onclick="ColorElement()" class="btn btn-dark">Override Color</button>
+        <button onclick="ResetColor()" class="btn btn-dark">Reset Colors</button>
+        <button onclick="Recolour()" class="btn btn-dark">Recolour by type</button>
+        <button class="btn btn-dark" style="margin:0 5px 0 0;" onclick="GetCamPos()">Save View</button>
+    </div>
+    <div style="position: absolute; right: 5px; bottom: 30px; padding: 5px;" id="toolbar" class="ui-widget-header ui-corner-all">
+        <span style="color:white">Pick Color</span>
+        <input id="color-picker" type="color" value="Red" class="ui-widget-header ui-corner-all">
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+
+  //Viewer inialize
+    var loading = '<div id="load_screen"><div class="loader"></div></div>';
+
+    $("body").append(loading); 
+
+
+    var SelectedElementId;
+    $("#btnFW").click(function () {
+        subItem = "FormWork";
+    });
+    $("#btnCN").click(function () {
+        subItem = "Concrete";
+    });
+    $("#btnRFT").click(function () {
+        subItem = "Reinforcement";
+    });
+
+    var viewer = new xViewer("viewer-canvas");
+    viewer.load('@Url.Action("Viewer2DLoad", "Viewer2D", new { FileName = ViewBag.FilePath })');
+    viewer.start();
+
+    //Viewer Events
+
+    var pickedAxesArr = [];
+    var subItem;
+        viewer.on("pick", function (args) {
+
+            var id = args.id;
+
+            viewer.renderingMode = "normal";
+            var type = viewer.getProductType(id);
+            if (xProductType["IFCSLABSTANDARDCASE"] == type) {
+                SelectedElementId = id;
+                viewer.setState(xState.HIGHLIGHTED, [id]);
+                keepTarget = true;
+                pickedAxesArr.push(id);
+            }
+            if (pickedAxesArr.length == 4) {
+                $.ajax({
+                    url: '@Url.Action("SubmitBlahBlah", "Viewer2D")',
+                    data: {
+                        axesIds: pickedAxesArr,
+                        subItem: subItem
+                    },
+                    type: "POST",
+                    success: function (data) {
+                        var Data = JSON.parse(data);
+                        viewer.setState(xState.HIGHLIGHTED, Data.SubmitedIds);
+                        
+                    },
+                    error: function (err) {
+                        console.log(err);
+                    }
+                });
+            }
+
+    });
+
+
+        viewer.on("dblclick", function (args) {
+          //  viewer.resetStates();
+            viewer.renderingMode = "x-ray";
+            var id = args.id;
+            viewer.setState(xState.HIGHLIGHTED, [id]);
+            viewer.zoomTo(id);
+            keepTarget = true;
+    });
+
+    $('#btnHideAll').click(function () {
+        HideAllElements(typeList);
+
+             $.ajax({
+                url: '@Url.Action("ResetCounter", "Viewer")',
+                type: 'POST',
+            });
+        });
+
+
+        var Recolour = function () {
+            if (!viewer) return;
+            var index = 0;
+            for (var i in xProductType) {
+                var type = xProductType[i];
+                var colour = [Math.random() * 255, Math.random() * 255, Math.random() * 255, 255];
+                viewer.defineStyle(index, colour);
+                viewer.setStyle(index, type);
+                index++;
+            }
+        };
+    var typeList = ['IFCCOLUMN', 'IFCFOOTING', 'IFCWALLSTANDARDCASE', 'IFCSLAB', 'IFCREINFORCINGBAR', 'IFCBUILDINGELEMENTPART', 'IFCCABLECARRIERSEGMENT', 'IFCBEAM', 'IFCSTAIRFLIGHT'];
+        function ColorByTypeFixed() {
+            var colorList = [[85, 85, 85, 255], [103, 103, 103, 255], [178, 190, 181, 255], [153, 153, 153, 255], [224, 223, 219, 255], [222, 184, 135, 255], [255, 53, 3, 255], [153, 153, 153, 255], [153, 153, 153, 255]];
+
+            for (var i = 0; i < typeList.length; i++) {
+                viewer.defineStyle(i, colorList[i]);
+                viewer.setStyle(i, xProductType[typeList[i]]);
+            }
+        }
+
+    viewer.on('loaded', function () {
+        var load_screen = document.getElementById("load_screen");
+        document.body.removeChild(load_screen);
+           //Recolour();
+        ColorByTypeFixed();
+        viewer.show('top');
+        //viewer.zoomTo();
+        viewer.perspectiveCamera.fov = viewer.perspectiveCamera.fov * .35;
+        viewer.navigationMode = 'pan';
+        HideAllElements(typeList);
+
+        $.ajax({
+            url:'@Url.Action("GetElementsByType", "Viewer2D")',
+            data: { type: "COL" },
+            type: "GET",
+            success: function (data) {
+                var Data = JSON.parse(data);
+                if (Data.floorHeight != 0 && Data.floorLevel != 0) {
+                    viewer.clip([0, 0, (Data.floorLevel - Data.floorHeight / 2)], [0, 0, 1]);
+                }
+                viewer.setState(xState.UNDEFINED, Data.ProductList);
+                viewer.setState(xState.UNDEFINED, xProductType["IFCSLABSTANDARDCASE"]);
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        })
+
+        });
+
+        var HideElement = function () {
+            debugger;
+            if (SelectedElementId == null) return;
+            hiddenIds.push(SelectedElementId);
+            viewer.setState(xState.HIDDEN, [SelectedElementId]);
+    }
+
+    var IsolateElement = function () {
+        if (SelectedElementId === undefined) return;
+            HideAllElements(typeList);
+        viewer.setState(xState.UNDEFINED, [SelectedElementId]);
+        viewer.zoomTo(SelectedElementId);
+        };
+    var Reset = function () {
+           for (var i = 0; i < typeList.length; i++) {
+               viewer.setState(xState.UNDEFINED, xProductType[typeList[i]]);
+            }
+            viewer.setState(xState.HIDDEN, xProductType['IFCBUILDINGELEMENTPART']);
+            viewer.renderingMode = "normal";
+            //FullExtent();
+            hiddenIds = [];
+        };
+    var HideAllElements = function (lsttype) {
+        if (lsttype) {
+            for (var i = 0; i < typeList.length; i++) {
+                viewer.setState(xState.HIDDEN, xProductType[typeList[i]]);
+            }
+        }
+        else {
+            for (var key in xProductType) {
+                viewer.setState(xState.HIDDEN, xProductType[key]);
+            }
+        }
+        }
+        var FullExtent = function () {
+            viewer.zoomTo();
+        };
+        var ColorElement = function () {
+            if (SelectedElementId === undefined) return;
+            viewer.setState(xState.UNDEFINED, [SelectedElementId]);
+            viewer.setStyle(colorarr[colorarr.length - 1], [SelectedElementId]);
+        };
+        var ResetColor = function () {
+            for (var type in xProductType) {
+                viewer.setStyle(xState.UNSTYLED, xProductType[type]);
+            }
+        };
+        var colorWell;
+        var defaultColor = "#ff0000";
+        var newColor;
+        var colorIndex = 0;
+        var colorarr = [];
+        window.addEventListener("load", startup, false);
+        function startup() {
+            colorWell = document.querySelector("#color-picker");
+            colorWell.value = defaultColor;
+            colorWell.addEventListener("change", changeStyle, false);
+            colorWell.select();
+
+        }
+        function hexToRgb(hex) {
+            var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? {
+                r: parseInt(result[1], 16),
+                g: parseInt(result[2], 16),
+                b: parseInt(result[3], 16)
+            } : null;
+        }
+        var red = hexToRgb(defaultColor).r;
+        var green = hexToRgb(defaultColor).g;
+        var blue = hexToRgb(defaultColor).b;
+    viewer.defineStyle(colorIndex, [red, green, blue, 255]);
+    colorarr.push(colorIndex);
+    var changeStyle = function (event) {
+            newColor = event.target.value;
+            red = hexToRgb(newColor).r;
+            green = hexToRgb(newColor).g;
+            blue = hexToRgb(newColor).b;
+            colorIndex++;
+            viewer.defineStyle(colorIndex, [red, green, blue, 255]);
+            colorarr.push(colorIndex);
+        }
+
+
+
+
+</script>

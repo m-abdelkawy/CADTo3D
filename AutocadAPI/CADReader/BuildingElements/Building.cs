@@ -1,4 +1,5 @@
-﻿using CADReader.Helpers;
+﻿using CADReader.Base;
+using CADReader.Helpers;
 using devDept.Eyeshot.Translators;
 using devDept.Geometry;
 using System;

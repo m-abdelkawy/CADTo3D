@@ -100,17 +100,17 @@ namespace BIMWebViewer.Controllers
             // buildingA.AddNewFloor(cadfilesBuildingA.Where(e => e.Contains("Basement")).FirstOrDefault(), 0);
 
             {//new
-                buildingA2.AddBuildingFoundation(cadfilesBuildingA.Where(b => b.Contains("Foundation")).FirstOrDefault(), 0, 0);
-                buildingA2.AddNewFloor(cadfilesBuildingA.Where(b => b.Contains("Basement")).FirstOrDefault(), 4.95, 4.95);
-                buildingA2.AddNewFloor(cadfilesBuildingA.Where(b => b.Contains("Ground")).FirstOrDefault(), 8.75, 3.8);
-                buildingA2.AddNewFloor(cadfilesBuildingA.Where(b => b.Contains("1st")).FirstOrDefault(), 11.75, 3);
-                buildingA2.AddNewFloor(cadfilesBuildingA.Where(b => b.Contains("2nd")).FirstOrDefault(), 14.75, 3);
-                buildingA2.AddNewFloor(cadfilesBuildingA.Where(b => b.Contains("3rd")).FirstOrDefault(), 17.75, 3);
-                buildingA2.AddNewFloor(cadfilesBuildingA.Where(b => b.Contains("4th")).FirstOrDefault(), 20.75, 3);
-                buildingA2.AddNewFloor(cadfilesBuildingA.Where(b => b.Contains("5th")).FirstOrDefault(), 23.75, 3);
-                buildingA2.AddNewFloor(cadfilesBuildingA.Where(b => b.Contains("6th")).FirstOrDefault(), 26.75, 3);
-                buildingA2.AddNewFloor(cadfilesBuildingA.Where(b => b.Contains("Roof Floor")).FirstOrDefault(), 29.75, 3);
-                buildingA2.AddNewFloor(cadfilesBuildingA.Where(b => b.Contains("UpRoof")).FirstOrDefault(), 32.75, 3);
+                buildingA2.AddBuildingFoundation(cadfilesBuildingA.Where(b => b.Contains("Foundation")).FirstOrDefault(), 373.55, 0);
+                buildingA2.AddNewFloor(cadfilesBuildingA.Where(b => b.Contains("Basement")).FirstOrDefault(), 378.5, 4.95);
+                buildingA2.AddNewFloor(cadfilesBuildingA.Where(b => b.Contains("Ground")).FirstOrDefault(), 382.3, 3.8);
+                //buildingA2.AddNewFloor(cadfilesBuildingA.Where(b => b.Contains("1st")).FirstOrDefault(), 11.75, 3);
+                //buildingA2.AddNewFloor(cadfilesBuildingA.Where(b => b.Contains("2nd")).FirstOrDefault(), 14.75, 3);
+                //buildingA2.AddNewFloor(cadfilesBuildingA.Where(b => b.Contains("3rd")).FirstOrDefault(), 17.75, 3);
+                //buildingA2.AddNewFloor(cadfilesBuildingA.Where(b => b.Contains("4th")).FirstOrDefault(), 20.75, 3);
+                //buildingA2.AddNewFloor(cadfilesBuildingA.Where(b => b.Contains("5th")).FirstOrDefault(), 23.75, 3);
+                //buildingA2.AddNewFloor(cadfilesBuildingA.Where(b => b.Contains("6th")).FirstOrDefault(), 26.75, 3);
+                //buildingA2.AddNewFloor(cadfilesBuildingA.Where(b => b.Contains("Roof Floor")).FirstOrDefault(), 29.75, 3);
+                //buildingA2.AddNewFloor(cadfilesBuildingA.Where(b => b.Contains("UpRoof")).FirstOrDefault(), 32.75, 3);
                 //buildingA2.AddNewFloor(cadfilesBuildingA.Where(b => b.Contains("Ground")).FirstOrDefault(), 3, 3); //top level = lvl + height
             }
             //buildingA.AddBuildingFoundation(cadfilesBuildingA.Where(e => e.Contains("Foundation")).FirstOrDefault(),4.50, 0.2);
@@ -118,7 +118,7 @@ namespace BIMWebViewer.Controllers
             //buildingB.AddNewFloor(cadfilesBuildingB.Where(e => e.sContains("Basement")).FirstOrDefault(), 0);
             //buildingB.AddBuildingFoundation(cadfilesBuildingB.Where(e => e.Contains("Foundation")).FirstOrDefault(), -4);
 
-            newBuilding = new XbimCreateBuilding(buildingA2, versionPath);
+            newBuilding = new XbimCreateBuilding(buildingA2, versionPath,true);
             List<string> files = Directory.GetFiles(versionPath).ToList();
             // string wexFile = files.Where(a => Path.GetExtension(a) == ".wexBIM").FirstOrDefault();
             List<string> lstIfcFile = files.Where(a => Path.GetExtension(a) == ".ifc").ToList();
@@ -161,7 +161,7 @@ namespace BIMWebViewer.Controllers
                 return new EmptyResult();
             }
             if (newBuilding.BuildingSubmissions.SubmittedElems[counter].Count != 0)
-                ElementIDsToRenders.AddRange(newBuilding.BuildingSubmissions.SubmittedElems[counter].Select(p => new { Id = p.EntityLabel, isFormWork = p is IfcBuildingElementPart, isConcrete = p is IfcBeam || p is IfcColumn || p is IfcSlab || p is IfcFooting || p is IfcWallStandardCase }));
+                ElementIDsToRenders.AddRange(newBuilding.BuildingSubmissions.SubmittedElems[counter].Select(p => new { Id = p.EntityLabel, isFormWork = p is IfcBuildingElementPart, isConcrete = p is IfcBeam || p is IfcColumn || p is IfcSlab || p is IfcFooting || p is IfcWallStandardCase, isReinforcement = p is IfcReinforcingBar, isMasonary = p is IfcWall }));
             //ElementIDsToRenders.AddRange(newBuilding.BuildingSubmissions.SubmittedElems[counter].Select(p => new {Id= p.EntityLabel,  isFormWork= p is IfcBuildingElementPart, isReinforcement = p is IfcReinforcingBar }));
             counter++;
             JsonResult result = new JsonResult();
