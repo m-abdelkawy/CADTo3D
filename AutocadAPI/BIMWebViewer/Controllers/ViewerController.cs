@@ -44,11 +44,17 @@ namespace BIMWebViewer.Controllers
         public ActionResult Viewer()
         {
             var filePath = "";
-
-            filePath = TempData["wexbimFilePath"].ToString();
+            if (TempData["wexbimFilePath"] != null)
+                filePath = TempData["wexbimFilePath"].ToString();
+            else
+                filePath = $"{ Server.MapPath("~")}\\UploadedFiles\\Projects\\Building A\\Update 1\\Demo10.wexBIM";
             //// file = TempData["wexbimFilePath"].ToString();
             ViewBag.FilePath = filePath;
-            ViewBag.VersionName = TempData["VersionName"].ToString();
+            if (TempData["VersionName"] != null)
+                ViewBag.VersionName = TempData["VersionName"].ToString();
+            else
+                ViewBag.VersionName = $"{ Server.MapPath("~")}\\UploadedFiles\\Projects\\Building A\\Update 1\\";
+
             if (TempData["ViewPoints"] != null)
                 ViewBag.ViewPoints = TempData["ViewPoints"];
 
@@ -101,8 +107,8 @@ namespace BIMWebViewer.Controllers
 
             {//new
                 buildingA2.AddBuildingFoundation(cadfilesBuildingA.Where(b => b.Contains("Foundation")).FirstOrDefault(), 373.55, 0);
-                buildingA2.AddNewFloor(cadfilesBuildingA.Where(b => b.Contains("Basement")).FirstOrDefault(), 378.5, 4.95);
-                buildingA2.AddNewFloor(cadfilesBuildingA.Where(b => b.Contains("Ground")).FirstOrDefault(), 382.3, 3.8);
+                //   buildingA2.AddNewFloor(cadfilesBuildingA.Where(b => b.Contains("Basement")).FirstOrDefault(), 378.5, 4.95);
+                //buildingA2.AddNewFloor(cadfilesBuildingA.Where(b => b.Contains("Ground")).FirstOrDefault(), 382.3, 3.8);
                 //buildingA2.AddNewFloor(cadfilesBuildingA.Where(b => b.Contains("1st")).FirstOrDefault(), 11.75, 3);
                 //buildingA2.AddNewFloor(cadfilesBuildingA.Where(b => b.Contains("2nd")).FirstOrDefault(), 14.75, 3);
                 //buildingA2.AddNewFloor(cadfilesBuildingA.Where(b => b.Contains("3rd")).FirstOrDefault(), 17.75, 3);
@@ -118,7 +124,7 @@ namespace BIMWebViewer.Controllers
             //buildingB.AddNewFloor(cadfilesBuildingB.Where(e => e.sContains("Basement")).FirstOrDefault(), 0);
             //buildingB.AddBuildingFoundation(cadfilesBuildingB.Where(e => e.Contains("Foundation")).FirstOrDefault(), -4);
 
-            newBuilding = new XbimCreateBuilding(buildingA2, versionPath,true);
+            newBuilding = new XbimCreateBuilding(buildingA2, versionPath);
             List<string> files = Directory.GetFiles(versionPath).ToList();
             // string wexFile = files.Where(a => Path.GetExtension(a) == ".wexBIM").FirstOrDefault();
             List<string> lstIfcFile = files.Where(a => Path.GetExtension(a) == ".ifc").ToList();

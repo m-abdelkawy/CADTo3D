@@ -42,7 +42,7 @@ namespace IfcFileCreator
 {
     public class XbimCreateBuilding
     {
-        public string BlkName { get; set; } = "P1C1Bl2";
+        public string BlkName { get; set; } = "P1C1Bl3";
         public Submissions BuildingSubmissions { get; set; }
 
         private Random random = new Random(1000);
@@ -50,14 +50,9 @@ namespace IfcFileCreator
         {
             BuildingSubmissions = new Submissions();
 
-
-
-
             using (var model = IFCHelper.CreateandInitModel("Demo1"))
             {
-                IfcSlab slab = null;
-
-                //for (int m = 0; m < lstBuilding.Count; m++)
+                IfcSlab slab = null; 
 
                 List<FloorBase> lstSortedFloors = cadBuilding.Floors.OrderBy(f => f.Level).ToList();
 
@@ -273,7 +268,7 @@ namespace IfcFileCreator
                             foreach (Stair cadStair in floor.LstStair)
                             {
                                 IfcStairFlight flight;
-                                IfcStair stair = CreateIfcStair(model, cadStair, out flight);
+                                IfcStair stair = CreateIfcStair(model, cadStair, storey.Name + "RfS" + "Cn", out flight);
 
                                 using (var txn = model.BeginTransaction("Add Stair"))
                                 {
@@ -288,7 +283,7 @@ namespace IfcFileCreator
                             foreach (LinearPath cadLanding in floor.LstLandingLinPath)
                             {
 
-                                IfcSlab landing = CreateIfcLanding(model, cadLanding, DefaultValues.SlabThinkess);
+                                IfcSlab landing = CreateIfcLanding(model, cadLanding, DefaultValues.SlabThinkess, storey.Name + "RfS" + "Cn");
 
                                 using (var txn = model.BeginTransaction("Add Landing"))
                                 {
@@ -568,7 +563,7 @@ namespace IfcFileCreator
                             foreach (Stair cadStair in floor.LstStair)
                             {
                                 IfcStairFlight flight;
-                                IfcStair stair = CreateIfcStair(model, cadStair, out flight);
+                                IfcStair stair = CreateIfcStair(model, cadStair, storey.Name + "RfS" + "Cn", out flight);
 
                                 using (var txn = model.BeginTransaction("Add Stair"))
                                 {
@@ -583,7 +578,7 @@ namespace IfcFileCreator
                             foreach (LinearPath cadLanding in floor.LstLandingLinPath)
                             {
 
-                                IfcSlab landing = CreateIfcLanding(model, cadLanding, DefaultValues.SlabThinkess);
+                                IfcSlab landing = CreateIfcLanding(model, cadLanding, DefaultValues.SlabThinkess, storey.Name + "RfS" + "Cn");
 
                                 using (var txn = model.BeginTransaction("Add Landing"))
                                 {
@@ -1029,7 +1024,7 @@ namespace IfcFileCreator
 
                 try
                 {
-                    model.SaveAs(pathToSave + @"\Demo10.ifc", StorageType.Ifc);
+                    model.SaveAs(pathToSave + @"\Demo10.ifc", IfcStorageType.Ifc);
                 }
                 catch (Exception e)
                 {
@@ -1106,7 +1101,7 @@ namespace IfcFileCreator
 
                         try
                         {
-                            model.SaveAs(pathToSave + @"\Demo" + i + ".ifc", StorageType.Ifc);
+                            model.SaveAs(pathToSave + @"\Demo" + i + ".ifc", IfcStorageType.Ifc);
                         }
                         catch (Exception e)
                         {
@@ -1117,13 +1112,15 @@ namespace IfcFileCreator
             }
         }
 
+
         private void CreateStoreyStairs(IfcStore model, IfcBuildingStorey storey, SuperStructure floor)
         {
-            int i = 0;
+            //int i = 0;
+            string name = storey.Name + "RfS" + "Cn";
             foreach (Stair cadStair in floor.LstStair)
             {
                 IfcStairFlight flight;
-                IfcStair stair = CreateIfcStair(model, cadStair, out flight);
+                IfcStair stair = CreateIfcStair(model, cadStair, name, out flight);
                 using (var txn = model.BeginTransaction("Add Stair"))
                 {
                     //stair.Name = storey.Name + $"RfS{++i}";
@@ -1135,7 +1132,7 @@ namespace IfcFileCreator
             foreach (LinearPath cadLanding in floor.LstLandingLinPath)
             {
 
-                IfcSlab landing = CreateIfcLanding(model, cadLanding, DefaultValues.SlabThinkess);
+                IfcSlab landing = CreateIfcLanding(model, cadLanding, DefaultValues.SlabThinkess, name);
 
                 using (var txn = model.BeginTransaction("Add Landing"))
                 {
@@ -1480,7 +1477,7 @@ namespace IfcFileCreator
                 {
                     IfcCableCarrierSegment conduit = CreateIfcConduit(model, cadConduit);
                     conduit.Tag = ElementType.ElectricalConduit;
-
+                    conduit.Name = storey.Name + "Elec";
                     storey.AddElement(conduit);
                     txn.Commit();
                 }
@@ -1570,7 +1567,7 @@ namespace IfcFileCreator
                 {
 
                     string slabItemName = storey.Name + $"RfS{++i}";
-                    slab.Name = slabItemName;
+                    slab.Name = slabItemName + "Cn";
                     storey.AddElement(slab);
 
                     IfcOpeningElement formworkVoid;
@@ -1583,8 +1580,6 @@ namespace IfcFileCreator
 
                     // Create Slab Reinforcement
                     CreateSlabRft(model, storey, cadRCSlab, lstOpening, slabItemName);
-
-
 
                     trans.Commit();
                 }
@@ -2143,14 +2138,14 @@ namespace IfcFileCreator
 
         }
 
-        private IfcStair CreateIfcStair(IfcStore model, Stair stair, out IfcStairFlight flight)
+        private IfcStair CreateIfcStair(IfcStore model, Stair stair, string name, out IfcStairFlight flight)
         {
 
             //begin a transaction
             using (var trans = model.BeginTransaction("Create Stair"))
             {
                 IfcStair stairToCreate = model.Instances.New<IfcStair>();
-                stairToCreate.Name = " Stair :UC305x305x97:" + random.Next(10000);
+                stairToCreate.Name = name;
 
 
                 IfcDirection extrusionDir = model.Instances.New<IfcDirection>();
@@ -2176,7 +2171,7 @@ namespace IfcFileCreator
                 prDefShape.Representations.Add(shape);
 
                 flight = model.Instances.New<IfcStairFlight>();
-                flight.Name = " Stair :Flight:" + random.Next(10000);
+                flight.Name = name;
                 flight.Representation = prDefShape;
 
                 IfcRelAggregates relAggregate = model.Instances.New<IfcRelAggregates>();
@@ -2207,7 +2202,7 @@ namespace IfcFileCreator
 
         }
 
-        private IfcSlab CreateIfcLanding(IfcStore model, LinearPath landingPline, double landingThickness)
+        private IfcSlab CreateIfcLanding(IfcStore model, LinearPath landingPline, double landingThickness, string name)
         {
 
             //begin a transaction
@@ -2215,7 +2210,8 @@ namespace IfcFileCreator
             {
 
                 IfcSlab landing = model.Instances.New<IfcSlab>();
-                landing.Name = " Landing :UC305x305x97:" + random.Next(10000);
+                landing.Name = name;
+
 
                 IfcDirection extrusionDir = model.Instances.New<IfcDirection>();
                 extrusionDir.SetXYZ(0, 0, -1);

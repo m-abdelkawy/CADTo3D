@@ -9,6 +9,7 @@ using Xbim.Ifc4.Interfaces;
 using Xbim.Ifc4.Kernel;
 using Xbim.Ifc4.MeasureResource;
 using Xbim.Ifc4.RepresentationResource;
+using Xbim.IO.Memory;
 
 namespace IfcFileCreator.Helpers
 {
@@ -124,5 +125,7 @@ namespace IfcFileCreator.Helpers
 
             }
         }
+
+    
     }
 }

@@ -61,7 +61,7 @@ namespace IfcFileCreator.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to D:\Coding Trials\GIT\Akam Project\CADTo3D\AutocadAPI\IfcFileCreator\Axis Text.ifc.
+        ///   Looks up a localized string similar to D:\03_PROJECT PREPERATION\04_Drawings\WORKING\ASSETS\Axis Text.ifc.
         /// </summary>
         internal static string AxisIFCFile {
             get {
