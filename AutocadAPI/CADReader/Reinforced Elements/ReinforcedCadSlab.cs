@@ -27,7 +27,8 @@ namespace CADReader.Reinforced_Elements
         public override void ReinforcementPopulate()
         {
             LinearPath BoundaryPath = new LinearPath(Slab.LinPathSlab.Vertices.Select(e => new Point3D(e.X, e.Y, e.Z - DefaultValues.SlabThinkess + DefaultValues.ColumnCover)).ToArray());
-            List<Line> lstBoundaryLines = CadHelper.BoundaryLinesGet(BoundaryPath);
+            //List<Line> lstBoundaryLines = CadHelper.BoundaryLinesGet(BoundaryPath);
+            List<Line> lstBoundaryLines = CadHelper.GetBbOrientedWithTallestLine(BoundaryPath, 1000);
 
             int nLong = Convert.ToInt32(lstBoundaryLines[0].Length() / DefaultValues.LongBarSpacing);
             int nTransverse = Convert.ToInt32(lstBoundaryLines[1].Length() / DefaultValues.LongBarSpacing);
@@ -38,7 +39,8 @@ namespace CADReader.Reinforced_Elements
 
             for (int i = 0; i < nTransverse; i++)
             {
-                Line rftTransverse = lstBoundaryLines[0].Offset(DefaultValues.LongBarSpacing * -i, Vector3D.AxisZ) as Line;
+                //Line rftTransverse = lstBoundaryLines[0].Offset(DefaultValues.LongBarSpacing * -i, Vector3D.AxisZ) as Line;
+                Line rftTransverse = lstBoundaryLines[0].Offset(DefaultValues.LongBarSpacing * i, Vector3D.AxisZ) as Line;
 
                 List<Line> lstRftLines = CadHelper.LinesTrimWithPolygon(Slab.LinPathSlab, rftTransverse);
 
@@ -54,7 +56,8 @@ namespace CADReader.Reinforced_Elements
 
             for (int i = 0; i < nLong; i++)
             {
-                Line rftLong = lstBoundaryLines[1].Offset(DefaultValues.LongBarSpacing * -i, Vector3D.AxisZ) as Line;
+                //Line rftLong = lstBoundaryLines[1].Offset(DefaultValues.LongBarSpacing * -i, Vector3D.AxisZ) as Line;
+                Line rftLong = lstBoundaryLines[1].Offset(DefaultValues.LongBarSpacing * i, Vector3D.AxisZ) as Line;
 
                 List<Line> lstRftLines = CadHelper.LinesTrimWithPolygon(Slab.LinPathSlab, rftLong);
 

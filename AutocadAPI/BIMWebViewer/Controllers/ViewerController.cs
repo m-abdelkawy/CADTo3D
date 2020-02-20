@@ -40,8 +40,7 @@ namespace BIMWebViewer.Controllers
         {
             return View();
         }
-
-        public ActionResult Viewer()
+        public ActionResult ViewProgress()
         {
             var filePath = "";
             if (TempData["wexbimFilePath"] != null)
@@ -58,8 +57,26 @@ namespace BIMWebViewer.Controllers
             if (TempData["ViewPoints"] != null)
                 ViewBag.ViewPoints = TempData["ViewPoints"];
 
-            List<ProductCategory> categories = IFCConverter.Categories;
-            return View(categories);
+            return View();
+        }
+        public ActionResult Viewer()
+        {
+            var filePath = "";
+            if (TempData["wexbimFilePath"] != null)
+                filePath = TempData["wexbimFilePath"].ToString();
+            else
+                filePath = $"{ Server.MapPath("~")}\\UploadedFiles\\Projects\\Building A\\Update 1\\Demo10.wexBIM";
+            //// file = TempData["wexbimFilePath"].ToString();
+            ViewBag.FilePath = filePath;
+            if (TempData["VersionName"] != null)
+                ViewBag.VersionName = TempData["VersionName"].ToString();
+            else
+                ViewBag.VersionName = $"{ Server.MapPath("~")}\\UploadedFiles\\Projects\\Building A\\Update 1\\";
+
+            if (TempData["ViewPoints"] != null)
+                ViewBag.ViewPoints = TempData["ViewPoints"];
+             
+            return View();
         }
 
 
@@ -106,8 +123,8 @@ namespace BIMWebViewer.Controllers
             // buildingA.AddNewFloor(cadfilesBuildingA.Where(e => e.Contains("Basement")).FirstOrDefault(), 0);
 
             {//new
-                buildingA2.AddBuildingFoundation(cadfilesBuildingA.Where(b => b.Contains("Foundation")).FirstOrDefault(), 373.55, 0);
-                //   buildingA2.AddNewFloor(cadfilesBuildingA.Where(b => b.Contains("Basement")).FirstOrDefault(), 378.5, 4.95);
+                //buildingA2.AddBuildingFoundation(cadfilesBuildingA.Where(b => b.Contains("Foundation")).FirstOrDefault(), 373.55, 0);
+                buildingA2.AddNewFloor(cadfilesBuildingA.Where(b => b.Contains("Basement")).FirstOrDefault(), 378.5, 4.95);
                 //buildingA2.AddNewFloor(cadfilesBuildingA.Where(b => b.Contains("Ground")).FirstOrDefault(), 382.3, 3.8);
                 //buildingA2.AddNewFloor(cadfilesBuildingA.Where(b => b.Contains("1st")).FirstOrDefault(), 11.75, 3);
                 //buildingA2.AddNewFloor(cadfilesBuildingA.Where(b => b.Contains("2nd")).FirstOrDefault(), 14.75, 3);

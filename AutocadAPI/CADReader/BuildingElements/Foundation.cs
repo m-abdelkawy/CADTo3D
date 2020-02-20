@@ -54,7 +54,7 @@ namespace CADReader.BuildingElements
             LstRCShearWall = GetRCShearWalls(cadReader);
 
             //RC Semelles
-            LstRCSemelle= GetReinforcedSemelles(cadReader);
+            LstRCSemelle = GetReinforcedSemelles(cadReader);
 
             //RC Footing
             LstRCCadFooting = GetReinforcedFootings(cadReader);
@@ -153,7 +153,7 @@ namespace CADReader.BuildingElements
 
             return RcFootings;
         }
-        
+
 
         private List<Semelle> GetSmelles(ReadAutodesk cadReader)
         {
@@ -229,7 +229,9 @@ namespace CADReader.BuildingElements
 
 
             //for each line get the nearest two circles to its end points and their attribute
-            double circleRadius = (blkCircle.Entities.FirstOrDefault(e => e is Circle) as Circle).Radius;
+            double circleRadius = 0;
+            if (blkCircle != null)
+                circleRadius = (blkCircle.Entities.FirstOrDefault(e => e is Circle) as Circle).Radius;
 
             for (int i = 0; i < lstLinPathAxes.Count(); i++)
             {

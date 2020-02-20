@@ -85,10 +85,10 @@ namespace CADReader.Helpers
             ICurve[] lineSegments;
             line.SplitBy(lstIntersectionPts, out lineSegments);
 
-            if (lineSegments.Count() == 0)
-                lstLineSegment.Add(line);
-            else
-            {
+            //if (lineSegments.Count() == 0)
+            //    lstLineSegment.Add(line);
+            //else
+            //{
                 for (int i = 0; i < lineSegments.Length; i++)
                 {
                     Line l = lineSegments[i] as Line;
@@ -97,7 +97,7 @@ namespace CADReader.Helpers
                         lstLineSegment.Add(l);
                     }
                 }
-            }
+            //}
 
             return lstLineSegment;
         }
@@ -262,6 +262,57 @@ namespace CADReader.Helpers
                 }
             }
             return SubmittedElements;
+        }
+
+        public static List<Line> GetBbOrientedWithTallestLine(LinearPath linPath, double offset)
+        {
+            List<Line> lstLine = new List<Line>();
+
+            Line[] lineArr = linPath.ConvertToLines();
+            double maxLength = 0;
+            Line tallestLine = null;
+            
+            for (int i = 0; i < lineArr.Length; i++)
+            {
+                if(lineArr[i].Length() > maxLength)
+                {
+                    tallestLine = lineArr[i];
+                    maxLength = lineArr[i].Length();
+                }
+            }
+            Line tallestOffset = tallestLine.Offset(-1 * offset, Vector3D.AxisZ) as Line;
+
+            /*  pt4 *********l3********** pt3
+                    *                   *
+                    *                   *
+                    *                   *
+                    *                   *
+               pt1  *********l1********** pt2 */
+
+            Point3D stPt = tallestOffset.StartPoint;
+            Point3D endPt = tallestOffset.EndPoint;
+
+            Point3D pt1 = tallestOffset.StartPoint + MathHelper.UnitVectorFromPt1ToPt2(endPt, stPt) * offset;
+            Point3D pt2 = tallestOffset.EndPoint + MathHelper.UnitVectorFromPt1ToPt2(stPt, endPt) * offset;
+            Line l1 = new Line(pt1, pt2);
+            Line l3 = l1.Offset(2 * offset, Vector3D.AxisZ) as Line;
+
+
+
+
+
+            //Point3D pt1 = new Point3D(tallestLine.StartPoint.X - offset, tallestLine.StartPoint.Y - offset, tallestLine.StartPoint.Z);
+            //Point3D pt2 = pt1 + MathHelper.UnitVectorFromPt1ToPt2(tallestLine.StartPoint, tallestLine.EndPoint) * 2 * offset;
+
+            //Point3D pt3 = pt2 + MathHelper.UVPerpendicularToLine2DFromPt(tallestLine, new Point3D(pt1.X - 1, pt1.Y + offset, pt1.Z));
+            //Point3D pt4 = pt3 + MathHelper.UVPerpendicularToLine2DFromPt(tallestLine, new Point3D(pt1.X - 1, pt1.Y + offset, pt1.Z));
+
+            lstLine.Add(l1);
+            lstLine.Add(new Line(l1.EndPoint, l3.EndPoint));
+            lstLine.Add(l3);
+            lstLine.Add(new Line(l3.StartPoint, l1.StartPoint));
+
+            return lstLine;
         }
     }
 }

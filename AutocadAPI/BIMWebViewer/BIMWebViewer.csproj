@@ -745,6 +745,7 @@
     <Content Include="vendor\bootstrap\css\bootstrap.min.css.map" />
     <Content Include="Views\Home\Home.cshtml" />
     <Content Include="Views\Viewer2D\Viewer2D.cshtml" />
+    <Content Include="Views\Viewer\ViewProgress.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
